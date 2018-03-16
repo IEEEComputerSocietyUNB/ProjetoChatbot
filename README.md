@@ -8,9 +8,14 @@ O objetivo é desenvolver um chatbot (isto é, um programa interativo que produz
 
 ## Como contribuir
 
-### Como instalar
+### Ferramentas a instalar
 
-É necessário ter [Python 3](https://www.python.org/downloads/) instalado.
+- Editor de texto (Ex.: [Atom](https://atom.io/), [VSCode](https://code.visualstudio.com/));
+- [Git Time Metric](https://github.com/git-time-metric/gtm);
+- Git;
+- [Python 3](https://www.python.org/downloads/).
+
+### Como instalar
 
 Deve-se primeiro criar um ambiente virtual
 
