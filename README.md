@@ -10,17 +10,17 @@ O objetivo é desenvolver um chatbot (isto é, um programa interativo que produz
 
 ### Ferramentas a instalar
 
-- Editor de texto (Ex.: [Atom](https://atom.io/), [VSCode](https://code.visualstudio.com/));
-- [Git Time Metric](https://github.com/git-time-metric/gtm);
-- Git;
-- [Python 3](https://www.python.org/downloads/).
+-   Editor de texto (Ex.: [Atom](https://atom.io/), [VSCode](https://code.visualstudio.com/));
+-   [Git Time Metric](https://github.com/git-time-metric/gtm);
+-   Git;
+-   [Python 3](https://www.python.org/downloads/).
 
 ### Como instalar
 
 Deve-se primeiro criar um ambiente virtual
 
 ```
-python -m venv venv 
+python -m venv venv
 ```
 
 Depois deve-se instalar os pacotes contidos no `requirements.txt`
@@ -35,9 +35,9 @@ Deve-se primeiramente criar um token usando o @botfather e responder o bot, ao f
 
 ## Equipe Responsável
 
-- Coordenador Geral
-  - [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
-    - alexandrebarbaruiva@gmail.com
-- Equipe Dev
-  - [Talitha Pumar](https://github.com/tapumar)
-- Equipe Cog
+-   Coordenador Geral
+    -   [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
+        -   alexandrebarbaruiva@gmail.com
+-   Equipe Dev
+    -   [Talitha Pumar](https://github.com/tapumar)
+-   Equipe Cog
