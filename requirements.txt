@@ -1,2 +1,4 @@
-coverage
-bottery
+python-telegram-bot
+green
+pytest-cov
+pycodestyle
