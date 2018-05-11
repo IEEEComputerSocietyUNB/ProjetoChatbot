@@ -31,7 +31,12 @@ pip install -r requirements.txt
 
 ## Como usar o bot
 
-Deve-se primeiramente criar um token usando o @botfather e responder o bot, ao final do diálogo, será informado um token, este token é o que permitirá receber e enviar mensagens ao bot.
+Deve-se primeiramente gerar um token utilizando o @botfather. Abra o Telegram e
+procure por @botfather. Inicie o diálogo, envie o comando /newbot e siga as
+instruções fornecidas. Ao final do diálogo, será informado um token, este token
+permitirá receber e enviar mensagens ao bot que acabou de ser criado. Também é
+informado o link para a documentação que serve de referência para a construção
+de bots para o Telegram: [Bot API](https://core.telegram.org/bots/api) 
 
 ## Equipe Responsável
 
@@ -40,4 +45,5 @@ Deve-se primeiramente criar um token usando o @botfather e responder o bot, ao f
         -   alexandrebarbaruiva@gmail.com
 -   Equipe Dev
     -   [Talitha Pumar](https://github.com/tapumar)
+    -   [Daniella Angelos](https://github.com/daniangelos)
 -   Equipe Cog
