@@ -4,7 +4,7 @@ from bot.bot import Chatbot
 from bot.bot import retrieve_token
 
 
-class TestBot(unittest.TestCase):
+class TestBotBasics(unittest.TestCase):
 
     def setUp(self):
         self.bot = Chatbot(retrieve_token())
@@ -33,6 +33,9 @@ class TestBot(unittest.TestCase):
         Check for start command veracity
         """
         pass
+
+
+# class TestGreetingDialogs(unittest.TestCase):
 
 
 if __name__ == '__main__':
