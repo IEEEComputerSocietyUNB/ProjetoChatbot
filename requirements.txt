@@ -1,4 +1,5 @@
 python-telegram-bot
 green
-pytest-cov
 pycodestyle
+chatterbot
+radon
