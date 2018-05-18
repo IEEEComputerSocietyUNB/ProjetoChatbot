@@ -30,7 +30,7 @@ porcentagem de cobertura de testes, se a nova funcionalidade está sendo
 testada e se a funcionalidade condiz com oque está sendo demandado na iteração
 vigente.
 
-### Ferramentas a instalar
+## Ferramentas a instalar
 
 -   Editor de texto (Ex.: [Atom](https://atom.io/),
 [VSCode](https://code.visualstudio.com/));
@@ -38,7 +38,7 @@ vigente.
 -   Git;
 -   [Python 3](https://www.python.org/downloads/).
 
-### Configurando o ambiente de desenvolvimento
+## Configurando o ambiente de desenvolvimento
 
 Deve-se primeiro criar um ambiente virtual
 
@@ -46,7 +46,7 @@ Deve-se primeiro criar um ambiente virtual
 python3 -m venv venv
 ```
 
-Depois deve-se instalar os pacotes contidos no `requirements.txt`
+Depois deve-se instalar os pacotes contidos no `requirements.txt`. Caso você tenha o `make` instalado, use `make install`, caso contrário:
 
 ```
 pip install -r requirements.txt
@@ -67,6 +67,12 @@ Uma vez tendo em mão o token do bot, deve-se criar um arquivo chamado
 ```
 [DEFAULT]
 token={SEUTOKENGIGANTEAQUI}
+```
+
+Uma vez criado o arquivo, use `make run` para fazer o bot funcionar ou
+
+```
+python3 bot/bot.py
 ```
 
 ## Equipe Responsável
