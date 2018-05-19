@@ -3,3 +3,4 @@ green
 pycodestyle
 chatterbot
 radon
+codecov

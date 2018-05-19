@@ -25,6 +25,10 @@ full:
 encrypt:
 	travis encrypt-file bot/config.ini --add
 
+travis:
+	green3
+	coverage run tests/tests.py
+
 help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
 	@echo " make.............= Runs the tests using green3"
