@@ -1,1 +1,1 @@
-web: python bot/herokubot.py 
+web: python bot/herokubot.py TOKEN NAME
