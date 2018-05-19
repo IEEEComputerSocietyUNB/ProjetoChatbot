@@ -1,7 +1,6 @@
 import unittest
 import os
 from time import strftime
-from telethon import TelegramClient
 from bot.bot import Chatbot
 from bot.bot import retrieve_default
 
