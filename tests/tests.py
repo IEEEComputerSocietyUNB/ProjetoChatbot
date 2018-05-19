@@ -1,19 +1,16 @@
 import unittest
 import os
+from time import strftime
+from telethon import TelegramClient
 from bot.bot import Chatbot
-from bot.bot import retrieve_token
+from bot.bot import retrieve_default
 
 
 class TestBotBasics(unittest.TestCase):
 
     def setUp(self):
-        self.bot = Chatbot(retrieve_token())
+        self.bot = Chatbot(retrieve_default()['token'])
 
-    def test_nothing(self):
-        """
-        Check if testing is really ocurring
-        """
-        pass
 
     def test_if_bot_is_unbchatbot(self):
         """
