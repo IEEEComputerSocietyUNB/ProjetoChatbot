@@ -2,15 +2,7 @@ import logging
 import os
 import sys
 from bot.bot import Chatbot
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
-
-def echo(bot, update):
-    update.effective_message.reply_text(update.effective_message.text)
-
-
-def error(bot, update, error):
-    logger.warning('Update "%s" caused error "%s"', update, error)
+from telegram.ext import Updater, CommandHandler, MessageHandler,
 
 
 if __name__ == "__main__":
@@ -23,10 +15,6 @@ if __name__ == "__main__":
 
     # Initialize bot
     bot = Chatbot(TOKEN)
-
-    # Add handlers #TODO: remove handlers and leave them on bot.py
-    bot.dispatcher.add_handler(MessageHandler(Filters.text, echo))
-    bot.dispatcher.add_error_handler(error)
 
     # Start the webhook
     bot.updater.start_webhook(
