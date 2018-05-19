@@ -25,6 +25,7 @@ class Chatbot:
         logging.basicConfig(
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO)
+        self.logger = logging.getLogger("log")
         self.bot = Bot(token)
         self.updater = Updater(token=token)
         self.dispatcher = self.updater.dispatcher
@@ -81,6 +82,7 @@ class Chatbot:
 
 
 if __name__ == '__main__':
+    # Running on local system, for heroku, there's herokubot.py
     token = retrieve_default()['token']
     if(not token):
         print('Configuration file not found.')

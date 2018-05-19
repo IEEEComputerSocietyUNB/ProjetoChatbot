@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
@@ -24,7 +23,6 @@ if __name__ == "__main__":
 
     # Port is given by Heroku
     PORT = os.environ.get('PORT')
-    print(PORT)
 
     # Enable logging
     logging.basicConfig(
