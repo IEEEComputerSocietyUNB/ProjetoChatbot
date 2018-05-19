@@ -27,7 +27,7 @@ encrypt:
 
 travis:
 	@make full
-	codecov
+	coverage run tests/tests.py
 
 help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
