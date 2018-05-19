@@ -2,16 +2,17 @@ import telegram
 import os
 import sys
 from time import sleep
-from telegram.ext import Updater, CommandHandler
+from telegram import Bot
+from telegram.ext import Updater, CommandHandler, Dispatcher
 from configparser import ConfigParser
 import logging
 
 
-def retrieve_token():
+def retrieve_default():
     try:
         config = ConfigParser()
         config.read_file(open(str(os.getcwd())+'/bot/config.ini'))
-        return(config['DEFAULT']['token'])
+        return(config['DEFAULT'])
     except Exception as e:
         return(e)
 
@@ -24,7 +25,7 @@ class Chatbot:
         logging.basicConfig(
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO)
-        self.bot = telegram.Bot(token)
+        self.bot = Bot(token)
         self.updater = Updater(token=token)
         self.dispatcher = self.updater.dispatcher
 
@@ -80,7 +81,7 @@ class Chatbot:
 
 
 if __name__ == '__main__':
-    token = retrieve_token()
+    token = retrieve_default()['token']
     if(not token):
         print('Configuration file not found.')
         sys.exit(1)
