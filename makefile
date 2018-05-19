@@ -26,7 +26,7 @@ encrypt:
 	travis encrypt-file bot/config.ini --add
 
 travis:
-	@make full
+	green3
 	coverage run tests/tests.py
 
 help:
