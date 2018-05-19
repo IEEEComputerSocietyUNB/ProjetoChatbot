@@ -18,9 +18,9 @@ cov:
 	coverage html bot/bot.py
 
 full:
-	make test
-	make cov
-	make style
+	@make test
+	@make cov
+	@make style
 
 encrypt:
 	travis encrypt-file bot/config.ini --add
