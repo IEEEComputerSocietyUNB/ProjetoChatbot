@@ -10,7 +10,6 @@ class TestBotBasics(unittest.TestCase):
     def setUp(self):
         self.bot = Chatbot(retrieve_default()['token'])
 
-
     def test_if_bot_is_unbchatbot(self):
         """
         Check if bot being initialized is truly the unbchatbot

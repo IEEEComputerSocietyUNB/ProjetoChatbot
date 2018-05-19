@@ -11,6 +11,7 @@ def start(bot, update):
 def echo(bot, update):
     update.effective_message.reply_text(update.effective_message.text)
 
+
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
 
@@ -24,8 +25,10 @@ if __name__ == "__main__":
     PORT = os.environ.get('PORT')
 
     # Enable logging
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.INFO)
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO
+    )
     logger = logging.getLogger(__name__)
 
     # Set up the Updater
