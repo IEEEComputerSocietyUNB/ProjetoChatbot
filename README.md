@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ComputerSocietyUNB/ProjetoChatbot.svg?branch=master)](https://travis-ci.org/ComputerSocietyUNB/ProjetoChatbot)
-
+[![codecov](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot/branch/master/graph/badge.svg)](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot)
 # ProjetoChatbot
 
 ## O que é
