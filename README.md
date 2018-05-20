@@ -36,8 +36,7 @@ vigente.
 
 ## Ferramentas a instalar
 
-* Editor de texto (Ex.: [Atom](https://atom.io/),
-[VSCode](https://code.visualstudio.com/));
+* Editor de texto (Ex.: [Atom](https://atom.io/), [VSCode](https://code.visualstudio.com/));
 * [Git Time Metric](https://github.com/git-time-metric/gtm);
 * Git;
 * [Python 3](https://www.python.org/downloads/).
