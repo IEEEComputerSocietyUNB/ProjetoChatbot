@@ -82,8 +82,8 @@ python3 bot/bot.py
 ## Equipe Responsável
 
 * Coordenador Geral
-   * [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
+  * [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
 * Equipe Dev
-   * [Daniella Angelos](https://github.com/daniangelos)
-   * [Talitha Pumar](https://github.com/tapumar)
+  * [Daniella Angelos](https://github.com/daniangelos)
+  * [Talitha Pumar](https://github.com/tapumar)
 * Equipe Cog
