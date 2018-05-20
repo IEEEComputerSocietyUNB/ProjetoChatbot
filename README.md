@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/ComputerSocietyUNB/ProjetoChatbot.svg?branch=master)](https://travis-ci.org/ComputerSocietyUNB/ProjetoChatbot)
 [![codecov](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot/branch/master/graph/badge.svg)](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ffdec12c3e0377893317/maintainability)](https://codeclimate.com/github/ComputerSocietyUNB/ProjetoChatbot/maintainability)
+
 # ProjetoChatbot
 
 ## O que é
@@ -35,11 +36,10 @@ vigente.
 
 ## Ferramentas a instalar
 
--   Editor de texto (Ex.: [Atom](https://atom.io/),
-[VSCode](https://code.visualstudio.com/));
--   [Git Time Metric](https://github.com/git-time-metric/gtm);
--   Git;
--   [Python 3](https://www.python.org/downloads/).
+* Editor de texto (Ex.: [Atom](https://atom.io/), [VSCode](https://code.visualstudio.com/));
+* [Git Time Metric](https://github.com/git-time-metric/gtm);
+* Git;
+* [Python 3](https://www.python.org/downloads/).
 
 ## Configurando o ambiente de desenvolvimento
 
@@ -49,7 +49,8 @@ Deve-se primeiro criar um ambiente virtual
 python3 -m venv venv
 ```
 
-Depois deve-se instalar os pacotes contidos no `requirements.txt`. Caso você tenha o `make` instalado, use `make install`, caso contrário:
+Depois deve-se instalar os pacotes contidos no `requirements.txt`. Caso você
+tenha o `make` instalado, use `make install`, caso contrário:
 
 ```
 pip install -r requirements.txt
@@ -80,9 +81,9 @@ python3 bot/bot.py
 
 ## Equipe Responsável
 
--   Coordenador Geral
-    -   [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
--   Equipe Dev
-    -   [Daniella Angelos](https://github.com/daniangelos)
-    -   [Talitha Pumar](https://github.com/tapumar)
--   Equipe Cog
+* Coordenador Geral
+  * [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
+* Equipe Dev
+  * [Daniella Angelos](https://github.com/daniangelos)
+  * [Talitha Pumar](https://github.com/tapumar)
+* Equipe Cog
