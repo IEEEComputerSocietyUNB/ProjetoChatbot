@@ -88,9 +88,10 @@ class Chatbot:
         update.effective_message.reply_text(update.effective_message.text)
 
     def text_message(self, bot, update):
-        message = update.effective_message.text.lower().split()
-        if(len(message) == 1):
-            firstWord = message[0]
+        message = update.effective_message.text
+        message_words = message.lower().split()
+        if(len(message_words) == 1):
+            firstWord = message_words[0]
             for string in stringConstants.saudacoes:
                 if firstWord == string:
                     bot.send_chat_action(
