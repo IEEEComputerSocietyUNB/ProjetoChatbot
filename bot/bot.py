@@ -109,6 +109,7 @@ class Chatbot:
 if __name__ == '__main__':
     # try to run with Heroku variables
     try:
+        # Variables set on Heroku
         TOKEN = os.environ.get('TOKEN')
         NAME = os.environ.get('NAME')
         # Port is given by Heroku
