@@ -2,7 +2,6 @@ import telegram
 import os
 import sys
 import logging
-import stringConstants
 import random
 from time import sleep
 from telegram import Bot
@@ -98,16 +97,18 @@ class Chatbot:
         @bot = information about the bot
         @message_words = list of words in the message
         """
-        for string in stringConstants.saudacoes:
+        saudacoes = ["ola", "olá", "oi", "iae"]
+        saudacoes_reply = ["Olá, tudo bem contigo?", "Olá, como vai?", "Oi, tudo bom?"]
+
+        for string in saudacoes:
             if message_words[0] == string:
                 bot.send_chat_action(
                     chat_id=update.message.chat_id, \
                     action=telegram.ChatAction.TYPING
                 )
-                randNumber = random.randint( \
-                    0,len(stringConstants.saudacoes_reply)-1)
+                randNumber = random.randint(0, len(saudacoes_reply)-1)
                 update.effective_message.reply_text( \
-                    stringConstants.saudacoes_reply[randNumber])
+                    saudacoes_reply[randNumber])
                 return
 
     def error(self, bot, update, error):
