@@ -86,4 +86,5 @@ python3 bot/bot.py
 * Equipe Dev
   * [Daniella Angelos](https://github.com/daniangelos)
   * [Talitha Pumar](https://github.com/tapumar)
+  * [William Simião](https://github.com/williamsimiao)
 * Equipe Cog

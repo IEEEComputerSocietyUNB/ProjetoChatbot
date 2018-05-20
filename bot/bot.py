@@ -2,6 +2,8 @@ import telegram
 import os
 import sys
 import logging
+import stringConstants
+import random
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
@@ -35,8 +37,10 @@ class Chatbot:
         self.dispatcher.add_handler(start_handler)
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
-        echo_handler = MessageHandler(Filters.text, self.echo)
-        self.dispatcher.add_handler(echo_handler)
+        #echo_handler = MessageHandler(Filters.text, self.echo)
+        #self.dispatcher.add_handler(echo_handler)
+        message_handler = MessageHandler(Filters.text, self.text_message)
+        self.dispatcher.add_handler(message_handler)
         self.dispatcher.add_error_handler(self.error)
 
     def verify_bot(self):
@@ -82,6 +86,22 @@ class Chatbot:
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
         update.effective_message.reply_text(update.effective_message.text)
+
+    def text_message(self, bot, update):
+        message = update.effective_message.text.lower().split()
+        if(len(message) == 1):
+            firstWord = message[0]
+            for string in stringConstants.saudacoes:
+                if firstWord == string:
+                    bot.send_chat_action(
+                        chat_id=update.message.chat_id, \
+                        action=telegram.ChatAction.TYPING
+                    )
+                    randNumber = random.randint( \
+                        0,len(stringConstants.saudacoes_reply))
+                    update.effective_message.reply_text( \
+                        stringConstants.saudacoes_reply[randNumber])
+                    return
 
     def error(self, bot, update, error):
         self.logger.warning('Update "%s" caused error "%s"', update, error)
