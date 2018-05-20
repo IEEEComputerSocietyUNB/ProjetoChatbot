@@ -97,9 +97,11 @@ class Chatbot:
         self.updater.idle()
 
     def run_heroku(self, TOKEN, NAME, PORT):
-        self.updater.start_webhook(listen="0.0.0.0",
-                              port=int(PORT),
-                              url_path=TOKEN)
+        self.updater.start_webhook(
+            listen="0.0.0.0",
+            port=int(PORT),
+            url_path=TOKEN
+        )
         self.updater.bot.set_webhook(
             "https://{}.herokuapp.com/{}".format(NAME, TOKEN)
         )
@@ -109,16 +111,21 @@ class Chatbot:
 if __name__ == '__main__':
     # try to run with Heroku variables
     try:
+        # Variables set on Heroku
         TOKEN = os.environ.get('TOKEN')
         NAME = os.environ.get('NAME')
         # Port is given by Heroku
         PORT = os.environ.get('PORT')
 
         bot = Chatbot(TOKEN)
-        bot.updater.start_webhook(listen="0.0.0.0",
-                              port=int(PORT),
-                              url_path=TOKEN)
-        bot.updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
+        bot.updater.start_webhook(
+            listen="0.0.0.0",
+            port=int(PORT),
+            url_path=TOKEN
+        )
+        bot.updater.bot.set_webhook(
+            "https://{}.herokuapp.com/{}".format(NAME, TOKEN)
+        )
         bot.updater.idle()
 
     # Run on local system once detected that it's not on Heroku
