@@ -88,21 +88,27 @@ class Chatbot:
         update.effective_message.reply_text(update.effective_message.text)
 
     def text_message(self, bot, update):
-        message = update.effective_message.text
-        message_words = message.lower().split()
+        message_words = update.effective_message.text.lower().split()
         if(len(message_words) == 1):
-            firstWord = message_words[0]
-            for string in stringConstants.saudacoes:
-                if firstWord == string:
-                    bot.send_chat_action(
-                        chat_id=update.message.chat_id, \
-                        action=telegram.ChatAction.TYPING
-                    )
-                    randNumber = random.randint( \
-                        0,len(stringConstants.saudacoes_reply))
-                    update.effective_message.reply_text( \
-                        stringConstants.saudacoes_reply[randNumber])
-                    return
+            self.salute_message(bot, update, message_words)
+
+    def salute_message(self, bot, update, message_words):
+        """
+        Salute message received
+        @bot = information about the bot
+        @message_words = list of words in the message
+        """
+        for string in stringConstants.saudacoes:
+            if message_words[0] == string:
+                bot.send_chat_action(
+                    chat_id=update.message.chat_id, \
+                    action=telegram.ChatAction.TYPING
+                )
+                randNumber = random.randint( \
+                    0,len(stringConstants.saudacoes_reply)-1)
+                update.effective_message.reply_text( \
+                    stringConstants.saudacoes_reply[randNumber])
+                return
 
     def error(self, bot, update, error):
         self.logger.warning('Update "%s" caused error "%s"', update, error)
