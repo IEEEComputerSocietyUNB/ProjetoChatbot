@@ -1,5 +1,5 @@
 python-telegram-bot==10.1.0
-green
+green==2.12.1
 pycodestyle
 chatterbot
 radon
