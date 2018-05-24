@@ -3,4 +3,4 @@ green==2.12.1
 pycodestyle==2.4.0
 chatterbot==0.8.7
 radon==2.2.0
-codecov
+codecov==2.0.15
