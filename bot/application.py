@@ -8,18 +8,26 @@ from telegram import Bot
 from configparser import ConfigParser
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
     Filters
+sys.path.append(
+    os.path.dirname(
+        os.path.dirname(os.path.realpath(__file__))
+    )
+)
+from bot.communication import Communication
 
 
 def retrieve_default():
     try:
         config = ConfigParser()
-        config.read_file(open(str(os.getcwd())+'/bot/config.ini'))
+        with open(str(os.getcwd())+'/bot/config.ini') as file:
+            config.read_file(file)
         return(config['DEFAULT'])
-    except Exception as e:
-        return(e)
+    except FileNotFoundError:
+        print("File not found error")
+        raise FileNotFoundError
 
 
-class Chatbot:
+class Application:
     """
     The chatbot per se! Yay <3
     """
@@ -28,25 +36,24 @@ class Chatbot:
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO)
         self.logger = logging.getLogger("log")
-        self.bot = Bot(token)
+        self.app = Bot(token)
+        self.comm = Communication()
         self.updater = Updater(token)
         self.dispatcher = self.updater.dispatcher
 
         start_handler = CommandHandler('start', self.start)
         self.dispatcher.add_handler(start_handler)
+
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
-        #echo_handler = MessageHandler(Filters.text, self.echo)
-        #self.dispatcher.add_handler(echo_handler)
+
         message_handler = MessageHandler(Filters.text, self.text_message)
         self.dispatcher.add_handler(message_handler)
+
         self.dispatcher.add_error_handler(self.error)
 
     def verify_bot(self):
-        return(self.bot.get_me().username, self.bot.get_me().id)
-
-    def make_log(self):
-        print(self.bot.getLogger())
+        return(self.app.get_me().username, self.app.get_me().id)
 
     def start(self, bot, update):
         """
@@ -75,41 +82,22 @@ class Chatbot:
         info_text = "This is the info!"
         bot.send_message(
             chat_id=update.message.chat_id,
-            text="*bold* _italic_ `fixed font` [link](http://google.com).",
+            text=info_text,
+            # text="*bold* _italic_ `fixed font` [link](http://google.com).",
             parse_mode=telegram.ParseMode.MARKDOWN
         )
         print('info sent')
 
-    def echo(self, bot, update):
+    def text_message(self, bot, update):
+        # message_words = update.effective_message.text.lower().split()
+        # if(len(message_words) == 1):
+        #     self.salute_message(bot, update, message_words)
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        update.effective_message.reply_text(update.effective_message.text)
-
-    def text_message(self, bot, update):
-        message_words = update.effective_message.text.lower().split()
-        if(len(message_words) == 1):
-            self.salute_message(bot, update, message_words)
-
-    def salute_message(self, bot, update, message_words):
-        """
-        Salute message received
-        @bot = information about the bot
-        @message_words = list of words in the message
-        """
-        saudacoes = ["ola", "olá", "oi", "iae"]
-        saudacoes_reply = ["Olá, tudo bem contigo?", "Olá, como vai?", "Oi, tudo bom?"]
-
-        for string in saudacoes:
-            if message_words[0] == string:
-                bot.send_chat_action(
-                    chat_id=update.message.chat_id, \
-                    action=telegram.ChatAction.TYPING
-                )
-                randNumber = random.randint(0, len(saudacoes_reply)-1)
-                update.effective_message.reply_text( \
-                    saudacoes_reply[randNumber])
-                return
+        message = update.effective_message.text
+        update.effective_message.reply_text(str(self.comm.respond(message)))
+        return
 
     def error(self, bot, update, error):
         self.logger.warning('Update "%s" caused error "%s"', update, error)
@@ -124,16 +112,16 @@ class Chatbot:
         # start_polling() is non-blocking and will stop the bot gracefully.
         self.updater.idle()
 
-    def run_heroku(self, TOKEN, NAME, PORT):
-        self.updater.start_webhook(
-            listen="0.0.0.0",
-            port=int(PORT),
-            url_path=TOKEN
-        )
-        self.updater.bot.set_webhook(
-            "https://{}.herokuapp.com/{}".format(NAME, TOKEN)
-        )
-        self.updater.idle()
+    # def run_heroku(self, TOKEN, NAME, PORT):
+    #     self.updater.start_webhook(
+    #         listen="0.0.0.0",
+    #         port=int(PORT),
+    #         url_path=TOKEN
+    #     )
+    #     self.updater.bot.set_webhook(
+    #         "https://{}.herokuapp.com/{}".format(NAME, TOKEN)
+    #     )
+    #     self.updater.idle()
 
 
 if __name__ == '__main__':
@@ -145,7 +133,7 @@ if __name__ == '__main__':
         # Port is given by Heroku
         PORT = os.environ.get('PORT')
 
-        bot = Chatbot(TOKEN)
+        bot = Application(TOKEN)
         bot.updater.start_webhook(
             listen="0.0.0.0",
             port=int(PORT),
@@ -158,9 +146,10 @@ if __name__ == '__main__':
 
     # Run on local system once detected that it's not on Heroku
     except Exception as inst:
-        token = retrieve_default()['token']
-        if(not token):
+        try:
+            token = retrieve_default()['token']
+            x = Application(token)
+            x.run()
+        except FileNotFoundError:
             print('Configuration file not found.')
             sys.exit(1)
-        x = Chatbot(token)
-        x.run()
