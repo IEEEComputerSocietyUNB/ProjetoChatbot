@@ -31,7 +31,7 @@ encrypt:
 	travis encrypt-file bot/config.ini --add
 
 travis:
-	green3
+	green3 .
 	coverage run $(app_test)
 	coverage run $(comm_test)
 

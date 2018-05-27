@@ -32,12 +32,12 @@ class Application:
     The chatbot per se! Yay <3
     """
     def __init__(self, token):
+        self.comm = Communication()
         logging.basicConfig(
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO)
         self.logger = logging.getLogger("log")
         self.app = Bot(token)
-        self.comm = Communication()
         self.updater = Updater(token)
         self.dispatcher = self.updater.dispatcher
 
@@ -97,7 +97,6 @@ class Application:
         )
         message = update.effective_message.text
         update.effective_message.reply_text(str(self.comm.respond(message)))
-        return
 
     def error(self, bot, update, error):
         self.logger.warning('Update "%s" caused error "%s"', update, error)

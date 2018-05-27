@@ -1,6 +1,5 @@
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
-import sys
 import os
 
 
@@ -16,10 +15,11 @@ class Communication:
                 {
                     'import_path': 'chatterbot.logic.LowConfidenceAdapter',
                     'threshold': 0.65,
-                    'default_response': 'Desculpa, mas não entendi sua mensagem.'
+                    'default_response':
+                        'Desculpa, mas não entendi sua mensagem.',
                 }
             ],
-            read_only=True
+            # read_only=True
         )
 
         self.comm.set_trainer(ListTrainer)
