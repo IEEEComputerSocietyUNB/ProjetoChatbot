@@ -32,8 +32,7 @@ encrypt:
 
 travis:
 	green3 .
-	coverage run $(app_test)
-	coverage run $(comm_test)
+	coverage run -m py.test $(app_test) $(comm_test)
 
 help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
