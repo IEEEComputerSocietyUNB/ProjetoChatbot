@@ -1,10 +1,15 @@
+app = bot/application.py
+comm = bot/communication.py
+app_test = tests/test_application.py
+comm_test = tests/test_communication.py
+
 default: test
 
 test:
 	green3 . -vv
 
 run:
-	python3 bot/bot.py
+	python3 $(app)
 
 install:
 	pip3 install -r requirements.txt
@@ -13,9 +18,9 @@ style:
 	pycodestyle bot/ tests/
 
 cov:
-	coverage run -m py.test tests/tests.py
-	coverage report -m bot/bot.py
-	coverage html bot/bot.py
+	coverage run -m py.test $(app_test) $(comm_test)
+	coverage report -m $(app) $(comm)
+	coverage html $(app) $(comm)
 
 full:
 	@make test
@@ -26,8 +31,8 @@ encrypt:
 	travis encrypt-file bot/config.ini --add
 
 travis:
-	green3
-	coverage run tests/tests.py
+	green3 .
+	coverage run -m py.test $(app_test) $(comm_test)
 
 help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
