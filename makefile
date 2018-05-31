@@ -5,14 +5,10 @@ first_test = tests.test_communication.TestBotDialogs.test_if_comm_answers_greeti
 comm_test = tests/test_communication.py
 db_file = db.sqlite3
 
-default: test
+default: full
 
 rmdb:
 	@if [ -a $(db_file) ]; then rm $(db_file); fi
-
-test:
-	@make rmdb
-	green3 . -vv
 
 run:
 	@make rmdb
@@ -33,15 +29,18 @@ cov:
 	coverage html $(app) $(comm)
 
 full:
+	@# check everything on local machine
 	@make rmdb
-	@make test
+	@make travis
 	@make cov
 	@make style
 
 encrypt:
+	@# needed only when encrypting bot token to travis, no need for production
 	travis encrypt-file bot/config.ini --add
 
 travis:
+	@# what will run on travis
 	@make rmdb
 	green3 $(first_test)
 	green3 .
@@ -50,10 +49,10 @@ travis:
 help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
 	@echo " make.............= Runs the tests using green3"
-	@echo " make test........= Also run the tests using green3"
+	@echo " make travis......= Also run the tests using green3"
 	@echo " make run.........= Run bot.py"
 	@echo " make install.....= Install the requirements necessary for this project"
 	@echo " make style.......= Cheks if your code is well formatted for this project"
 	@echo " make cov.........= Checks how much of the program is covered by tests"
-	@echo " make full........= Runs make test, cov and style"
+	@echo " make full........= Checks test, codecoverage and style"
 	@echo "\n\t End of Makefile Help\n"

@@ -18,19 +18,16 @@ class Communication:
                     'import_path': 'chatterbot.logic.LowConfidenceAdapter',
                     'threshold': 0.65,
                     'default_response':
-                        'Desculpa, mas não entendi sua mensagem.',
+                        [
+                            'Desculpa, mas não entendi sua mensagem.',
+                            'Não compreendi, você pode repetir?',
+                            'Como é? Não entendi',
+                        ],
                 }
             ],
-            trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
-            #read_only=True
+            trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
         )
-
-        self.comm.set_trainer(ChatterBotCorpusTrainer)
-
-        # TODO create function to deal with training
-        print(os.getcwd())
-        self.comm.train('chatterbot.corpus.custom.saudacoes')
-        self.comm.train('chatterbot.corpus.custom.piadas')
+        self.comm.train('bot/dialogs/')
 
     def respond(self, message):
         return self.comm.get_response(message)

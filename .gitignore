@@ -107,3 +107,4 @@ ENV/
 /.gtm/
 /rabot
 db.sqlite3
+.idea
