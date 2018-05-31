@@ -79,6 +79,7 @@ Uma vez criado o arquivo, use `make run` para fazer o bot funcionar ou
 python3 bot/bot.py
 ```
 
+
 ## Equipe Responsável
 
 * Coordenador Geral
@@ -87,4 +88,5 @@ python3 bot/bot.py
   * [Daniella Angelos](https://github.com/daniangelos)
   * [Talitha Pumar](https://github.com/tapumar)
   * [William Simião](https://github.com/williamsimiao)
+  * [Jefferson Leandro](https://github.com/jeffersonlsz)
 * Equipe Cog
