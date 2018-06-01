@@ -8,6 +8,10 @@ import json
 class Communication:
 
     def __init__(self):
+        """
+        Generator for dealing with most messages the bot will receive
+        from user
+        """
         self.comm = ChatBot(
             "Comms",
             response_selection_method=get_random_response,
@@ -31,11 +35,20 @@ class Communication:
         self.comm.train('bot/dialogs/')
 
     def respond(self, message):
+        """
+        Method that receives message from user and returns
+        corresponding answer
+        """
         return self.comm.get_response(self.clean(message))
 
-    def clean(self, message):
+    def clean(self, message, file='abbreviations.json'):
+        """
+        Method to remove upper letters and possible abbreviations.
+        Might be improved to remove other words, like adverbs
+        and some pronouns
+        """
         ABBR_PATH = str(os.getcwd())
-        ABBR_PATH += '/bot/dialogs/abbreviations/abbreviations.json'
+        ABBR_PATH += '/bot/dialogs/abbreviations/' + file
         try:
             with open(ABBR_PATH, 'r') as file:
                 commom_abbr = json.load(file)

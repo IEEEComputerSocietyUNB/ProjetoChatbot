@@ -18,6 +18,9 @@ class TestBotDialogs(unittest.TestCase):
     def setUp(self):
         self.comm = Communication()
 
+    def tearDown(self):
+        self.comm = None
+
     def test_if_comm_answers_greetings(self):
         """
         Check if communication answers greetings appropriately
@@ -29,6 +32,32 @@ class TestBotDialogs(unittest.TestCase):
         Check if communication answers greetings appropriately
         """
         self.assertEqual(self.comm.respond("Olá"), "Olá, tudo bom?")
+
+    def test_if_comm_answers_jokes(self):
+        """
+        Check if communication answers jokes appropriately
+        """
+        self.assertIn(
+            self.comm.respond("Conte-me uma piada"),
+            [
+                "Por que o robô foi ao médico? Porque ele tinha vírus!",
+                "Como um robô pirata se chama? Argh2D2.",
+                ("Por que o robô atravessou a rua? " +
+                    "Porque ele foi programado por uma galinha"),
+                "Como você para um robô de destruir o mundo? Você não para."
+            ]
+        )
+
+    def test_if_comm_answers_triggers(self):
+        """
+        Check if communication answers dialog triggers appropriately
+        """
+        self.assertEqual(self.comm.respond("Que bom"), "Sim, muito bom mesmo!")
+        self.assertEqual(self.comm.respond(
+            "Conte-me novidades"),
+            "Nada de mais, alguns bits trocados aqui e ali, e você?"
+        )
+        self.assertEqual(self.comm.respond("Que bom"), "Sim, muito bom mesmo!")
 
 
 if __name__ == '__main__':
