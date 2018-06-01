@@ -20,7 +20,8 @@ travis:
 	@# what will run on travis
 	@make rmdb
 	@make style
-	@make test
+	@# make test
+	@make rmdb
 	coverage run -m py.test $(app_test) $(comm_test) $(dialog_test)
 
 run:
@@ -34,7 +35,7 @@ cov:
 	coverage html $(app) $(comm)
 
 style:
-	@pycodestyle bot/. tests/. --ignore=E402
+	@pycodestyle bot/. tests/. --ignore=E402,W504
 
 full:
 	@# check everything on local machine

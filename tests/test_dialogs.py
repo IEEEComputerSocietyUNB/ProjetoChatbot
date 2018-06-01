@@ -18,6 +18,9 @@ class TestBotDialogs(unittest.TestCase):
     def setUp(self):
         self.comm = Communication()
 
+    def tearDown(self):
+        self.comm = None
+
     def test_if_comm_answers_greetings(self):
         """
         Check if communication answers greetings appropriately
@@ -39,8 +42,8 @@ class TestBotDialogs(unittest.TestCase):
             [
                 "Por que o robô foi ao médico? Porque ele tinha vírus!",
                 "Como um robô pirata se chama? Argh2D2.",
-                "Por que o robô atravessou a rua? \
-                Porque ele foi programado por uma galinha",
+                ("Por que o robô atravessou a rua? " +
+                    "Porque ele foi programado por uma galinha"),
                 "Como você para um robô de destruir o mundo? Você não para."
             ]
         )

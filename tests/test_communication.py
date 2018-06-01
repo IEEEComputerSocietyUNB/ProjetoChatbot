@@ -14,6 +14,9 @@ class TestBotCommunication(unittest.TestCase):
     def setUp(self):
         self.comm = Communication()
 
+    def tearDown(self):
+        self.comm = None
+
     def test_if_comm_answers(self):
         """
         Check if communication method answers appropriately
