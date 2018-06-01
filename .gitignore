@@ -106,3 +106,5 @@ ENV/
 *.ini
 /.gtm/
 /rabot
+db.sqlite3
+.idea
