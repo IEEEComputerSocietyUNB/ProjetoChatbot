@@ -1,7 +1,13 @@
 categories:
   - Greetings
 conversations:
-- - Oi
+- - oi
   - Olá, tudo bom?
-- - Olá
-  - Olá, tudo bem?
+  - Tudo, e você?
+- - olá
+  - Olá, tudo bom?
+  - Tudo, e você?
+- - Tudo bom?
+  - Tudo, e você?
+- - Também
+  - Que bom!

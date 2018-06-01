@@ -9,19 +9,27 @@ sys.path.append(
 from bot.communication import Communication
 
 
-class TestBotDialogs(unittest.TestCase):
+class TestBotCommunication(unittest.TestCase):
 
     def setUp(self):
         self.comm = Communication()
 
-    def test_if_comm_answers_greetings(self):
+    def test_if_comm_answers(self):
         """
-        Check if communication answers greetings appropriately
+        Check if communication method answers appropriately
         """
         self.assertEqual(self.comm.respond("Oi"), "Olá, tudo bom?")
 
-    # def test_if_message_cleaning_works(self):
-    #     self.assertEqual(self.comm.clean_message("Olá"), "ola")
+    def test_if_comm_removes_accents_and_upper_letters(self):
+        """
+        Check if communication method cleans
+        """
+        # Remove upper letters
+        self.assertEqual(self.comm.clean("ABCDEF"), "abcdef")
+
+    def test_if_comm_removes_abbreviation(self):
+        self.assertEqual(self.comm.clean("cadê vc"), "cadê você")
+        self.assertEqual(self.comm.clean("vc é um chato"), "você é um chato")
 
 
 if __name__ == '__main__':
