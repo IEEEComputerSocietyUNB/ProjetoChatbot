@@ -31,6 +31,10 @@ class TestBotCommunication(unittest.TestCase):
         self.assertEqual(self.comm.clean("cadê vc"), "cadê você")
         self.assertEqual(self.comm.clean("vc é um chato"), "você é um chato")
 
+    def test_if_comm_raises_error_when_abbr_not_found(self):
+        with self.assertRaises(FileNotFoundError):
+            self.comm.clean("teste", file="fail.txt")
+
 
 if __name__ == '__main__':
     unittest.main()

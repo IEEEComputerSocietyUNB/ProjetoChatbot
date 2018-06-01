@@ -4,3 +4,5 @@ plugins:
   enabled: true
  markdownlint:
   enabled: true
+ fixme:
+  enabled: true

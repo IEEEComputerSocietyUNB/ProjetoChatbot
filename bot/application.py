@@ -16,10 +16,15 @@ sys.path.append(
 from bot.communication import Communication
 
 
-def retrieve_default():
+def retrieve_default(file='config.ini'):
+    """
+    Function to retrieve all informations from token file.
+    Usually retrieves from config.ini
+    """
     try:
+        FILE_PATH = str(os.getcwd()) + '/bot/' + file
         config = ConfigParser()
-        with open(str(os.getcwd())+'/bot/config.ini') as file:
+        with open(FILE_PATH) as file:
             config.read_file(file)
         return(config['DEFAULT'])
     except FileNotFoundError:
@@ -29,7 +34,9 @@ def retrieve_default():
 
 class Application:
     """
-    The chatbot per se! Yay <3
+    The chatbot per se, it contains the Communication class to deal with
+    oncoming messages and also handles all Telegram related commands.
+    Might soon have a sibling to deal with Facebook.
     """
     def __init__(self, token):
         self.comm = Communication()
@@ -53,11 +60,14 @@ class Application:
         self.dispatcher.add_error_handler(self.error)
 
     def verify_bot(self):
+        """
+        Method to check if bot is as expected
+        """
         return(self.app.get_me().username, self.app.get_me().id)
 
     def start(self, bot, update):
         """
-        Start command to start bot on Telegram.
+        Start command to receive /start message on Telegram.
         @bot = information about the bot
         @update = the user info.
         """
@@ -79,7 +89,9 @@ class Application:
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        info_text = "This is the info!"
+        info_text = "Saiba mais sobre mim acessando minha",\
+            "página de desenvolvimento!\n",\
+            "https://github.com/ComputerSocietyUNB/ProjetoChatbot"
         bot.send_message(
             chat_id=update.message.chat_id,
             text=info_text,
@@ -99,7 +111,9 @@ class Application:
         update.effective_message.reply_text(str(self.comm.respond(message)))
 
     def error(self, bot, update, error):
-        self.logger.warning('Update "%s" caused error "%s"', update, error)
+        self.logger.warning(
+            'Update "{0}" caused error "{1}"'.format(update, error)
+        )
 
     def run(self):
         # Start the Bot

@@ -8,14 +8,19 @@ db_file = db.sqlite3
 
 default: full
 
+test:
+	@make rmdb
+	green3 $(first_test)
+	green3 .
+
 rmdb:
 	@if [ -a $(db_file) ]; then rm $(db_file); fi
 
 travis:
 	@# what will run on travis
 	@make rmdb
-	green3 $(first_test)
-	green3 .
+	@make style
+	@make test
 	coverage run -m py.test $(app_test) $(comm_test) $(dialog_test)
 
 run:
@@ -29,12 +34,12 @@ cov:
 	coverage html $(app) $(comm)
 
 style:
-	pycodestyle bot/ tests/
+	@pycodestyle bot/. tests/. --ignore=E402
 
 full:
 	@# check everything on local machine
 	@make rmdb
-	@make travis
+	@make test
 	@make cov
 	@make style
 
