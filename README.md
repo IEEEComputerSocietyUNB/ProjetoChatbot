@@ -79,7 +79,6 @@ Uma vez criado o arquivo, use `make run` para fazer o bot funcionar ou
 python3 bot/bot.py
 ```
 
-
 ## Equipe Responsável
 
 * Coordenador Geral
