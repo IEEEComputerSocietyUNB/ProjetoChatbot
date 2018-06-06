@@ -6,3 +6,5 @@ plugins:
   enabled: true
  fixme:
   enabled: true
+ sonar-python:
+    enabled: true
