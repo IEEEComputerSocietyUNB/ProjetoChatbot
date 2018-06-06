@@ -3,7 +3,7 @@ dist: trusty
 sudo: required
 env:
   global:
-    - CC_TEST_REPORTER_ID=787a2f89b15c637323c7340d65ec17e898ac44480706b4b4122ea040c2a88f1d
+    - CC_TEST_REPORTER_ID=855c7cffbc4aeb49d8ee560e6667c1b43b7b315b8e1efffeb9ad6651ae6e5c6f
 language: python
 python:
 - '3.6'
