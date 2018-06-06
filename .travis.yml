@@ -1,6 +1,9 @@
 os: linux
 dist: trusty
 sudo: required
+env:
+  global:
+    - CC_TEST_REPORTER_ID=855c7cffbc4aeb49d8ee560e6667c1b43b7b315b8e1efffeb9ad6651ae6e5c6f
 language: python
 python:
 - '3.6'
@@ -11,6 +14,14 @@ script:
 before_install:
 - openssl aes-256-cbc -K $encrypted_41103fb4d715_key -iv $encrypted_41103fb4d715_iv
   -in config.ini.enc -out bot/config.ini -d
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+after_success:
+- codecov
 notifications:
   webhooks:
     urls:
@@ -25,5 +36,3 @@ deploy:
   app: projeto-chatbot
   on:
     repo: ComputerSocietyUNB/ProjetoChatbot
-after_success:
-- codecov
