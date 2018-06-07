@@ -21,7 +21,7 @@ class TestBotCommunication(unittest.TestCase):
         """
         Check if communication method answers appropriately
         """
-        self.assertEqual(self.comm.respond("Oi"), "Olá, tudo bom?")
+        self.assertEqual(self.comm.respond("Olá"), "Olá, tudo bom?")
 
     def test_if_comm_removes_accents_and_upper_letters(self):
         """
