@@ -95,15 +95,11 @@ class Application:
         bot.send_message(
             chat_id=update.message.chat_id,
             text=info_text,
-            # text="*bold* _italic_ `fixed font` [link](http://google.com).",
             parse_mode=telegram.ParseMode.MARKDOWN
         )
         print('info sent')
 
     def text_message(self, bot, update):
-        # message_words = update.effective_message.text.lower().split()
-        # if(len(message_words) == 1):
-        #     self.salute_message(bot, update, message_words)
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
