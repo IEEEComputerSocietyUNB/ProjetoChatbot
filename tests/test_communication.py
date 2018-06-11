@@ -30,8 +30,8 @@ class TestBotCommunication(unittest.TestCase):
         # Remove upper letters
         self.assertEqual(self.comm.clean("ABCDEF"), "abcdef")
 
-    def test_if_comm_raises_error_when_abbr_not_found(self):
-        with self.assertRaises(TypeError):
+    def test_if_comm_raises_error_when_abbr_is_not_a_list(self):
+        with self.assertRaises(FileNotFoundError):
             self.comm.switch_abbreviations("teste", files="fail.txt")
 
     def test_if_comm_raises_error_when_abbr_not_found(self):
@@ -44,8 +44,8 @@ class TestBotCommunication(unittest.TestCase):
             "você está aqui?"
         )
 
-    def test_if_comm_raises_error_when_rm_not_found(self):
-        with self.assertRaises(TypeError):
+    def test_if_comm_raises_error_when_rm_is_not_a_list(self):
+        with self.assertRaises(FileNotFoundError):
             self.comm.remove_words("teste", files="fail.txt")
 
     def test_if_comm_raises_error_when_rm_not_found(self):
