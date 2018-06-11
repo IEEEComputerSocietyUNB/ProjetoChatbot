@@ -37,6 +37,9 @@ cov:
 style:
 	@pycodestyle bot/. tests/. --ignore=E402,W504
 
+doc:
+	pydocstyle bot/. tests/.
+
 full:
 	@# check everything on local machine
 	@make rmdb

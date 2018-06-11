@@ -10,7 +10,7 @@ class Communication:
     def __init__(self):
         """
         Generator for dealing with most messages the bot will receive
-        from user
+        from user.
         """
         self.comm = ChatBot(
             "Comms",
@@ -36,29 +36,46 @@ class Communication:
 
     def respond(self, message):
         """
-        Method that receives message from user and returns
-        corresponding answer
+        Receive message from user and returns corresponding answer.
         """
         return self.comm.get_response(self.clean(message))
 
-    def clean(self, message, file='abbreviations.json'):
+    def clean(self, message):
         """
-        Method to remove upper letters and possible abbreviations.
+        Remove upper letters and possible abbreviations.
+
         Might be improved to remove other words, like adverbs
-        and some pronouns
+        and some pronouns.
         """
-        ABBR_PATH = str(os.getcwd())
-        ABBR_PATH += '/bot/dialogs/abbreviations/' + file
+        message = self.switch_abbreviations(message)
+        message = self.remove_words(message)
+        return message.lower()
+
+    def switch_abbreviations(self, message, files=["abbreviations.json"]):
         try:
-            with open(ABBR_PATH, 'r') as file:
-                commom_abbr = json.load(file)
-                for word in commom_abbr:
-                    message = message.replace(
-                        (' ' + word), (' ' + commom_abbr[word])
-                    )
-                    message = message.replace(
-                        (word + ' '), (commom_abbr[word] + ' ')
-                    )
+            for file in files:
+                FILE_PATH = str(os.getcwd()) + '/bot/dialogs/switches/' + file
+                with open(FILE_PATH, 'r') as file:
+                    common_abbr = json.load(file)
+                    for word in common_abbr:
+                        message = message.replace(
+                            (' ' + word), (' ' + common_abbr[word])
+                        )
+                        message = message.replace(
+                            (word + ' '), (common_abbr[word] + ' ')
+                        )
+            return message
         except FileNotFoundError:
             raise FileNotFoundError
-        return message.lower()
+
+    def remove_words(self, message, files=["articles.json", "pronouns.json"]):
+        try:
+            for file in files:
+                FILE_PATH = str(os.getcwd()) + '/bot/dialogs/removals/' + file
+                with open(FILE_PATH, 'r') as file:
+                    removals = json.load(file)
+                    for word in removals:
+                        message = message.replace((' ' + word + ' '), (' '))
+            return message
+        except FileNotFoundError:
+            raise FileNotFoundError
