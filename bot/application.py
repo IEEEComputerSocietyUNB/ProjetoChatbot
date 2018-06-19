@@ -3,6 +3,7 @@ import os
 import sys
 import logging
 import random
+from datetime import timedelta
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
@@ -47,6 +48,7 @@ class Application:
         self.app = Bot(token)
         self.updater = Updater(token)
         self.dispatcher = self.updater.dispatcher
+        self.job_queue = self.updater.job_queue
 
         start_handler = CommandHandler('start', self.start)
         self.dispatcher.add_handler(start_handler)
@@ -54,8 +56,11 @@ class Application:
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
 
-        message_handler = MessageHandler(Filters.text, self.text_message)
-        self.dispatcher.add_handler(message_handler)
+        any_message_handler = MessageHandler(Filters.all, self.any_message, pass_job_queue=True)
+        self.dispatcher.add_handler(any_message_handler)
+
+        text_message_handler = MessageHandler(Filters.text, self.text_message)
+        self.dispatcher.add_handler(text_message_handler, group=1)
 
         self.dispatcher.add_error_handler(self.error)
 
@@ -105,6 +110,15 @@ class Application:
         )
         message = update.effective_message.text
         update.effective_message.reply_text(str(self.comm.respond(message)))
+
+    def any_message(self, bot, update, job_queue):
+        #starting timer for next reminder to chat
+        job_queue.run_repeating(self.callback_lets_talk, timedelta(days=3),
+                                context=update)
+
+    def callback_lets_talk(self, bot, job):
+        bot.send_message(chat_id=job.context.message.chat_id,
+                         text='Vamos conversar ?')
 
     def error(self, bot, update, error):
         self.logger.warning(
