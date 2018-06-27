@@ -25,7 +25,6 @@ class TestBotDialogs(unittest.TestCase):
         """
         Check if communication answers greetings appropriately
         """
-        self.assertEqual(self.comm.respond("oi"), "Olá, tudo bom?")
         self.assertEqual(self.comm.respond("Olá, tudo bom?"), "Tudo, e você?")
 
     def test_if_comm_answers_greetings2(self):

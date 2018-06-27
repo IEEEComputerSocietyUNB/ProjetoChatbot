@@ -1,10 +1,12 @@
 app = bot/application.py
 comm = bot/communication.py
-first_test = tests.test_dialogs.TestBotDialogs.test_if_comm_answers_greetings
+first_test = tests.test_communication.TestBotCommunication.test_if_comm_answers
 app_test = tests/test_application.py
 comm_test = tests/test_communication.py
 dialog_test = tests/test_dialogs.py
 db_file = db.sqlite3
+
+.PHONY: test rmdb travis run cov style doc full encrypt install help
 
 default: full
 

@@ -28,7 +28,6 @@ def retrieve_default(file='config.ini'):
             config.read_file(file)
         return(config['DEFAULT'])
     except FileNotFoundError:
-        print("File not found error")
         raise FileNotFoundError
 
 
