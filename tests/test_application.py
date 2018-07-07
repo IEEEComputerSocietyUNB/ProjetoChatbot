@@ -17,20 +17,24 @@ class TestBotBasics(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    @unittest.skipUnless(os.path.exists("./bot/config.ini"), "Configuration file not found")
+    @unittest.skipUnless(os.path.exists("./bot/config.ini"),
+                         "Configuration file not found")
     def test_if_retrieve_default_works(self):
         self.assertEqual(type(dict(retrieve_default())), type({}))
 
-    @unittest.skipUnless(os.path.exists("./bot/config.ini"), "Configuration file not found")
+    @unittest.skipUnless(os.path.exists("./bot/config.ini"),
+                         "Configuration file not found")
     def test_if_retrieve_default_has_token(self):
         self.assertTrue('token' in list(retrieve_default()))
 
-    @unittest.skipUnless(os.path.exists("./bot/config.ini"), "Configuration file not found")
+    @unittest.skipUnless(os.path.exists("./bot/config.ini"),
+                         "Configuration file not found")
     def test_if_retrieve_without_file_raises_error(self):
         with self.assertRaises(FileNotFoundError):
             retrieve_default("fail.ini")
 
-    @unittest.skipUnless(os.path.exists("./bot/config.ini"), "Configuration file not found")
+    @unittest.skipUnless(os.path.exists("./bot/config.ini"),
+                         "Configuration file not found")
     def test_if_bot_is_unbchatbot(self):
         """
         Check if bot being initialized is truly the unbchatbot
