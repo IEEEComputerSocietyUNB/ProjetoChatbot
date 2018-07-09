@@ -54,6 +54,9 @@ class Application:
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
 
+        helpme_handler = CommandHandler('helpme', self.helpme)
+        self.dispatcher.add_handler(helpme_handler)
+
         message_handler = MessageHandler(Filters.text, self.text_message)
         self.dispatcher.add_handler(message_handler)
 
@@ -98,6 +101,24 @@ class Application:
             parse_mode=telegram.ParseMode.MARKDOWN
         )
         print('info sent')
+
+    def helpme(self, bot, update):
+    	"""
+		Helpme command to show information about help sources
+		for people in critical situations
+    	"""
+    	bot.send_chat_action(
+    		chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+    	)
+    	helpme_text = "Você quer conversar com alguém? Existem muitas opções",\
+    				"e eu posso te indicar algumas. Que tal entrar em contato com",\
+    				"o CVV pelo link abaixo?\n",\
+    				"https://www.cvv.org.br/quero-conversar/"
+    	bot.send_message(
+    		chat_id=update.message.chat_id,
+    		text=helpme_text,
+    		parse_mode=telegram.ParseMode.MARKDOWN
+    	)
 
     def text_message(self, bot, update):
         bot.send_chat_action(
