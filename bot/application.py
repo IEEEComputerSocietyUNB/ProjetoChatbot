@@ -3,7 +3,9 @@ import os
 import sys
 import logging
 import random
+import json
 from datetime import timedelta
+from datetime import datetime
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
@@ -113,12 +115,23 @@ class Application:
 
     def any_message(self, bot, update, job_queue):
         #starting timer for next reminder to chat
-        job_queue.run_repeating(self.callback_lets_talk, timedelta(days=3),
-                                context=update)
+        #set defalt interval
+        interval = 3
+        try:
+            with open("users_custom_invervals.json", "r") as data_file:
+                intervals_dic = json.load(data_file)
+                chatID = update.message.chat_id
+                if (intervals_dic.get(str(chatID) != None)):
+                    interval = int(intervals_dic.get(str(chatID)))
+        except FileNotFoundError:
+            print("File not found error")
+        finally:
+            job_queue.run_repeating(self.callback_lets_talk, interval=timedelta(days=interval),
+                                    context=update)
 
     def callback_lets_talk(self, bot, job):
-        bot.send_message(chat_id=job.context.message.chat_id,
-                         text='Vamos conversar ?')
+        bot.send_message(chat_id= job.context.message.chat_id,
+                     text='Vamos conversar ?')
 
     def error(self, bot, update, error):
         self.logger.warning(
