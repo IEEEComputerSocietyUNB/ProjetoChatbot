@@ -113,6 +113,7 @@ class Application:
         self.logger.warning(
             'Update "{0}" caused error "{1}"'.format(update, error)
         )
+        return 0
 
     def run(self):
         # Start the Bot

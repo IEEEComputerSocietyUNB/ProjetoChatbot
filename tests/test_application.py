@@ -1,6 +1,7 @@
 import unittest
 import os
 import sys
+import logging
 from telegram import Bot
 from unittest.mock import patch
 sys.path.append(
@@ -34,15 +35,20 @@ class TestBotBasics(unittest.TestCase):
 
     @patch('telegram.Bot')
     def test_info_message(self, bot):
-        self.assertEqual(self.tgbot.info(bot, bot.update), 0)
+        self.assertEqual(self.tgbot.info(bot, bot), 0)
 
-    # @patch('telegram.Bot')
-    # def test_text_message(self, bot):
-    #     bot.send_chat_action.return_value = True
-    #     bot.send_message.return_value = "ok"
-    #     bot.update.effective_message.return_value = "ok"
-    #     bot.update.effective_message.reply_text.return_value = "ok"
-    #     self.assertEqual(self.tgbot.text_message(bot, update), 0)
+    @patch('telegram.Bot')
+    def test_start_method(self, bot):
+        self.assertEqual(self.tgbot.start(bot, bot), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    def test_text_message(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.text_message(bot, bot), 0)
+
+    def test_error_method(self):
+        self.assertEqual(self.tgbot.error("", "", ""), 0)
 
     @patch('telegram.ext.Updater')
     def test_run_method(self, updater):
