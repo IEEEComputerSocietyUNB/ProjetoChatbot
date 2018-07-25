@@ -1,6 +1,8 @@
 import unittest
 import os
 import sys
+from telegram import Bot
+from unittest.mock import patch
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
@@ -29,6 +31,23 @@ class TestBotBasics(unittest.TestCase):
         Check if bot being initialized is truly the unbchatbot
         """
         self.assertEqual(self.tgbot.verify_bot(), ('unbchatbot', 330147863))
+
+    @patch('telegram.Bot')
+    def test_info_message(self, bot):
+        self.assertEqual(self.tgbot.info(bot, bot.update), 0)
+
+    # @patch('telegram.Bot')
+    # def test_text_message(self, bot):
+    #     bot.send_chat_action.return_value = True
+    #     bot.send_message.return_value = "ok"
+    #     bot.update.effective_message.return_value = "ok"
+    #     bot.update.effective_message.reply_text.return_value = "ok"
+    #     self.assertEqual(self.tgbot.text_message(bot, update), 0)
+
+    @patch('telegram.ext.Updater')
+    def test_run_method(self, updater):
+        self.tgbot.updater = updater
+        self.assertEqual(self.tgbot.run(), 0)
 
 
 if __name__ == '__main__':
