@@ -1,31 +1,31 @@
 categories:
   - Greetings
 conversations:
-- - oi
-  - Olá, tudo bom?
-  - Tudo, e você?
+  - - oi
+    - Olá, tudo bom?
+    - Tudo, e você?
 
-- - olá
-  - Olá, tudo bom?
-  - Tudo, e você?
+  - - olá
+    - Olá, tudo bom?
+    - Tudo, e você?
 
-- - eae
-  - Olá, tudo bom?
+  - - eae
+    - Olá, tudo bom?
 
-- - tudo bom?
-  - Tudo, e você?
+  - - tudo bom?
+    - Tudo, e você?
 
-- - tudo, e você?
-  - Também
-  - Ok
-  - Quais as novidades?
+  - - tudo, e você?
+    - Também
+    - Ok
+    - Quais as novidades?
 
-- - também
-  - Que bom!
+  - - também
+    - Que bom!
 
-- - olá, tudo bom?
-  - Sim
+  - - olá, tudo bom?
+    - Sim
 
-- - olá, tudo bom?
-  - Não
-  - O que houve?
+  - - olá, tudo bom?
+    - Não
+    - O que houve?
