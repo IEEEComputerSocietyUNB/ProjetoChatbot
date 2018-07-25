@@ -1,30 +1,36 @@
 app = bot/application.py
 comm = bot/communication.py
+linter = linter/linter.py
 first_test = tests.test_communication.TestBotCommunication.test_if_comm_answers
 app_test = tests/test_application.py
 comm_test = tests/test_communication.py
 dialog_test = tests/test_dialogs.py
 db_file = db.sqlite3
 
-.PHONY: test rmdb travis run cov style doc full encrypt install help
+.PHONY: test rmdb travis run cov style doc full encrypt install help yaml
 
 default: full
 
 test:
+	@make style
+	@make yaml
 	@make rmdb
 	green3 $(first_test)
 	green3 .
 
-rmdb:
-	@if [ -a $(db_file) ]; then rm $(db_file); fi
-
 travis:
 	@# what will run on travis
-	@make rmdb
-	@make style
-	@# make test
+	@make test
 	@make rmdb
 	coverage run -m py.test $(app_test) $(comm_test)
+
+full:
+	@# check everything on local machine
+	@make test
+	@make cov
+
+rmdb:
+	@if [ -a $(db_file) ]; then rm $(db_file); fi
 
 run:
 	@make rmdb
@@ -42,12 +48,9 @@ style:
 doc:
 	pydocstyle bot/. tests/.
 
-full:
-	@# check everything on local machine
-	@make rmdb
-	@make test
-	@make cov
-	@make style
+yaml:
+	@yamllint bot/
+	@echo "All yaml files ok."
 
 encrypt:
 	@# needed only when encrypting bot token to travis, no need for production

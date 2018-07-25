@@ -33,9 +33,7 @@ class TestLinter(unittest.TestCase):
             test_json.write("[\"test\"]")
 
         self.assertEqual(self.linter.check_files(path=self.FILE_PATH), 0)
-
         os.remove(FPATH)
-
 
 
 if __name__ == '__main__':
