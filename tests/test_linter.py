@@ -23,17 +23,17 @@ class TestLinter(unittest.TestCase):
         self.linter = None
         os.removedirs(self.FILE_PATH)
 
-    def test_if_linter_finds_one_yml(self):
-        """
-        Check if linter identifies json file on test directory with files
-        """
-        filename = "dialogs.json"
-        FPATH = "{0}/{1}".format(self.FILE_PATH, filename)
-        with open(FPATH, "w") as test_json:
-            test_json.write("[\"test\"]")
-
-        self.assertEqual(self.linter.check_files(path=self.FILE_PATH), 0)
-        os.remove(FPATH)
+    # def test_if_linter_finds_yml(self):
+    #     """
+    #     Check if linter identifies json file on test directory with files
+    #     """
+    #     filename = "dialogs.json"
+    #     FPATH = "{0}/{1}".format(self.FILE_PATH, filename)
+    #     with open(FPATH, "w") as test_json:
+    #         test_json.write("[\"test\"]")
+    #
+    #     self.assertEqual(self.linter.check_files(path=self.FILE_PATH), 0)
+    #     os.remove(FPATH)
 
 
 if __name__ == '__main__':
