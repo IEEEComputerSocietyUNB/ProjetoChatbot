@@ -40,8 +40,8 @@ class TestBotCommunication(unittest.TestCase):
 
     def test_comm_switches_abbreviations(self):
         self.assertEqual(
-            self.comm.switch_abbreviations("vc está aki?"),
-            "você está aqui?"
+            self.comm.switch_abbreviations("vc está aki"),
+            "você está aqui"
         )
 
     def test_if_comm_raises_error_when_rm_is_not_a_list(self):
