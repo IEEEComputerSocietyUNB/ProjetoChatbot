@@ -59,14 +59,15 @@ class TestBotBasics(unittest.TestCase):
     @patch('telegram.ext.Updater')
     def test_any_message(self, bot, updater):
         self.tgbot.updater = updater
-        self.assertEqual(self.tgbot.any_message(bot, self.tgbot.updater, \
-                        self.tgbot.updater.job_queue), 0)
+        self.assertEqual(self.tgbot.any_message(bot, self.tgbot.updater,
+                         self.tgbot.updater.job_queue), 0)
 
     @patch('telegram.Bot')
     @patch('telegram.ext.Updater')
     def test_callback_lets_talk(self, bot, updater):
         self.tgbot.updater = updater
-        self.assertEqual(self.tgbot.callback_lets_talk(bot, self.tgbot.updater.job_queue), 0)
+        self.assertEqual(self.tgbot.callback_lets_talk(bot,
+                         self.tgbot.updater.job_queue), 0)
 
 
 if __name__ == '__main__':

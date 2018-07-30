@@ -58,7 +58,8 @@ class Application:
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
 
-        any_message_handler = MessageHandler(Filters.all, self.any_message, pass_job_queue=True)
+        any_message_handler = MessageHandler(Filters.all, self.any_message,
+                                             pass_job_queue=True)
         self.dispatcher.add_handler(any_message_handler)
 
         text_message_handler = MessageHandler(Filters.text, self.text_message)
@@ -117,25 +118,26 @@ class Application:
         return 0
 
     def any_message(self, bot, update, job_queue):
-        #starting timer for next reminder to chat
-        #set defalt interval
+        # starting timer for next reminder to chat
+        # set defalt interval
         interval = 3
         try:
             with open("users_custom_invervals.json", "r") as data_file:
                 intervals_dic = json.load(data_file)
                 chatID = update.message.chat_id
-                if (intervals_dic.get(str(chatID) != None)):
+                if (intervals_dic.get(str(chatID) is not None)):
                     interval = int(intervals_dic.get(str(chatID)))
         except FileNotFoundError:
             print("File not found error")
         finally:
-            job_queue.run_repeating(self.callback_lets_talk, interval=timedelta(days=interval),
+            job_queue.run_repeating(self.callback_lets_talk,
+                                    interval=timedelta(days=interval),
                                     context=update)
         return 0
 
     def callback_lets_talk(self, bot, job):
-        bot.send_message(chat_id= job.context.message.chat_id,
-                     text='Vamos conversar ?')
+        bot.send_message(chat_id=job.context.message.chat_id,
+                         text='Vamos conversar ?')
         return 0
 
     def error(self, bot, update, error):
