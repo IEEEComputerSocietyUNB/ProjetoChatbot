@@ -1,4 +1,8 @@
-### New Feature Submissions:
+## PR Description
+
+<!-- Describe briefly what you did on this PR -->
+
+### New Feature Submissions
 
 To run tests locally, use `make` if you're on Mac or Linux.
 
@@ -6,7 +10,7 @@ To run tests locally, use `make` if you're on Mac or Linux.
 2. [ ] Have you lint your code locally prior to submission?
 3. [ ] Have you written proper tests to your added code?
 
-### New Dialog Submissions:
+### New Dialog Submissions
 
 User messages have `- -`, bot messages have `  -`
 
@@ -15,8 +19,8 @@ User messages have `- -`, bot messages have `  -`
 3. [ ] Have you written proper tests to your added dialogs on `test_dialogs`?
 4. [ ] Does your dialog have an existing category? If not, did you create it?
 
-### Changes to Core Features:
+### Changes to Core Features
 
 * [ ] Have you added an explanation of what your changes do and why you'd like us to include them?
 * [ ] Have you written new tests or modified old ones for your core changes, as applicable?
-* [ ] Have you successfully ran tests with your changes locally?
+* [ ] Have you successfully run tests with your changes locally?
