@@ -47,7 +47,7 @@ class Communication:
         Might be improved to remove other words, like adverbs
         and some pronouns.
         """
-        # TODO: message = self.remove_punctuations(message)
+        # message = self.remove_punctuations(message)
         message = self.switch_abbreviations(message)
         message = self.remove_words(message)
         return message.lower()
