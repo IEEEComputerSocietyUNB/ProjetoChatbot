@@ -86,6 +86,7 @@ class Application:
         start_text = "Olá {},".format(name) + "Eu sou o Rabot.\n" + \
             "Estou aqui para alegrar o seu dia!\n" + "Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        return 0
 
     def info(self, bot, update):
         """
@@ -105,6 +106,7 @@ class Application:
             parse_mode=telegram.ParseMode.MARKDOWN
         )
         print('info sent')
+        return 0
 
     def text_message(self, bot, update):
         bot.send_chat_action(
@@ -112,6 +114,7 @@ class Application:
         )
         message = update.effective_message.text
         update.effective_message.reply_text(str(self.comm.respond(message)))
+        return 0
 
     def any_message(self, bot, update, job_queue):
         #starting timer for next reminder to chat
@@ -137,6 +140,7 @@ class Application:
         self.logger.warning(
             'Update "{0}" caused error "{1}"'.format(update, error)
         )
+        return 0
 
     def run(self):
         # Start the Bot
@@ -147,17 +151,7 @@ class Application:
         # SIGTERM or SIGABRT. This should be used most of the time, since
         # start_polling() is non-blocking and will stop the bot gracefully.
         self.updater.idle()
-
-    # def run_heroku(self, TOKEN, NAME, PORT):
-    #     self.updater.start_webhook(
-    #         listen="0.0.0.0",
-    #         port=int(PORT),
-    #         url_path=TOKEN
-    #     )
-    #     self.updater.bot.set_webhook(
-    #         "https://{}.herokuapp.com/{}".format(NAME, TOKEN)
-    #     )
-    #     self.updater.idle()
+        return 0
 
 
 if __name__ == '__main__':
