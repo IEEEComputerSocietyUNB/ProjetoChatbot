@@ -42,6 +42,26 @@ class TestLinterClass(unittest.TestCase):
         )
         os.remove(FPATH)
 
+    def test_if_linter_works_on_empty_folders(self):
+        """
+        Check if linter works on test directory without files
+        """
+
+        self.assertEqual(self.linter.check_folders(path="./bot_test/"), {})
+
+    def test_if_linter_works_on_files_only(self):
+        """
+        Check if linter works on test directory with only files
+        """
+        os.rmdir(self.FILE_PATH)
+        filename = "dialogs.yml"
+        FPATH = "{0}/{1}".format("./bot_test/", filename)
+
+        with open(FPATH, "w") as test_json:
+            test_json.write("categories:\n- Test")
+
+        self.assertEqual(self.linter.check_folders(path="./bot_test/"), {})
+
     # def test_if_linter_warns(self):
     #     filename = "dialogs.yml"
     #     FPATH = "{0}/{1}".format(self.FILE_PATH, filename)

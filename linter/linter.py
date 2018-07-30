@@ -10,13 +10,12 @@ class Linter:
     def check_folders(self, path="bot/dialogs"):
         """Checks for specified dialog folders"""
         all_folders = []
-        for folder in listdir(path):
-            if isdir(join(path, folder)):
-                all_folders.append(folder)
-        self.check_yaml(all_folders)
+        for item in listdir(path):
+            if isdir(join(path, item)):
+                all_folders.append(item)
+        return self.check_yaml(all_folders, path)
 
-
-    def check_yaml(self, folders):
+    def check_yaml(self, folders, path):
         yml_paths = {}
         for folder in folders:
             full_path = "{0}/{1}".format(path, folder)
@@ -25,7 +24,8 @@ class Linter:
                     if isfile(join(full_path, file))
             ]
             only_yml = [f for f in all_files if f[-3:] == "yml"]
-            yml_paths[folder] = only_yml
+            if len(only_yml) > 0:
+                yml_paths[folder] = only_yml
         return yml_paths
 
 
