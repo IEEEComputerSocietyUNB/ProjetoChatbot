@@ -9,11 +9,16 @@ class Linter:
 
     def check_folders(self, path="bot/dialogs"):
         """Checks for specified dialog folders"""
-        all_folders = [
-            folder for folder in listdir(path) if isdir(join(path, folder))
-        ]
+        all_folders = []
+        for folder in listdir(path):
+            if isdir(join(path, folder)):
+                all_folders.append(folder)
+        self.check_yaml(all_folders)
+
+
+    def check_yaml(self, folders):
         yml_paths = {}
-        for folder in all_folders:
+        for folder in folders:
             full_path = "{0}/{1}".format(path, folder)
             all_files = [
                 file for file in listdir(full_path) \
@@ -22,6 +27,7 @@ class Linter:
             only_yml = [f for f in all_files if f[-3:] == "yml"]
             yml_paths[folder] = only_yml
         return yml_paths
+
 
     # def check_pronouns_on_dialogs(self, folder):
     #     pass
