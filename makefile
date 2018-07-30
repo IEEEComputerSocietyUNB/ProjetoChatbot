@@ -62,6 +62,9 @@ encrypt:
 install:
 	pip3 install -r requirements.txt
 
+html:
+	@open -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome htmlcov/index.html
+
 help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
 	@echo " make.............= Runs the tests using green3"
