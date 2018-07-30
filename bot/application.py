@@ -131,10 +131,12 @@ class Application:
         finally:
             job_queue.run_repeating(self.callback_lets_talk, interval=timedelta(days=interval),
                                     context=update)
+        return 0
 
     def callback_lets_talk(self, bot, job):
         bot.send_message(chat_id= job.context.message.chat_id,
                      text='Vamos conversar ?')
+        return 0
 
     def error(self, bot, update, error):
         self.logger.warning(
