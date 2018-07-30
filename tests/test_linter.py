@@ -1,6 +1,7 @@
 import unittest
 import sys
 import os
+import shutil
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
@@ -9,7 +10,7 @@ sys.path.append(
 from linter.linter import Linter
 
 
-class TestLinter(unittest.TestCase):
+class TestLinterClass(unittest.TestCase):
     """
     Test linter methods and help check which patterns must be verified.
     """
@@ -20,20 +21,33 @@ class TestLinter(unittest.TestCase):
         os.makedirs(self.FILE_PATH)
 
     def tearDown(self):
-        self.linter = None
-        os.removedirs(self.FILE_PATH)
+        shutil.rmtree("./bot_test", ignore_errors=True)
 
-    # def test_if_linter_finds_yml(self):
-    #     """
-    #     Check if linter identifies json file on test directory with files
-    #     """
-    #     filename = "dialogs.json"
+    def test_linter_constructor(self):
+        self.assertEqual(self.linter.file_count, 0)
+        self.assertEqual(self.linter.directories, [])
+
+    def test_if_linter_finds_yml(self):
+        """
+        Check if linter identifies yml file on test directory with files
+        """
+        filename = "dialogs.yml"
+        FPATH = "{0}/{1}".format(self.FILE_PATH, filename)
+        with open(FPATH, "w") as test_json:
+            test_json.write("categories:\n- Test")
+        expected_result = {'dialogs': ['dialogs.yml']}
+
+        self.assertEqual(
+            self.linter.check_folders(path="./bot_test/"), expected_result
+        )
+        os.remove(FPATH)
+
+    # def test_if_linter_warns(self):
+    #     filename = "dialogs.yml"
     #     FPATH = "{0}/{1}".format(self.FILE_PATH, filename)
     #     with open(FPATH, "w") as test_json:
-    #         test_json.write("[\"test\"]")
-    #
-    #     self.assertEqual(self.linter.check_files(path=self.FILE_PATH), 0)
-    #     os.remove(FPATH)
+    #         test_json.write("categories:\n- Test")
+    #     self.assertEqual(self.linter.check_pronouns_on_dialogs(), False)
 
 
 if __name__ == '__main__':
