@@ -45,7 +45,7 @@ class TestBotDialogs(unittest.TestCase):
                 "Por que o robô foi ao médico? Porque ele tinha vírus!",
                 "Como um robô pirata se chama? Argh2D2.",
                 ("Por que o robô atravessou a rua? " +
-                    "Porque ele foi programado por uma galinha"),
+                "Porque ele foi programado por uma galinha"),
                 "Como você para um robô de destruir o mundo? Você não para."
             ]
         )
@@ -73,7 +73,7 @@ class TestBotDialogs(unittest.TestCase):
             ]
         )
         self.assertIn(
-            self.comm.respond("Eu tenho sentido dores inexplicáveis),
+            self.comm.respond("Eu tenho sentido dores inexplicáveis"),
             [
                 "Qual você acredita ser a causa desse sentimento?",
                 "Em quais situações você costuma se sentir assim?",
@@ -82,7 +82,7 @@ class TestBotDialogs(unittest.TestCase):
             ]
         )
         self.assertIn(
-            self.comm.respond("Eu tenho evitado situações que me deixam ansioso),
+            self.comm.respond("Eu tenho evitado situações que me deixam ansioso"),
             [
                 "Qual você acredita ser a causa desse comportamento?",
                 "Em quais situações você costuma se comportar assim?",
@@ -91,7 +91,7 @@ class TestBotDialogs(unittest.TestCase):
             ]
         )
         self.assertIn(
-            self.comm.respond("Eu tenho sentido como se eu pudesse ouvir o que outras pessoas pensam),
+            self.comm.respond("Eu tenho sentido como se eu pudesse ouvir o que outras pessoas pensam"),
             [
                 "Qual você acredita ser a causa desse sentimento?",
                 "Em quais situações você costuma se sentir assim?",
