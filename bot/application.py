@@ -1,11 +1,12 @@
-import telegram
 import os
 import sys
-import logging
 import random
+import logging
+import telegram
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
+from bot.communication import Communication
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
     Filters
 sys.path.append(
@@ -13,7 +14,6 @@ sys.path.append(
         os.path.dirname(os.path.realpath(__file__))
     )
 )
-from bot.communication import Communication
 
 
 def retrieve_default(file='config.ini'):
@@ -76,11 +76,12 @@ class Application:
         )
         sleep(3.5)
         name = update.message['chat']['first_name']
-        
+
         start_text = "Olá {},".format(name) + "Eu sou o Rabot.\n" + \
             "Um robo bem simpatico criado para alegrar seu dia!\n"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
-        start_text = "Se quiser saber mais sobre mim ou meus criadores só ir em /info ;)"
+        start_text = "Se quiser saber mais sobre mim ou meus criadores " + \
+            "só ir em /info ;)"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         start_text = "Agora vamos lá. Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
