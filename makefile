@@ -69,7 +69,7 @@ help:
 	@echo "\n\t Makefile of Projeto Chatbot\n"
 	@echo " make.............= Runs the tests using green3"
 	@echo " make travis......= Also run the tests using green3"
-	@echo " make run.........= Run bot.py"
+	@echo " make run.........= Run application.py"
 	@echo " make cov.........= Checks how much of the program is covered by tests"
 	@echo " make style.......= Cheks if your code is well formatted for this project"
 	@echo " make full........= Checks test, codecoverage and style"
