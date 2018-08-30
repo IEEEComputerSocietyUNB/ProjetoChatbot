@@ -76,8 +76,13 @@ class Application:
         )
         sleep(3.5)
         name = update.message['chat']['first_name']
+        
         start_text = "Olá {},".format(name) + "Eu sou o Rabot.\n" + \
-            "Estou aqui para alegrar o seu dia!\n" + "Em que posso ajudá-lo?"
+            "Um robo bem simpatico criado para alegrar seu dia!\n"
+        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        start_text = "Se quiser saber mais sobre mim ou meus criadores só ir em /info ;)"
+        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        start_text = "Agora vamos lá. Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         return 0
 
