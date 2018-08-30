@@ -115,20 +115,13 @@ class Application:
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        helpme_text = "Você quer conversar com alguém? Existem muitas opções",\
-            "e eu posso te indicar algumas. Que tal entrar em contato com", \
-            "algumas pessoas?",\
-            "CVV: https://www.cvv.org.br/quero-conversar/",\
-            "UnB/CAEP: 3107-1680",\
-            "Unip:     3349-0046",\
-            "Instituto Brasiliense de Análise de Comportamento: ", \
-            "3242-5250 ou 3443-4086",\
-            "Quer ver mais? Digite /contatos"
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=helpme_text,
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
+        with open(f"{os.getcwd()}/bot/dialogs/help.md") as help_file:
+            helpme_text = help_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=helpme_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
 
     def contatos(self, bot, update):
         """
@@ -138,38 +131,13 @@ class Application:
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
 
-        contatos_text = "Lista completa de contatos para", \
-            "Psicologia Gratuita ou de Baixo Custo:\n", \
-            "CVV: https://www.cvv.org.br/quero-conversar/\n",\
-            "UnB/CAEP: 3107-1680\n",\
-            "Unip: 3349-0046\n",\
-            "Instituto Brasiliense de Análise de Comportamento:", \
-            "3242-5250 ou 3443-4086\n",\
-            "Centro de Orientação Médico ou Psicopedagógico:", \
-            "3325-4995 ou 3326-3201\n",\
-            "Associação Brasiliense de Psicodrama e Sociodrama:", \
-            "3245-6390 ou 3346-6832\n",\
-            "UNICEUB: 3966-1687 ou 3966-1626\n",\
-            "Universidade Católica de Brasília: 3356-9328\n",\
-            "Escola Lacaniana de Psicanalise de Brasília:", \
-            "99976-5818 ou 3242-5615 ou 3345-0169\n",\
-            "IGTB - Instituto de Gestalt-Terapia de Brasília:", \
-            "3033-7094 ou 9967-7569\n",\
-            "Instituto São Paulo de Análise Comportamento:", \
-            "3425-2717 ou 3327-7338\n",\
-            "Clínica Social do IMPI: 3364-2745\n",\
-            "Clínica Social INTERPSI/CBP: 98118-0548 ou 99982-3224\n",\
-            "IBNeuro - Instituto Brasileiro de Neuropsicológica:", \
-            "3226-3002 ou 3225-9185\n",\
-            "Clínica Social de Taguatinga: 3967-3060\n",\
-            "SOBRAP: Instituto Brasileiro de Psicanálise, Dinâmica", \
-            "de Grupo e Psicodrama: 3323-5366"
-
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=contatos_text,
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
+        with open(f"{os.getcwd()}/bot/dialogs/contacts.md") as contatos_file:
+            contatos_text = contatos_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=contatos_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
 
     def text_message(self, bot, update):
         bot.send_chat_action(
