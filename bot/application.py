@@ -54,6 +54,12 @@ class Application:
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
 
+        helpme_handler = CommandHandler('helpme', self.helpme)
+        self.dispatcher.add_handler(helpme_handler)
+
+        contatos_handler = CommandHandler('contatos', self.contatos)
+        self.dispatcher.add_handler(contatos_handler)
+
         message_handler = MessageHandler(Filters.text, self.text_message)
         self.dispatcher.add_handler(message_handler)
 
@@ -106,6 +112,38 @@ class Application:
         )
         print('info sent')
         return 0
+
+    def helpme(self, bot, update):
+        """
+        Helpme command to show information about help sources
+        for people in critical situations
+        """
+        bot.send_chat_action(
+            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        )
+        with open(f"{os.getcwd()}/bot/dialogs/help.md") as help_file:
+            helpme_text = help_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=helpme_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
+
+    def contatos(self, bot, update):
+        """
+        Shows all contact centers to the bot user
+        """
+        bot.send_chat_action(
+            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        )
+
+        with open(f"{os.getcwd()}/bot/dialogs/contacts.md") as contatos_file:
+            contatos_text = contatos_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=contatos_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
 
     def text_message(self, bot, update):
         bot.send_chat_action(
