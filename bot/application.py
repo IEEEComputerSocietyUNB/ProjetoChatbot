@@ -77,11 +77,11 @@ class Application:
         sleep(3.5)
         name = update.message['chat']['first_name']
 
-        start_text = "Olá {},".format(name) + "Eu sou o Rabot.\n" + \
+        start_text = f"Olá {name}, eu sou o Rabot.\n" + \
             "Um robo bem simpatico criado para alegrar seu dia!\n"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         start_text = "Se quiser saber mais sobre mim ou meus criadores " + \
-            "só ir em /info ;)"
+            "basta digitar ```/info``` ;)"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         start_text = "Agora vamos lá. Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
@@ -117,7 +117,7 @@ class Application:
 
     def error(self, bot, update, error):
         self.logger.warning(
-            'Update "{0}" caused error "{1}"'.format(update, error)
+            f'Update "{update}" caused error "{error}"'
         )
         return 0
 
