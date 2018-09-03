@@ -76,7 +76,7 @@ token={SEUTOKENGIGANTEAQUI}
 Uma vez criado o arquivo, use `make run` para fazer o bot funcionar ou
 
 ```
-python3 bot/bot.py
+python3 bot/application.py
 ```
 
 ## Equipe Responsável
@@ -88,4 +88,5 @@ python3 bot/bot.py
   * [Talitha Pumar](https://github.com/tapumar)
   * [William Simião](https://github.com/williamsimiao)
   * [Jefferson Leandro](https://github.com/jeffersonlsz)
+  * [Beatriz Chiarelli]((https://github.com/biachiarelli)
 * Equipe Cog
