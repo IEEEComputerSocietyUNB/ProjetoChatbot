@@ -59,7 +59,7 @@ class Application:
 
         self.dispatcher.add_error_handler(self.error)
 
-        def start(self, bot, update):
+    def start(self, bot, update):
         """
         Start command to receive /start message on Telegram.
         @bot = information about the bot
