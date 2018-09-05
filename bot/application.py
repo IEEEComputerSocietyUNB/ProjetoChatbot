@@ -65,12 +65,6 @@ class Application:
 
         self.dispatcher.add_error_handler(self.error)
 
-    def verify_bot(self):
-        """
-        Method to check if bot is as expected
-        """
-        return(self.app.get_me().username, self.app.get_me().id)
-
     def start(self, bot, update):
         """
         Start command to receive /start message on Telegram.

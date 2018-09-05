@@ -108,3 +108,6 @@ ENV/
 /rabot
 db.sqlite3
 .idea
+
+## vscode settings
+./.vscode/
