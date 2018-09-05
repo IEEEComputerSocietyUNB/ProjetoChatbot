@@ -22,7 +22,7 @@ travis:
 	@make style
 	@# make test
 	@make rmdb
-	coverage run -m py.test $(app_test) $(comm_test) $(dialog_test)
+	coverage run -m py.test $(app_test) $(comm_test)
 
 run:
 	@make rmdb

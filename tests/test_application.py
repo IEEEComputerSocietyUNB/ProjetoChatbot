@@ -27,12 +27,6 @@ class TestBotBasics(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             retrieve_default("fail.ini")
 
-    def test_if_bot_is_unbchatbot(self):
-        """
-        Check if bot being initialized is truly the unbchatbot
-        """
-        self.assertEqual(self.tgbot.verify_bot(), ('unbchatbot', 330147863))
-
     @patch('telegram.Bot')
     def test_info_message(self, bot):
         self.assertEqual(self.tgbot.info(bot, bot), 0)

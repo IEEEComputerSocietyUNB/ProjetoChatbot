@@ -1,14 +1,12 @@
-import telegram
 import os
 import sys
-import logging
 import random
-import json
-from datetime import timedelta
-from datetime import datetime
+import logging
+import telegram
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
+from bot.communication import Communication
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
     Filters
 sys.path.append(
@@ -16,7 +14,6 @@ sys.path.append(
         os.path.dirname(os.path.realpath(__file__))
     )
 )
-from bot.communication import Communication
 
 
 def retrieve_default(file='config.ini'):
@@ -58,20 +55,16 @@ class Application:
         info_handler = CommandHandler('info', self.info)
         self.dispatcher.add_handler(info_handler)
 
-        any_message_handler = MessageHandler(Filters.all, self.any_message,
-                                             pass_job_queue=True)
-        self.dispatcher.add_handler(any_message_handler)
+        helpme_handler = CommandHandler('helpme', self.helpme)
+        self.dispatcher.add_handler(helpme_handler)
 
-        text_message_handler = MessageHandler(Filters.text, self.text_message)
-        self.dispatcher.add_handler(text_message_handler, group=1)
+        contatos_handler = CommandHandler('contatos', self.contatos)
+        self.dispatcher.add_handler(contatos_handler)
+
+        message_handler = MessageHandler(Filters.text, self.text_message)
+        self.dispatcher.add_handler(message_handler)
 
         self.dispatcher.add_error_handler(self.error)
-
-    def verify_bot(self):
-        """
-        Method to check if bot is as expected
-        """
-        return(self.app.get_me().username, self.app.get_me().id)
 
     def start(self, bot, update):
         """
@@ -84,8 +77,14 @@ class Application:
         )
         sleep(3.5)
         name = update.message['chat']['first_name']
-        start_text = "Olá {},".format(name) + "Eu sou o Rabot.\n" + \
-            "Estou aqui para alegrar o seu dia!\n" + "Em que posso ajudá-lo?"
+
+        start_text = f"Olá {name}, eu sou o Rabot.\n" + \
+            "Um robo bem simpatico criado para alegrar seu dia!\n"
+        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        start_text = "Se quiser saber mais sobre mim ou meus criadores " + \
+            "basta digitar ```/info``` ;)"
+        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        start_text = "Agora vamos lá. Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         return 0
 
@@ -108,6 +107,38 @@ class Application:
         )
         print('info sent')
         return 0
+
+    def helpme(self, bot, update):
+        """
+        Helpme command to show information about help sources
+        for people in critical situations
+        """
+        bot.send_chat_action(
+            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        )
+        with open(f"{os.getcwd()}/bot/dialogs/help.md") as help_file:
+            helpme_text = help_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=helpme_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
+
+    def contatos(self, bot, update):
+        """
+        Shows all contact centers to the bot user
+        """
+        bot.send_chat_action(
+            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        )
+
+        with open(f"{os.getcwd()}/bot/dialogs/contacts.md") as contatos_file:
+            contatos_text = contatos_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=contatos_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
 
     def text_message(self, bot, update):
         bot.send_chat_action(
@@ -142,7 +173,7 @@ class Application:
 
     def error(self, bot, update, error):
         self.logger.warning(
-            'Update "{0}" caused error "{1}"'.format(update, error)
+            f'Update "{update}" caused error "{error}"'
         )
         return 0
 
