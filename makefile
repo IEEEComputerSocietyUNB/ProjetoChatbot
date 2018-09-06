@@ -23,8 +23,9 @@ test:
 
 travis:
 	@# what will run on travis
-	@make test
 	@make rmdb
+	green3 $(first_test)
+	green3 $(app_test) $(comm_test) $(linter_test)
 	coverage run -m py.test $(app_test) $(comm_test) $(linter_test)
 
 full:

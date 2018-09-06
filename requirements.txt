@@ -1,5 +1,6 @@
 python-telegram-bot==11.0.0
 green==2.12.1
+pytest
 pycodestyle==2.4.0
 pydocstyle==2.1.1
 chatterbot==0.8.7
