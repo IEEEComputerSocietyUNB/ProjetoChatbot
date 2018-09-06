@@ -32,7 +32,7 @@ def doc(c):
 def run(c):
     c.run("python3.6 " + app)
 
-@task(rmdb, style, test)
+@task(pre = [rmdb, style, test], post=[rmdb])
 def travis(c):
     """ What will run on travis """
-    c.run("invoke rmdb")
+    print('hey')
