@@ -88,5 +88,5 @@ python3 bot/application.py
   * [Talitha Pumar](https://github.com/tapumar)
   * [William Simião](https://github.com/williamsimiao)
   * [Jefferson Leandro](https://github.com/jeffersonlsz)
-  * [Beatriz Chiarelli]((https://github.com/biachiarelli)
+  * [Beatriz Chiarelli](https://github.com/biachiarelli)
 * Equipe Cog
