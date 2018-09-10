@@ -120,7 +120,7 @@ class TestBotDialogs(unittest.TestCase):
             self.comm.respond(
                 "Eu tenho começado mais projetos do que costumo fazer"),
             [
-                "Qual você acredita ser a causa desse comportamento?",
+                "Qual você acredita ser a causa deste comportamento",
                 "Em quais situações você costuma se comportar assim?",
                 "Esse comportamento é comum no seu círculo social?",
                 "Desde quando você tem se comportado assim?"
@@ -133,7 +133,7 @@ class TestBotDialogs(unittest.TestCase):
                 "Qual você acredita ser a causa desse pensamento?",
                 "Em quais situações você costuma pensar assim?",
                 "Esse pensamento é comum no seu círculo social?",
-                "Desde quando você tem pensa assim?"
+                "Desde quando você tem pensado assim?"
             ]
         )
         self.assertIn(

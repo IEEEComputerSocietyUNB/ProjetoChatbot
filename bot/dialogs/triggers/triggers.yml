@@ -1,13 +1,13 @@
 categories:
   - Triggers
 conversations:
-- - que bom!
-  - Sim, muito bom mesmo!
-- - conte-me novidades!
-  - Nada de mais, alguns bits trocados aqui e ali, e você?
-- - quais as novidades?
-  - Estou testando umas peças para melhorar minhas engrenagens, e você?
-- - comece um assunto
-  - Claro, como foi seu dia?
-- - como foi seu dia?
-  - Foi bom, troquei muitos uns e zeros, e você? Novidades?
+  - - que bom!
+    - Sim, muito bom mesmo!
+  - - conte-me novidades!
+    - Nada de mais, alguns bits trocados aqui e ali, e você?
+  - - quais as novidades?
+    - Estou testando umas peças para melhorar minhas engrenagens, e você?
+  - - comece um assunto
+    - Claro, como foi seu dia?
+  - - como foi seu dia?
+    - Foi bom, troquei muitos uns e zeros, e você? Novidades?

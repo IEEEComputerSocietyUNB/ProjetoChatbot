@@ -9,7 +9,6 @@ from datetime import datetime
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
-from bot.communication import Communication
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
     Filters
 sys.path.append(
@@ -17,6 +16,7 @@ sys.path.append(
         os.path.dirname(os.path.realpath(__file__))
     )
 )
+from bot.communication import Communication
 
 
 def retrieve_default(file='config.ini'):
@@ -31,7 +31,6 @@ def retrieve_default(file='config.ini'):
             config.read_file(file)
         return(config['DEFAULT'])
     except FileNotFoundError:
-        print("File not found error")
         raise FileNotFoundError
 
 
@@ -82,13 +81,14 @@ class Application:
         )
         sleep(3.5)
         name = update.message['chat']['first_name']
-
         start_text = f"Olá {name}, eu sou o Rabot.\n" + \
-            "Um robo bem simpatico criado para alegrar seu dia!\n"
+            "Um robô bem simpático criado para alegrar seu dia!\n"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         start_text = "Se quiser saber mais sobre mim ou meus criadores " + \
-            "basta digitar ```/info``` ;)"
-        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+            "basta digitar `/info` ;)"
+        bot.send_message(
+            chat_id=update.message.chat_id, text=start_text,
+            parse_mode=telegram.ParseMode.MARKDOWN)
         start_text = "Agora vamos lá. Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         return 0
@@ -102,16 +102,15 @@ class Application:
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        info_text = "Saiba mais sobre mim acessando minha",\
-            "página de desenvolvimento!\n",\
-            "https://github.com/ComputerSocietyUNB/ProjetoChatbot"
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=info_text,
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
-        print('info sent')
-        return 0
+        with open(f"{os.getcwd()}/bot/dialogs/info.md") as info_file:
+            info_text = info_file.read()
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=info_text,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
+            return 0
+        return 1
 
     def helpme(self, bot, update):
         """

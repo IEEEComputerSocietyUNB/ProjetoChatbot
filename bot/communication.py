@@ -47,11 +47,13 @@ class Communication:
         Might be improved to remove other words, like adverbs
         and some pronouns.
         """
+        # message = self.remove_punctuations(message)
         message = self.switch_abbreviations(message)
         message = self.remove_words(message)
         return message.lower()
 
     def switch_abbreviations(self, message, files=["abbreviations.json"]):
+        message = " {} ".format(message)
         try:
             for file in files:
                 FILE_PATH = str(os.getcwd()) + '/bot/dialogs/switches/' + file
@@ -59,23 +61,24 @@ class Communication:
                     common_abbr = json.load(file)
                     for word in common_abbr:
                         message = message.replace(
-                            (' ' + word), (' ' + common_abbr[word])
+                            (' ' + word + ' '), (' ' + common_abbr[word] + ' ')
                         )
-                        message = message.replace(
-                            (word + ' '), (common_abbr[word] + ' ')
-                        )
+            message = message[1:-1]
             return message
         except FileNotFoundError:
             raise FileNotFoundError
 
     def remove_words(self, message, files=["articles.json", "pronouns.json"]):
+        message = " {} ".format(message)
         try:
             for file in files:
                 FILE_PATH = str(os.getcwd()) + '/bot/dialogs/removals/' + file
                 with open(FILE_PATH, 'r') as file:
                     removals = json.load(file)
+
                     for word in removals:
                         message = message.replace((' ' + word + ' '), (' '))
+            message = message[1:-1]
             return message
         except FileNotFoundError:
             raise FileNotFoundError
