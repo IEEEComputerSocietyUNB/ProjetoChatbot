@@ -3,6 +3,9 @@ import sys
 import random
 import logging
 import telegram
+import json
+from datetime import timedelta
+from datetime import datetime
 from time import sleep
 from telegram import Bot
 from configparser import ConfigParser
@@ -49,6 +52,7 @@ class Application:
         self.dispatcher = self.updater.dispatcher
         self.job_queue = self.updater.job_queue
 
+
         start_handler = CommandHandler('start', self.start)
         self.dispatcher.add_handler(start_handler)
 
@@ -60,8 +64,9 @@ class Application:
 
         contatos_handler = CommandHandler('contatos', self.contatos)
         self.dispatcher.add_handler(contatos_handler)
-
-        message_handler = MessageHandler(Filters.text, self.text_message)
+      
+        message_handler = MessageHandler(Filters.text, self.text_message,
+                                         pass_job_queue=True)
         self.dispatcher.add_handler(message_handler)
 
         self.dispatcher.add_error_handler(self.error)
@@ -139,19 +144,16 @@ class Application:
                 text=contatos_text,
                 parse_mode=telegram.ParseMode.MARKDOWN
             )
-
-    def text_message(self, bot, update):
-        bot.send_chat_action(
-            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
-        )
-        message = update.effective_message.text
-        update.effective_message.reply_text(str(self.comm.respond(message)))
-        return 0
-
-    def any_message(self, bot, update, job_queue):
+    def reset_reminder_timer(self, bot, update, job_queue):
+        #Removing previus job
+        jobs = job_queue.get_jobs_by_name('reminder_job')
+        print(jobs)
+        for job in jobs:
+            job.schedule_removal()
         # starting timer for next reminder to chat
         # set defalt interval
         interval = 3
+
         try:
             with open("users_custom_invervals.json", "r") as data_file:
                 intervals_dic = json.load(data_file)
@@ -163,12 +165,22 @@ class Application:
         finally:
             job_queue.run_repeating(self.callback_lets_talk,
                                     interval=timedelta(days=interval),
+                                    name='reminder_job',
                                     context=update)
         return 0
 
     def callback_lets_talk(self, bot, job):
         bot.send_message(chat_id=job.context.message.chat_id,
                          text='Vamos conversar ?')
+        return 0
+
+    def text_message(self, bot, update, job_queue):
+        self.reset_reminder_timer(bot, update, job_queue)
+        bot.send_chat_action(
+            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        )
+        message = update.effective_message.text
+        update.effective_message.reply_text(str(self.comm.respond(message)))
         return 0
 
     def error(self, bot, update, error):

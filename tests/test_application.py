@@ -37,9 +37,16 @@ class TestBotBasics(unittest.TestCase):
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
-    def test_text_message(self, comm, bot):
+    @patch('telegram.ext.JobQueue')
+    def test_text_message(self, comm, bot, job_queue):
         self.tgbot.comm = comm
-        self.assertEqual(self.tgbot.text_message(bot, bot), 0)
+        self.assertEqual(self.tgbot.text_message(bot, bot, job_queue), 0)
+
+    @patch('telegram.Bot')
+    @patch('telegram.ext.Job')
+    def test_callback_lets_talk(self, bot, job):
+        self.assertEqual(self.tgbot.callback_lets_talk(bot,
+                         job), 0)
 
     def test_error_method(self):
         self.assertEqual(self.tgbot.error("", "", ""), 0)
@@ -48,20 +55,6 @@ class TestBotBasics(unittest.TestCase):
     def test_run_method(self, updater):
         self.tgbot.updater = updater
         self.assertEqual(self.tgbot.run(), 0)
-
-    @patch('telegram.Bot')
-    @patch('telegram.ext.Updater')
-    def test_any_message(self, bot, updater):
-        self.tgbot.updater = updater
-        self.assertEqual(self.tgbot.any_message(bot, self.tgbot.updater,
-                         self.tgbot.updater.job_queue), 0)
-
-    @patch('telegram.Bot')
-    @patch('telegram.ext.Updater')
-    def test_callback_lets_talk(self, bot, updater):
-        self.tgbot.updater = updater
-        self.assertEqual(self.tgbot.callback_lets_talk(bot,
-                         self.tgbot.updater.job_queue), 0)
 
 
 if __name__ == '__main__':
