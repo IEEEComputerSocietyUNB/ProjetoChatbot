@@ -3,7 +3,7 @@ import os
 
 # Name definitions
 first_test = "tests.test_dialogs.TestBotDialogs.test_if_comm_answers_greetings"
-db_file = "db.sqlite3"
+db_files = ["db.sqlite3", "db.sqlite3-shm", "db.sqlite3-wal"]
 app = "bot/application.py"
 app_test = "tests/test_application.py"
 comm_test = "tests/test_communication.py"
@@ -14,14 +14,15 @@ comm = "bot/communication.py"
 @task
 def rmdb(c):
     """ Removes test database """
-    if os.path.exists(db_file):
-        os.remove(db_file)
+    for db_file in db_files:
+        if os.path.exists(db_file):
+            os.remove(db_file)
 
 @task(rmdb)
 def test(c):
     """ Runs all tests """
     c.run("green3 " + first_test)
-    # c.run("green3 .")
+    c.run("green3 .")
 
 @task
 def style(c):
@@ -40,7 +41,9 @@ def run(c):
 @task(pre =[rmdb, style, test], post=[rmdb])
 def travis(c):
     """ Also run the tests using green3 """
-    # TODO
+    style()
+    test()
+    cov()
     pass
 
 @task
