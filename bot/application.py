@@ -40,8 +40,9 @@ class Application:
     oncoming messages and also handles all Telegram related commands.
     Might soon have a sibling to deal with Facebook.
     """
-    def __init__(self, token):
-        self.comm = Communication()
+    def __init__(self, token, train=True):
+        if train:
+            self.comm = Communication()
         logging.basicConfig(
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO)

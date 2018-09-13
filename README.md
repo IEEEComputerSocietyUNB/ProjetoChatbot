@@ -84,9 +84,18 @@ python3 bot/application.py
 * Coordenador Geral
   * [Alexandre Augusto](https://github.com/alexandrebarbaruiva)
 * Equipe Dev
-  * [Daniella Angelos](https://github.com/daniangelos)
   * [Talitha Pumar](https://github.com/tapumar)
   * [William Simião](https://github.com/williamsimiao)
   * [Jefferson Leandro](https://github.com/jeffersonlsz)
+  * [Beatriz Chiarelli]((https://github.com/biachiarelli)
+  * [Vinicius Costa](https://github.com/vinicius0197)
   * [Beatriz Chiarelli](https://github.com/biachiarelli)
+  * [Anna Thaís Costa Lopes](https://github.com/annathais)
+  
 * Equipe Cog
+  * [Marcella Pantarotto](https://github.com/marcellapantarotto)
+  * [Vithor Rosa Franco](https://github.com/vthorrf)
+  * [Gabriela Yukari Iwama](https://github.com/GabrielaIwama)
+  * [Leonardo Souza](https://github.com/leonardosv)
+  * [Emilly Lima](https://github.com/emillylima)
+  * [Thatiane Amorim](https://github.com/thatiamorim)

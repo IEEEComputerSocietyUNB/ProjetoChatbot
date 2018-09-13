@@ -16,7 +16,7 @@ class TestBotBasics(unittest.TestCase):
 
     def setUp(self):
         try:
-            self.tgbot = Application(retrieve_default()['token'])
+            self.tgbot = Application(retrieve_default()['token'], False)
         except FileNotFoundError:
             pass
 
@@ -67,4 +67,4 @@ class TestBotBasics(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(exit=False)

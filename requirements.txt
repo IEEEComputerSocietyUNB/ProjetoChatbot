@@ -6,4 +6,5 @@ pydocstyle==2.1.1
 chatterbot==0.8.7
 radon==2.2.0
 codecov==2.0.15
+invoke
 yamllint
