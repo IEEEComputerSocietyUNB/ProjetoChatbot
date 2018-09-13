@@ -170,7 +170,7 @@ class TestBotDialogs(unittest.TestCase):
             self.comm.respond(
                 "Eu tenho ingerido muitas vezes"),
             [
-                "Qual você acredita ser a causa desse comportamento?",
+                "Qual você acredita ser a causa deste comportamento?",
                 "Em quais situações você costuma se comportar assim?",
                 "Esse comportamento é comum no seu círculo social?",
                 "Desde quando você tem se comportado assim?"
