@@ -52,7 +52,7 @@ def run(c):
 def travis(c):
     """ Runs the tests checked by Travis """
     style(c)
-    linter(c)
+    lint(c)
     test(c)
     cov(c)
 
@@ -72,11 +72,12 @@ def encrypt(c):
 @task(rmdb)
 def cov(c):
     """ Checks how much of the program is covered by tests """
-    c.run(f"coverage run -m py.test {app_test} {comm_test}")
-    c.run(f"coverage report -m {app} {comm}")
-    c.run(f"coverage html {app} {comm}")
+    c.run(f"coverage run -m py.test {app_test} {comm_test} {linter_test}")
+    c.run(f"coverage report -m {app} {comm} {linter}")
+    c.run(f"coverage html {app} {comm} {linter}")
+
 
 @task()
-def linter(c):
+def lint(c):
     """ Checks yaml file structure """
     c.run("yamllint bot")
