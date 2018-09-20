@@ -3,6 +3,7 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.response_selection import get_random_response
 import os
 import json
+import dialogflow/dialog as dlf
 
 
 class Communication:
@@ -38,7 +39,7 @@ class Communication:
         """
         Receive message from user and returns corresponding answer.
         """
-        return self.comm.get_response(self.clean(message))
+        return self.dlf.get_response(self.clean(message))
 
     def clean(self, message):
         """

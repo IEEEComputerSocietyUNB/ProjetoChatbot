@@ -8,3 +8,4 @@ radon==2.2.0
 codecov==2.0.15
 invoke
 yamllint
+dialogflow==0.5.1
