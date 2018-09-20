@@ -8,3 +8,6 @@ radon==2.2.0
 codecov==2.0.15
 invoke
 yamllint
+sphinx
+sphinx-autobuild
+sphinx_rtd_theme

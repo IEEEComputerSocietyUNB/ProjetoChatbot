@@ -189,8 +189,7 @@ if __name__ == '__main__':
     except Exception as inst:
         try:
             token = retrieve_default()['token']
-            x = Application(token)
-            x.run()
+            x = Application(token).run()
         except FileNotFoundError:
             print('Configuration file not found.')
             sys.exit(1)

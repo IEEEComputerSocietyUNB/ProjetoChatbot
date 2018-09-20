@@ -12,7 +12,7 @@ from bot.communication import Communication
 class TestBotCommunication(unittest.TestCase):
 
     def setUp(self):
-        self.comm = Communication()
+        self.comm = Communication(train=False)
 
     def tearDown(self):
         self.comm = None
@@ -21,6 +21,7 @@ class TestBotCommunication(unittest.TestCase):
         """
         Check if communication method answers appropriately
         """
+        self.comm = Communication()
         self.assertEqual(self.comm.respond("Olá"), "Olá, tudo bom?")
 
     def test_if_comm_removes_accents_and_upper_letters(self):
