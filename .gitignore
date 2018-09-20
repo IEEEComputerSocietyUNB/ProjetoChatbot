@@ -111,3 +111,6 @@ db.sqlite3
 
 ## vscode settings
 ./.vscode/
+
+# credentials google cloud
+dialogflow/movie-bot-7714a-336604d6dd77.json
