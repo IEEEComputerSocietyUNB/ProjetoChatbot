@@ -96,5 +96,6 @@ class TestBotBasics(unittest.TestCase):
         self.tgbot.updater = updater
         self.assertEqual(self.tgbot.run(), 0)
 
+
 if __name__ == '__main__':
     unittest.main(exit=False)

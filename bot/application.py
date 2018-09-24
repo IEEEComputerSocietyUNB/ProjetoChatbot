@@ -69,7 +69,7 @@ class Application:
 
         self.dispatcher.add_handler(CallbackQueryHandler(self.button))
 
-        message_handler = MessageHandler(Filters.text, self.text_message, 
+        message_handler = MessageHandler(Filters.text, self.text_message,
                                          pass_job_queue=True)
         self.dispatcher.add_handler(message_handler)
 
@@ -148,24 +148,26 @@ class Application:
                 text=contatos_text,
                 parse_mode=telegram.ParseMode.MARKDOWN
             )
-    
+
     def ask_for_interval(self, bot, update, message):
         """
-        Builds the keyboard and prompts it to the user with the message argument
+        Builds the keyboard and prompts it to the user with the message
+        argument
         """
         # numeric keyboard
         digit_list = []
         for i in range(1, 10):
             digit_list.append(InlineKeyboardButton(
-                                str(i),callback_data="{}-{}".format(str(i),
-                                str(update.message.chat_id))
+                                str(i),
+                                callback_data="{}-{}".format(str(i), 
+                                                str(update.message.chat_id))
                                 ))
 
         keyboard = [digit_list[0:3],
                     digit_list[3:6],
                     digit_list[6:9]
                     ]
-        
+
         bot.send_message(
             chat_id=update.message.chat_id,
             text=message,
@@ -176,14 +178,15 @@ class Application:
 
     def lembrete(self, bot, update):
         """
-        Asks the frequency (in days) on witch the user wants to 
+        Asks the frequency (in days) on witch the user wants to
         be reminded to chat
         """
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + "users_custom_invervals.json"
+            FILE_PATH = str(os.getcwd()) + '/bot/' + \
+                        "users_custom_invervals.json"
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 max_interval = intervals_dict.get("max_interval")
@@ -199,18 +202,20 @@ class Application:
 
     def set_user_custom_interval(self, interval, chatID):
         """
-        Write the user defined interval of reminder to chat in to the 
+        Write the user defined interval of reminder to chat in to the
         users_custom_invervals.json file
         """
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + "users_custom_invervals.json"
+            FILE_PATH = str(os.getcwd()) + '/bot/' + \
+                        "users_custom_invervals.json"
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
 
             intervals_dict[chatID] = str(interval)
 
-            FILE_PATH = str(os.getcwd()) + '/bot/' + "users_custom_invervals.json"
-            with open(FILE_PATH) as data_file:
+            FILE_PATH = str(os.getcwd()) + '/bot/' + \
+                        "users_custom_invervals.json"
+            with open(FILE_PATH, "w") as data_file:
                 json.dump(intervals_dict, data_file)
                 
         except FileNotFoundError:
@@ -219,12 +224,12 @@ class Application:
 
     def button(self, bot, update):
         """
-        Parse the callback_query for the button pressed and call 
+        Parse the callback_query for the button pressed and call
         apropriate handler
         """
         query = update.callback_query
-        # query.data is the string payload sended. Exemple: "5-7267119" where 
-        # the single digit prior to "-" is the interval and the nuber 
+        # query.data is the string payload sended. Exemple: "5-7267119" where
+        # the single digit prior to "-" is the interval and the nuber
         # after is the chatID from the user
 
         index = query.data.find("-")
@@ -253,7 +258,8 @@ class Application:
 
         # starting timer for next reminder to chat
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + "users_custom_invervals.json"
+            FILE_PATH = str(os.getcwd()) + '/bot/' + \
+                        "users_custom_invervals.json"
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 interval = int(intervals_dict.get("default_interval"))
@@ -261,8 +267,8 @@ class Application:
                 if (intervals_dict.get(str(chatID) is not None)):
                     interval = int(intervals_dict.get(str(chatID)))
                     job_queue.run_repeating(self.callback_lets_talk,
-                                            interval=timedelta(days=interval),\
-                                            name='reminder_job',\
+                                            interval=timedelta(days=interval),
+                                            name='reminder_job',
                                             context=update)
         except FileNotFoundError:
             print("File not found error")
