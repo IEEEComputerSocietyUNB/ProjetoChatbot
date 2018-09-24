@@ -157,13 +157,9 @@ class Application:
         # numeric keyboard
         digit_list = []
         for i in range(1, 10):
-            digit_list.append(InlineKeyboardButton(
-                                str(i),
-                                callback_data="{}-{}".
-                                format(str(i),
-                                        str(update.message.chat_id))
-                              )
-                       )
+            callback_data = "{}-{}".format(str(i),str(update.message.chat_id))
+            button = InlineKeyboardButton(str(i), callback_data=callback_data)
+            digit_list.append(button)
 
         keyboard = [digit_list[0:3],
                     digit_list[3:6],
