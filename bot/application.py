@@ -159,9 +159,11 @@ class Application:
         for i in range(1, 10):
             digit_list.append(InlineKeyboardButton(
                                 str(i),
-                                callback_data="{}-{}".format(str(i), 
-                                                str(update.message.chat_id))
-                                ))
+                                callback_data="{}-{}".
+                                format(str(i),
+                                        str(update.message.chat_id))
+                              )
+                       )
 
         keyboard = [digit_list[0:3],
                     digit_list[3:6],
@@ -186,7 +188,7 @@ class Application:
         )
         try:
             FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                        "users_custom_invervals.json"
+                "users_custom_invervals.json"
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 max_interval = intervals_dict.get("max_interval")
@@ -207,17 +209,17 @@ class Application:
         """
         try:
             FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                        "users_custom_invervals.json"
+                "users_custom_invervals.json"
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
 
             intervals_dict[chatID] = str(interval)
 
             FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                        "users_custom_invervals.json"
+                "users_custom_invervals.json"
             with open(FILE_PATH, "w") as data_file:
                 json.dump(intervals_dict, data_file)
-                
+
         except FileNotFoundError:
             print("File not found error")
         return 0
@@ -259,7 +261,7 @@ class Application:
         # starting timer for next reminder to chat
         try:
             FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                        "users_custom_invervals.json"
+                "users_custom_invervals.json"
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 interval = int(intervals_dict.get("default_interval"))
