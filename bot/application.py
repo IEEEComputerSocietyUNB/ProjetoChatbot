@@ -157,7 +157,7 @@ class Application:
         # numeric keyboard
         digit_list = []
         for i in range(1, 10):
-            callback_data = "{}-{}".format(str(i),str(update.message.chat_id))
+            callback_data = "{}-{}".format(str(i), str(update.message.chat_id))
             button = InlineKeyboardButton(str(i), callback_data=callback_data)
             digit_list.append(button)
 
