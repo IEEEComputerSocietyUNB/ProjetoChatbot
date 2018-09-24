@@ -7,7 +7,7 @@ import json
 
 class Communication:
 
-    def __init__(self):
+    def __init__(self, train=True):
         """
         Generator for dealing with most messages the bot will receive
         from user.
@@ -32,7 +32,8 @@ class Communication:
             ],
             trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
         )
-        self.comm.train('bot/dialogs/')
+        if train:
+            self.comm.train('bot/dialogs/')
 
     def respond(self, message):
         """

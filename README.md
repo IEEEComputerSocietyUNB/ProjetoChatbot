@@ -87,7 +87,7 @@ python3 bot/application.py
   * [Talitha Pumar](https://github.com/tapumar)
   * [William Simião](https://github.com/williamsimiao)
   * [Jefferson Leandro](https://github.com/jeffersonlsz)
-  * [Beatriz Chiarelli]((https://github.com/biachiarelli)
+  * [Beatriz Chiarelli](https://github.com/biachiarelli)
   * [Vinicius Costa](https://github.com/vinicius0197)
   * [Beatriz Chiarelli](https://github.com/biachiarelli)
   * [Anna Thaís Costa Lopes](https://github.com/annathais)
