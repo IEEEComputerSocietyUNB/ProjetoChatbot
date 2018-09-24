@@ -109,6 +109,5 @@ ENV/
 db.sqlite3
 .idea
 
-users_custom_invervals.json
 ## vscode settings
 ./.vscode/
