@@ -47,15 +47,47 @@ class TestBotBasics(unittest.TestCase):
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
     @patch('telegram.ext.JobQueue')
-    def test_text_message(self, comm, bot, job_queue):
+    def test_reset_reminder_timer(self, comm, bot, job_queue):
         self.tgbot.comm = comm
-        self.assertEqual(self.tgbot.text_message(bot, bot, job_queue), 0)
+        self.assertEqual(self.tgbot.reset_reminder_timer(bot, bot, job_queue), 0)
+
+    @patch('telegram.Bot')
+    def text_button(self, bot):
+        self.assertEqual(self.tgbot.button(bot, bot), 0)
+
+    def test_set_user_custom_interval(self):
+        interval = 3
+        chatID = "133518222"
+        self.assertEqual(self.tgbot.set_user_custom_interval(interval, chatID), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    def test_ask_for_interval(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.ask_for_interval(bot, bot, "Tente novamente"), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    def test_lembrete(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.lembrete(bot, bot), 0)
+
+
+
+
 
     @patch('telegram.Bot')
     @patch('telegram.ext.Job')
     def test_callback_lets_talk(self, bot, job):
         self.assertEqual(self.tgbot.callback_lets_talk(bot,
                          job), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    @patch('telegram.ext.JobQueue')
+    def test_text_message(self, comm, bot, job_queue):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.text_message(bot, bot, job_queue), 0)
 
     def test_error_method(self):
         self.assertEqual(self.tgbot.error("", "", ""), 0)

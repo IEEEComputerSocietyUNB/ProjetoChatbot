@@ -7,10 +7,10 @@ import json
 from datetime import timedelta
 from datetime import datetime
 from time import sleep
-from telegram import Bot
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
 from configparser import ConfigParser
-from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
-    Filters
+from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, Dispatcher, \
+    MessageHandler, Filters
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
@@ -64,6 +64,11 @@ class Application:
 
         contatos_handler = CommandHandler('contatos', self.contatos)
         self.dispatcher.add_handler(contatos_handler)
+
+        lembrete_handler = CommandHandler('lembrete', self.lembrete)
+        self.dispatcher.add_handler(lembrete_handler)
+
+        self.dispatcher.add_handler(CallbackQueryHandler(self.button))
       
         message_handler = MessageHandler(Filters.text, self.text_message,
                                          pass_job_queue=True)
@@ -144,29 +149,120 @@ class Application:
                 text=contatos_text,
                 parse_mode=telegram.ParseMode.MARKDOWN
             )
-    def reset_reminder_timer(self, bot, update, job_queue):
-        #Removing previus job
-        jobs = job_queue.get_jobs_by_name('reminder_job')
-        print(jobs)
-        for job in jobs:
-            job.schedule_removal()
-        # starting timer for next reminder to chat
-        # set defalt interval
-        interval = 3
+    
+    def ask_for_interval(self, bot, update, message):
+        """
+        Builds the keyboard and prompts it to the user with the message argument
+        """
+        #numeric keyboard
+        digit_list = []
+        for i in range(1,10):
+            digit_list.append(InlineKeyboardButton(str(i), callback_data="{}-{}"\
+                                .format(str(i), str(update.message.chat_id))))
+        
+        keyboard = [digit_list[0:3],
+                    digit_list[3:6],
+                    digit_list[6:9]
+                    ]
+        
+        bot.send_message(
+                chat_id=update.message.chat_id,
+                text=message,
+                reply_markup=InlineKeyboardMarkup(keyboard),
+                one_time_keyboard=True
+            )
+        return 0
 
+    def lembrete(self, bot, update):
+        """
+        Asks the frequency (in days) on witch the user wants to 
+        be reminded to chat
+        """
+        bot.send_chat_action(
+            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        )
         try:
-            with open("users_custom_invervals.json", "r") as data_file:
-                intervals_dic = json.load(data_file)
-                chatID = update.message.chat_id
-                if (intervals_dic.get(str(chatID) is not None)):
-                    interval = int(intervals_dic.get(str(chatID)))
+            with open(f"{os.getcwd()}/bot/users_custom_invervals.json") as data_file:
+                intervals_dict = json.load(data_file)
+                max_interval = intervals_dict.get("max_interval")
+                message = "Com que frequencia você quer ser lembrado de dialogar com " + \
+                            "o bot? Diga um intervalo em dias inferior a {}"\
+                            .format(max_interval)
+
+                self.ask_for_interval(bot, update, message)
         except FileNotFoundError:
             print("File not found error")
-        finally:
-            job_queue.run_repeating(self.callback_lets_talk,
+
+        return 0
+        
+
+    def set_user_custom_interval(self, interval, chatID):
+        """
+        Write the user defined interval of reminder to chat in to the 
+        users_custom_invervals.json file
+        """
+        try:
+            with open(f"{os.getcwd()}/bot/users_custom_invervals.json", "r") as data_file:
+                intervals_dict = json.load(data_file)
+
+            intervals_dict[chatID] = str(interval)
+
+            with open(f"{os.getcwd()}/bot/users_custom_invervals.json", "w") as data_file:
+                json.dump(intervals_dict, data_file)
+        except FileNotFoundError:
+            print("File not found error")
+        return 0
+
+
+    def button(self, bot, update):
+        """
+        Parse the callback_query for the button pressed and call apropriate handler
+        """
+        query = update.callback_query
+        #query.data is the string payload sended. Exemple: "5-7267119" where 
+        #the single digit prior to "-" is the interval and the nuber after is the chatID
+        #from the user
+
+        index = query.data.find("-")
+        interval = int(query.data[0])
+        chatID = query.data[index+1:]
+        if(interval >= 1 and interval <= 9):
+            if(self.set_user_custom_interval(interval, chatID) == 0):
+                bot.edit_message_text(text="Frequência alterada",
+                                        chat_id=query.message.chat_id,
+                                        message_id=query.message.message_id)
+
+        else:
+            self.ask_for_interval(bot, update, "Tente novamente")
+
+        return 0
+            
+
+        
+    def reset_reminder_timer(self, bot, update, job_queue):
+        """
+        Remove previus scheduled reminder and sets a new one
+        """
+        #Removing previus job
+        jobs = job_queue.get_jobs_by_name('reminder_job')
+        # print(jobs)
+        for job in jobs:
+            job.schedule_removal()
+
+        # starting timer for next reminder to chat
+        try:
+            with open(f"{os.getcwd()}/bot/users_custom_invervals.json") as data_file:
+                intervals_dict = json.load(data_file)
+                interval = intervals_dict.get("default_interval")
+                chatID = update.message.chat_id
+                if (intervals_dict.get(str(chatID) is not None)):
+                    interval = int(intervals_dict.get(str(chatID)))
+                    job_queue.run_repeating(self.callback_lets_talk,
                                     interval=timedelta(days=interval),
                                     name='reminder_job',
                                     context=update)
+        except FileNotFoundError:
+            print("File not found error")            
         return 0
 
     def callback_lets_talk(self, bot, job):
