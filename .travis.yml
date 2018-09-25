@@ -3,17 +3,19 @@ dist: trusty
 sudo: required
 env:
   global:
-    - CC_TEST_REPORTER_ID=855c7cffbc4aeb49d8ee560e6667c1b43b7b315b8e1efffeb9ad6651ae6e5c6f
+    - CC_TEST_REPORTER_ID=855c7cffbc4aeb49d8ee560e6667c1b43b7b315b8e1efffeb9
+      ad6651ae6e5c6f
 language: python
+cache: pip
 python:
-- '3.6'
+  - '3.6.5'
 install:
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
 script:
-- inv travis
+  - invoke travis
 before_install:
-- openssl aes-256-cbc -K $encrypted_41103fb4d715_key -iv $encrypted_41103fb4d715_iv
-  -in config.ini.enc -out bot/config.ini -d
+  - openssl aes-256-cbc -K $encrypted_41103fb4d715_key -iv
+    $encrypted_41103fb4d715_iv -in config.ini.enc -out bot/config.ini -d
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
@@ -21,18 +23,27 @@ before_script:
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 after_success:
-- codecov
+  - codecov
 notifications:
   webhooks:
     urls:
-    - https://integrations.bonbotics.io/travis/webhook/2Xp5VtTcrNNLtIMd9zfTEIIE1AJHZRsHEOgASbWe0UM
+      - https://integrations.bonbotics.io/travis/webhook/2Xp5VtTcrNNLtIMd9zfTEIIE1AJHZRsHEOgASbWe0UM
     on_success: never
     on_failure: always
     on_start: never
 deploy:
   provider: heroku
   api_key:
-    secure: Dn2gz/H1XVQQduvaSHeKwG8LkxxH6tzQSf0lyGTDxtI/C6d0ew4XDf3tAriwJNaULlsTknYoT1u1ivk7UzTIQI1HoZIw9MA31LfmswJq3wcau5tTfVclIYOZRA3XaDA8mgaZNwPLl7I+rhjil4DA6lz6moS2hIET8HEzUilizr9+1CET2uZ4yHFZMGrb1OrZCjc2YUniPErQ/vjzr5SEBRF5MGBQTqHo9e561zMHTgtzytrxRKAic5SHggUbcI2eZnDZNHGiAjeWIuHjP5+q7trKhBQP318SmQiOeI3oySxdHSC5V2Ik5zBrvltg/hEjzu29ZzNYTFX7TrAUnn6wvy9tSrtHTLqAjbuo8meFH2662tX1SPyh8CJGkqpRDSWthvoBHIjiaPYmem0MLJQJ+dIVjVu6Cn5vtvPQMpqTzkSMyFQ1KwNMpdKe8jA5ryUqAaRcywXcSdJ1hDLNmvdXrZngQisM1UkmGJnOgulIKckJZrj1x7GazHtSTSYYIRIObVNFWD/gem3R9DCn3nN2uCSjCoxdXQsM+a0ldF+XXPN1ZX11FE61VuTSy5WRzXl3pGlGEcTAGuNh/IcJaL7MILeDvxlQQV0d8ZZnOZQFTQC+YAATc7tOrWgz8vAC3/LDNhHiOmgqgDMiVj+aSaqNkVlAsO0HzD1/gaYCtakEu7k=
+    secure: Dn2gz/H1XVQQduvaSHeKwG8LkxxH6tzQSf0lyGTDxtI/C6d0ew4XDf3tAriwJNaULl
+      sTknYoT1u1ivk7UzTIQI1HoZIw9MA31LfmswJq3wcau5tTfVclIYOZRA3XaDA8mgaZNwPLl7
+      I+rhjil4DA6lz6moS2hIET8HEzUilizr9+1CET2uZ4yHFZMGrb1OrZCjc2YUniPErQ/vjzr
+      5SEBRF5MGBQTqHo9e561zMHTgtzytrxRKAic5SHggUbcI2eZnDZNHGiAjeWIuHjP5+q7tr
+      KhBQP318SmQiOeI3oySxdHSC5V2Ik5zBrvltg/hEjzu29ZzNYTFX7TrAUnn6wvy9tSrtHTL
+      qAjbuo8meFH2662tX1SPyh8CJGkqpRDSWthvoBHIjiaPYmem0MLJQJ+dIVjVu6Cn5vtvPQM
+      pqTzkSMyFQ1KwNMpdKe8jA5ryUqAaRcywXcSdJ1hDLNmvdXrZngQisM1UkmGJnOgulIKckJ
+      Zrj1x7GazHtSTSYYIRIObVNFWD/gem3R9DCn3nN2uCSjCoxdXQsM+a0ldF+XXPN1ZX11FE6
+      1VuTSy5WRzXl3pGlGEcTAGuNh/IcJaL7MILeDvxlQQV0d8ZZnOZQFTQC+YAATc7tOrWgz8v
+      AC3/LDNhHiOmgqgDMiVj+aSaqNkVlAsO0HzD1/gaYCtakEu7k=
   app: projeto-chatbot
   on:
     repo: ComputerSocietyUNB/ProjetoChatbot

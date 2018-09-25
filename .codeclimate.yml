@@ -1,12 +1,12 @@
 version: "2"
 plugins:
- radon:
-  enabled: true
+  radon:
+    enabled: true
   config:
-      threshold: "C"
- markdownlint:
-  enabled: true
- fixme:
-  enabled: true
- sonar-python:
+    threshold: "C"
+  markdownlint:
+    enabled: true
+  fixme:
+    enabled: true
+  sonar-python:
     enabled: true

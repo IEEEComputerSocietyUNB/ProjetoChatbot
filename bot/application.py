@@ -5,7 +5,6 @@ import logging
 import telegram
 from time import sleep
 from telegram import Bot
-from configparser import ConfigParser
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
     Filters
 sys.path.append(
@@ -14,21 +13,7 @@ sys.path.append(
     )
 )
 from bot.communication import Communication
-
-
-def retrieve_default(file='config.ini'):
-    """
-    Function to retrieve all informations from token file.
-    Usually retrieves from config.ini
-    """
-    try:
-        FILE_PATH = str(os.getcwd()) + '/bot/' + file
-        config = ConfigParser()
-        with open(FILE_PATH) as file:
-            config.read_file(file)
-        return(config['DEFAULT'])
-    except FileNotFoundError:
-        raise FileNotFoundError
+from bot.config_reader import retrieve_default
 
 
 class Application:
@@ -37,9 +22,10 @@ class Application:
     oncoming messages and also handles all Telegram related commands.
     Might soon have a sibling to deal with Facebook.
     """
-    def __init__(self, token, train=True):
+    def __init__(self, token, train=True, use_watson=True):
         if train:
-            self.comm = Communication()
+            self.comm = Communication(use_watson)
+
         logging.basicConfig(
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO)
@@ -166,15 +152,13 @@ class Application:
 
 
 if __name__ == '__main__':
-    # try to run with Heroku variables
-    try:
-        # Variables set on Heroku
-        TOKEN = os.environ.get('TOKEN')
-        NAME = os.environ.get('NAME')
-        # Port is given by Heroku
-        PORT = os.environ.get('PORT')
-
-        bot = Application(TOKEN)
+    # Variables set on Heroku
+    TOKEN = os.environ.get('TOKEN')
+    NAME = os.environ.get('NAME')
+    # Port is given by Heroku
+    PORT = os.environ.get('PORT')
+    if TOKEN is not None:
+        bot = Application(TOKEN, use_watson=False)
         bot.updater.start_webhook(
             listen="0.0.0.0",
             port=int(PORT),
@@ -186,7 +170,7 @@ if __name__ == '__main__':
         bot.updater.idle()
 
     # Run on local system once detected that it's not on Heroku
-    except Exception as inst:
+    else:
         try:
             token = retrieve_default()['token']
             x = Application(token).run()

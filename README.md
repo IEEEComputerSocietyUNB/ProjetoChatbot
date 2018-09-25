@@ -1,3 +1,4 @@
+[![Documentation Status](https://readthedocs.org/projects/projetochatbot/badge/?version=latest)](https://projetochatbot.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/ComputerSocietyUNB/ProjetoChatbot.svg?branch=master)](https://travis-ci.org/ComputerSocietyUNB/ProjetoChatbot)
 [![codecov](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot/branch/master/graph/badge.svg)](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ffdec12c3e0377893317/maintainability)](https://codeclimate.com/github/ComputerSocietyUNB/ProjetoChatbot/maintainability)

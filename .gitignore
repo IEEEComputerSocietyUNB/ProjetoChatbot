@@ -106,8 +106,6 @@ ENV/
 *.ini
 /.gtm/
 /rabot
-db.sqlite3
+db.sqlite*
 .idea
-
-## vscode settings
-./.vscode/
+.vscode/

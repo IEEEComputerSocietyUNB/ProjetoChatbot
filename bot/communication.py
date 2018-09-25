@@ -1,13 +1,22 @@
+import os
+import json
+import time
+import sys
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.response_selection import get_random_response
-import os
-import json
+from bot.config_reader import retrieve_default
+sys.path.append(
+    os.path.dirname(
+        os.path.dirname(os.path.realpath(__file__))
+    )
+)
+from bot.watson import Watson
 
 
 class Communication:
 
-    def __init__(self, train=True):
+    def __init__(self, use_watson=False, train=True):
         """
         Generator for dealing with most messages the bot will receive
         from user.
@@ -34,12 +43,43 @@ class Communication:
         )
         if train:
             self.comm.train('bot/dialogs/')
+        if use_watson:
+            try:
+                self.watson_analyzer = Watson(retrieve_default()['user'],
+                                              retrieve_default()['pass'])
+                self.watson_usage = True
+            except KeyError:
+                # If config.ini doesn't have the user and password:
+                # Alert user and end execution
+                print('Watson\'s user and password '
+                      'need to be in configuration file.')
+                exit()
+        else:
+            self.watson_usage = False
+        self.all_texts = ''
 
     def respond(self, message):
         """
         Receive message from user and returns corresponding answer.
         """
-        return self.comm.get_response(self.clean(message))
+        # if string isnt empty concatenate with space
+        if(self.all_texts):
+            self.all_texts += ' ' + message
+        else:
+            self.all_texts = message
+
+        if(len(message) > 50 and self.watson_usage):
+            analysis = self.watson_analyzer.get_analysis(message)
+
+            # Get top 1 categorie
+            top_score = (analysis['categories'][0]['score'])
+            top_label = (analysis['categories'][0]['label'])
+
+            # Print the leaf from category tree
+            leaf_category = top_label[top_label.rindex('/') + 1:]
+            return (f'Hmm, você está falando sobre {leaf_category}')
+        else:
+            return self.comm.get_response(self.clean(message))
 
     def clean(self, message):
         """
