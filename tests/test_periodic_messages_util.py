@@ -40,7 +40,9 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
         chatID = "123456789"
         file_name = "another_file_name.json"
         self.assertEqual(self.periodic_messages.
-                         set_user_custom_interval(interval, chatID, file_name), 0)
+                         set_user_custom_interval(interval,
+                                                  chatID,
+                                                  file_name), 0)
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
