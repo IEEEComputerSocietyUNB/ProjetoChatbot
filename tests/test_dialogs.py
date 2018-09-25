@@ -1,13 +1,12 @@
 import os
 import sys
 import unittest
-from bot.communication import Communication
-
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
     )
 )
+from bot.communication import Communication
 
 
 class TestBotDialogs(unittest.TestCase):
@@ -190,4 +189,4 @@ class TestBotDialogs(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main()

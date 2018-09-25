@@ -6,11 +6,13 @@ from invoke import task
 # Name definitions
 db_files = ['db.sqlite3', 'db.sqlite3-shm', 'db.sqlite3-wal']
 
+config = 'bot/config_reader.py'
 app = 'bot/application.py'
 comm = 'bot/communication.py'
 linter = 'linter/linter.py'
 
-first_test = 'tests.test_communication.TestBotCommunication.test_if_comm_answers'
+first_test = 'tests.test_dialogs.TestBotDialogs.test_if_comm_answers_greetings'
+config_test = 'tests/test_config_reader.py'
 app_test = 'tests/test_application.py'
 comm_test = 'tests/test_communication.py'
 dialog_test = 'tests/test_dialogs.py'
@@ -26,10 +28,13 @@ def rmdb(c):
 
 
 @task(rmdb)
-def test(c):
+def test(c, vv=False):
     """ Runs all tests """
-    c.run('green3 ' + first_test)
-    c.run(f'green3 {app_test} {comm_test} {linter_test} -vv')
+    detail = ""
+    if vv:
+        detail = '-vv'
+    c.run(f'green3 {first_test}')
+    c.run(f'green3 {app_test} {comm_test} {linter_test} {config_test} {detail}')
 
 
 @task
@@ -76,9 +81,10 @@ def encrypt(c):
 @task(rmdb)
 def cov(c):
     """ Checks how much of the program is covered by tests """
-    c.run(f'coverage run -m py.test {app_test} {comm_test} {linter_test}')
-    c.run(f'coverage report -m {app} {comm} {linter}')
-    c.run(f'coverage html {app} {comm} {linter}')
+    c.run(f'coverage run -m py.test\
+          {app_test} {comm_test} {linter_test} {config_test}')
+    c.run(f'coverage report -m {app} {comm} {linter} {config}')
+    c.run(f'coverage html {app} {comm} {linter} {config}')
 
 
 @task()

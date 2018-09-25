@@ -12,7 +12,7 @@ from bot.communication import Communication
 class TestBotCommunication(unittest.TestCase):
 
     def setUp(self):
-        self.comm = Communication(train=False)
+        self.comm = Communication(train=False, use_watson=False)
 
     def tearDown(self):
         self.comm = None
@@ -65,4 +65,4 @@ class TestBotCommunication(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main()
