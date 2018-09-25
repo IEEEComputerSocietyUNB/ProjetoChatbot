@@ -17,6 +17,7 @@ sys.path.append(
     )
 )
 from bot.communication import Communication
+from bot.periodic_messages_util import Periodic_mesages_util
 
 
 def retrieve_default(file='config.ini'):
@@ -74,6 +75,8 @@ class Application:
         self.dispatcher.add_handler(message_handler)
 
         self.dispatcher.add_error_handler(self.error)
+
+        self.periodic_mesages_util = Periodic_mesages_util()
 
     def start(self, bot, update):
         """
@@ -149,32 +152,7 @@ class Application:
                 parse_mode=telegram.ParseMode.MARKDOWN
             )
 
-    def ask_for_interval(self, bot, update, message):
-        """
-        Builds the keyboard and prompts it to the user with the message
-        argument
-        """
-        # numeric keyboard
-        digit_list = []
-        for i in range(1, 10):
-            callback_data = "{}-{}".format(str(i), str(update.message.chat_id))
-            button = InlineKeyboardButton(str(i), callback_data=callback_data)
-            digit_list.append(button)
-
-        keyboard = [digit_list[0:3],
-                    digit_list[3:6],
-                    digit_list[6:9]
-                    ]
-
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=message,
-            reply_markup=InlineKeyboardMarkup(keyboard),
-            one_time_keyboard=True
-        )
-        return 0
-
-    def lembrete(self, bot, update):
+    def lembrete(self, bot, update, file='users_custom_invervals.json'):
         """
         Asks the frequency (in days) on witch the user wants to
         be reminded to chat
@@ -183,8 +161,7 @@ class Application:
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                "users_custom_invervals.json"
+            FILE_PATH = str(os.getcwd()) + '/bot/' + file
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 max_interval = intervals_dict.get("max_interval")
@@ -192,32 +169,11 @@ class Application:
                           "dialogar com o bot? Diga um intervalo em dias " + \
                           "inferior a {}".format(max_interval)
 
-                self.ask_for_interval(bot, update, message)
+                self.periodic_mesages_util. \
+                    ask_for_interval(bot, update, message)
         except FileNotFoundError:
             print("File not found error")
 
-        return 0
-
-    def set_user_custom_interval(self, interval, chatID):
-        """
-        Write the user defined interval of reminder to chat in to the
-        users_custom_invervals.json file
-        """
-        try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                "users_custom_invervals.json"
-            with open(FILE_PATH) as data_file:
-                intervals_dict = json.load(data_file)
-
-            intervals_dict[chatID] = str(interval)
-
-            FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                "users_custom_invervals.json"
-            with open(FILE_PATH, "w") as data_file:
-                json.dump(intervals_dict, data_file)
-
-        except FileNotFoundError:
-            print("File not found error")
         return 0
 
     def button(self, bot, update):
@@ -234,21 +190,27 @@ class Application:
         interval = int(query.data[0])
         chatID = query.data[index + 1:]
         if(interval >= 1 and interval <= 9):
-            if(self.set_user_custom_interval(interval, chatID) == 0):
+            return_value = self.periodic_mesages_util.\
+                           set_user_custom_interval(interval, chatID)
+            if(return_value == 0):
                 bot.edit_message_text(text="Frequência alterada",
                                       chat_id=query.message.chat_id,
                                       message_id=query.message.message_id)
-
         else:
-            self.ask_for_interval(bot, update, "Tente novamente")
+            self.periodic_mesages_util.\
+                ask_for_interval(bot, update, "Tente novamente")
 
         return 0
 
-    def reset_reminder_timer(self, bot, update, job_queue):
-        """
-        Remove previus scheduled reminder and sets a new one
-        """
-        # Removing previus job
+    def callback_lets_talk(self, bot, job):
+        bot.send_message(chat_id=job.context.message.chat_id,
+                         text='Vamos conversar?')
+        return 0
+
+    def text_message(self, bot, update,
+                     job_queue, file='users_custom_invervals.json'):
+        # The user interacted with the bot so the scheduled
+        # reminders to use the bot should be removed
         jobs = job_queue.get_jobs_by_name('reminder_job')
         # print(jobs)
         for job in jobs:
@@ -256,8 +218,7 @@ class Application:
 
         # starting timer for next reminder to chat
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + \
-                "users_custom_invervals.json"
+            FILE_PATH = str(os.getcwd()) + '/bot/' + file
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 interval = int(intervals_dict.get("default_interval"))
@@ -270,16 +231,6 @@ class Application:
                                             context=update)
         except FileNotFoundError:
             print("File not found error")
-
-        return 0
-
-    def callback_lets_talk(self, bot, job):
-        bot.send_message(chat_id=job.context.message.chat_id,
-                         text='Vamos conversar?')
-        return 0
-
-    def text_message(self, bot, update, job_queue):
-        self.reset_reminder_timer(bot, update, job_queue)
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )

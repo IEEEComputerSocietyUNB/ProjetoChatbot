@@ -44,36 +44,22 @@ class TestBotBasics(unittest.TestCase):
     def test_start_method(self, bot):
         self.assertEqual(self.tgbot.start(bot, bot), 0)
 
-    @patch('bot.communication.Communication')
-    @patch('telegram.Bot')
-    @patch('telegram.ext.JobQueue')
-    def test_reset_reminder_timer(self, comm, bot, job_queue):
-        self.tgbot.comm = comm
-        self.assertEqual(self.tgbot.
-                         reset_reminder_timer(bot, bot, job_queue), 0)
-
     @patch('telegram.Bot')
     def text_button(self, bot):
         self.assertEqual(self.tgbot.button(bot, bot), 0)
-
-    def test_set_user_custom_interval(self):
-        interval = 3
-        chatID = "123456789"
-        self.assertEqual(self.tgbot.
-                         set_user_custom_interval(interval, chatID), 0)
-
-    @patch('bot.communication.Communication')
-    @patch('telegram.Bot')
-    def test_ask_for_interval(self, comm, bot):
-        self.tgbot.comm = comm
-        self.assertEqual(self.tgbot.
-                         ask_for_interval(bot, bot, "Tente novamente"), 0)
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
     def test_lembrete(self, comm, bot):
         self.tgbot.comm = comm
         self.assertEqual(self.tgbot.lembrete(bot, bot), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    def test_lembrete_wrong_file(self, comm, bot):
+        self.tgbot.comm = comm
+        file = "another_file_name.json"
+        self.assertEqual(self.tgbot.lembrete(bot, bot, file), 0)
 
     @patch('telegram.Bot')
     @patch('telegram.ext.Job')
@@ -87,6 +73,14 @@ class TestBotBasics(unittest.TestCase):
     def test_text_message(self, comm, bot, job_queue):
         self.tgbot.comm = comm
         self.assertEqual(self.tgbot.text_message(bot, bot, job_queue), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    @patch('telegram.ext.JobQueue')
+    def test_text_message_wrong_file(self, comm, bot, job_queue):
+        self.tgbot.comm = comm
+        file = "another_file_name.json"
+        self.assertEqual(self.tgbot.text_message(bot, bot, job_queue, file), 0)
 
     def test_error_method(self):
         self.assertEqual(self.tgbot.error("", "", ""), 0)
