@@ -8,8 +8,8 @@ from datetime import timedelta
 from datetime import datetime
 from time import sleep
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, Dispatcher, MessageHandler, \
-    Filters
+from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, \
+    Dispatcher, MessageHandler, Filters
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
