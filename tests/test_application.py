@@ -50,6 +50,18 @@ class TestBotBasics(unittest.TestCase):
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
+    def test_contatos(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.contatos(bot, bot), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    def test_helpme(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.helpme(bot, bot), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
     def test_lembrete(self, comm, bot):
         self.tgbot.comm = comm
         self.assertEqual(self.tgbot.lembrete(bot, bot), 0)

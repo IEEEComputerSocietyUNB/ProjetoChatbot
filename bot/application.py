@@ -135,6 +135,7 @@ class Application:
                 text=helpme_text,
                 parse_mode=telegram.ParseMode.MARKDOWN
             )
+        return 0
 
     def contatos(self, bot, update):
         """
@@ -151,6 +152,7 @@ class Application:
                 text=contatos_text,
                 parse_mode=telegram.ParseMode.MARKDOWN
             )
+        return 0
 
     def lembrete(self, bot, update, file='users_custom_invervals.json'):
         """
@@ -196,10 +198,6 @@ class Application:
                 bot.edit_message_text(text="Frequência alterada",
                                       chat_id=query.message.chat_id,
                                       message_id=query.message.message_id)
-        else:
-            self.periodic_mesages_util.\
-                ask_for_interval(bot, update, "Tente novamente")
-
         return 0
 
     def callback_lets_talk(self, bot, job):
