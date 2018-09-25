@@ -1,14 +1,8 @@
 import os
 import sys
-import random
-import logging
 import telegram
 import json
-from datetime import timedelta
-from datetime import datetime
-from time import sleep
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
-from configparser import ConfigParser
 from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, \
     Dispatcher, MessageHandler, Filters
 sys.path.append(
@@ -46,13 +40,13 @@ class Periodic_mesages_util:
         return 0
 
     def set_user_custom_interval(self, interval, chatID,
-                                 file='users_custom_invervals.json'):
+                                 file_name='users_custom_invervals.json'):
         """
         Write the user defined interval of reminder to chat in to the
         users_custom_invervals.json file
         """
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + file
+            FILE_PATH = str(os.getcwd()) + '/bot/' + file_name
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
 

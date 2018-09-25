@@ -58,8 +58,8 @@ class TestBotBasics(unittest.TestCase):
     @patch('telegram.Bot')
     def test_lembrete_wrong_file(self, comm, bot):
         self.tgbot.comm = comm
-        file = "another_file_name.json"
-        self.assertEqual(self.tgbot.lembrete(bot, bot, file), 0)
+        file_name = "another_file_name.json"
+        self.assertEqual(self.tgbot.lembrete(bot, bot, file_name), 0)
 
     @patch('telegram.Bot')
     @patch('telegram.ext.Job')
@@ -79,8 +79,9 @@ class TestBotBasics(unittest.TestCase):
     @patch('telegram.ext.JobQueue')
     def test_text_message_wrong_file(self, comm, bot, job_queue):
         self.tgbot.comm = comm
-        file = "another_file_name.json"
-        self.assertEqual(self.tgbot.text_message(bot, bot, job_queue, file), 0)
+        file_name = "another_file_name.json"
+        self.assertEqual(self.tgbot.
+                         text_message(bot, bot, job_queue, file_name), 0)
 
     def test_error_method(self):
         self.assertEqual(self.tgbot.error("", "", ""), 0)

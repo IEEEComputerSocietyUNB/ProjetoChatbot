@@ -190,8 +190,8 @@ class Application:
         interval = int(query.data[0])
         chatID = query.data[index + 1:]
         if(interval >= 1 and interval <= 9):
-            return_value = self.periodic_mesages_util.\
-                           set_user_custom_interval(interval, chatID)
+            return_value = self.periodic_mesages_util. \
+                set_user_custom_interval(interval, chatID)
             if(return_value == 0):
                 bot.edit_message_text(text="Frequência alterada",
                                       chat_id=query.message.chat_id,
@@ -208,7 +208,7 @@ class Application:
         return 0
 
     def text_message(self, bot, update,
-                     job_queue, file='users_custom_invervals.json'):
+                     job_queue, file_name='users_custom_invervals.json'):
         # The user interacted with the bot so the scheduled
         # reminders to use the bot should be removed
         jobs = job_queue.get_jobs_by_name('reminder_job')
@@ -218,17 +218,17 @@ class Application:
 
         # starting timer for next reminder to chat
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + file
+            FILE_PATH = str(os.getcwd()) + '/bot/' + file_name
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
                 interval = int(intervals_dict.get("default_interval"))
                 chatID = update.message.chat_id
                 if (intervals_dict.get(str(chatID) is not None)):
                     interval = int(intervals_dict.get(str(chatID)))
-                    job_queue.run_repeating(self.callback_lets_talk,
-                                            interval=timedelta(days=interval),
-                                            name='reminder_job',
-                                            context=update)
+                job_queue.run_repeating(self.callback_lets_talk,
+                                        interval=timedelta(days=interval),
+                                        name='reminder_job',
+                                        context=update)
         except FileNotFoundError:
             print("File not found error")
         bot.send_chat_action(
