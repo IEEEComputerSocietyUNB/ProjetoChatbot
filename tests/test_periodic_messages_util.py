@@ -1,7 +1,6 @@
 import unittest
 import os
 import sys
-import logging
 from telegram import Bot
 from unittest.mock import patch
 sys.path.append(
@@ -39,9 +38,9 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
     def test_set_user_custom_interval_wrong_file(self):
         interval = 3
         chatID = "123456789"
-        file = "another_file_name.json"
+        file_name = "another_file_name.json"
         self.assertEqual(self.periodic_messages.
-                         set_user_custom_interval(interval, chatID, file), 0)
+                         set_user_custom_interval(interval, chatID, file_name), 0)
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
