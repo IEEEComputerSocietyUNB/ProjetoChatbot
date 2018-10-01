@@ -9,6 +9,7 @@ codecov==2.0.15
 invoke
 yamllint
 watson-developer-cloud==1.7.1
+googletrans
 sphinx
 sphinx-autobuild
 sphinx_rtd_theme

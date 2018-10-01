@@ -68,16 +68,15 @@ class Communication:
         else:
             self.all_texts = message
 
-        if(len(message) > 50 and self.watson_usage):
-            analysis = self.watson_analyzer.get_analysis(message)
-
-            # Get top 1 categorie
-            top_score = (analysis['categories'][0]['score'])
-            top_label = (analysis['categories'][0]['label'])
-
-            # Print the leaf from category tree
-            leaf_category = top_label[top_label.rindex('/') + 1:]
-            return (f'Hmm, você está falando sobre {leaf_category}')
+        if(len(self.all_texts) > 50 and self.watson_usage):
+            user_emotion = self.watson_analyzer.get_emotion(message)
+            # if relevance is bigger than an arbitrary number send it to user
+            if(user_emotion[1] > 60):
+                message = f'Parece que tem sentido {user_emotion[0]}. '
+                message += 'Quer conversar sobre isso?\n'
+                return (message)
+            else:
+                return self.comm.get_response(self.clean(message))
         else:
             return self.comm.get_response(self.clean(message))
 
