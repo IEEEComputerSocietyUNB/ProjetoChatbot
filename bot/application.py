@@ -58,7 +58,12 @@ class Application:
 
         message_handler = MessageHandler(Filters.text, self.text_message,
                                          pass_job_queue=True)
+
+        weekly_message_handler = MessageHandler(Filters.text, self.weekly_update,
+                                         pass_job_queue=True)
+
         self.dispatcher.add_handler(message_handler)
+        self.dispatcher.add_handler(weekly_message_handler)
 
         self.dispatcher.add_error_handler(self.error)
 
@@ -142,7 +147,7 @@ class Application:
 
     def lembrete(self, bot, update, file='users_custom_invervals.json'):
         """
-        Asks the frequency (in days) on witch the user wants to
+        Asks the frequency (in days) on which the user wants to
         be reminded to chat
         """
         bot.send_chat_action(
@@ -221,6 +226,14 @@ class Application:
         message = update.effective_message.text
         update.effective_message.reply_text(str(self.comm.respond(message)))
         return 0
+
+    def callback_week(self, bot, job):
+        bot.send_message(chat_id=job.context.message.chat_id,
+                         text='Conte-me, como foi sua semana?')
+
+    def weekly_update(self, bot, update, job_queue):
+        """ Requests weekly update from user """
+        job_queue.run_repeating(self.callback_week, interval=60, first=0)
 
     def error(self, bot, update, error):
         self.logger.warning(
