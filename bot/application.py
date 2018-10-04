@@ -192,7 +192,7 @@ class Application:
             chat_id=update.message.chat_id,
             text=message,
             parse_mode=telegram.ParseMode.MARKDOWN
-         )
+        )
 
     def find_weekly_messages(self, bot, update):
         """
@@ -261,7 +261,7 @@ class Application:
 
     def callback_week(self, bot, job):
         bot.send_message(chat_id=job.context.message.chat_id,
-                         text='Conte-me, como foi sua semana?')
+                         text='Use /resumo e me conte como foi sua semana!')
 
     def weekly_update(self, bot, update, job_queue):
         """ Requests weekly update from user """
