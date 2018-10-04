@@ -54,6 +54,17 @@ class Application:
         lembrete_handler = CommandHandler('lembrete', self.lembrete)
         self.dispatcher.add_handler(lembrete_handler)
 
+        weekly_handler = CommandHandler('resumo', 
+                                        self.weekly_resume,
+                                        pass_args=True)
+       
+        find_weekly_handler = CommandHandler('historico',
+                                            self.find_weekly_resume)
+
+        self.dispatcher.add_handler(find_weekly_handler)
+
+        self.dispatcher.add_handler(weekly_handler)
+
         self.dispatcher.add_handler(CallbackQueryHandler(self.button))
 
         message_handler = MessageHandler(Filters.text, self.text_message,
@@ -169,6 +180,27 @@ class Application:
 
         return 0
 
+    def weekly_resume(self, bot, update, args):
+        """
+        Asks about the user's week experiences
+        """
+        message = ' '.join(args)
+
+        # TODO : add message and user to database
+
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message,
+            parse_mode=telegram.ParseMode.MARKDOWN
+         )
+
+    def find_weekly_messages(self, bot, update):
+        """
+        Search database to find saved weekly resumes
+        """
+        # TODO
+        pass
+
     def button(self, bot, update):
         """
         Parse the callback_query for the button pressed and call
@@ -233,7 +265,11 @@ class Application:
 
     def weekly_update(self, bot, update, job_queue):
         """ Requests weekly update from user """
-        job_queue.run_repeating(self.callback_week, interval=60, first=0)
+        job_queue.run_repeating(self.callback_week,
+                                     interval=60,
+                                     first=0,
+                                     name='weekly',
+                                     context=update)
 
     def error(self, bot, update, error):
         self.logger.warning(
@@ -275,7 +311,7 @@ if __name__ == '__main__':
     else:
         try:
             token = retrieve_default()['token']
-            x = Application(token).run()
+            x = Application(token, use_watson=False).run()
         except FileNotFoundError:
             print('Configuration file not found.')
             sys.exit(1)
