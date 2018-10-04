@@ -155,7 +155,7 @@ class Application:
                 max_interval = intervals_dict.get("max_interval")
                 message = "Com que frequencia você quer ser lembrado de " + \
                           "dialogar com o bot? Diga um intervalo em dias " + \
-                          "inferior a {}".format(max_interval)
+                          "inferior a {max_interval}"
 
                 self.periodic_mesages_util. \
                     ask_for_interval(bot, update, message)
@@ -262,7 +262,8 @@ if __name__ == '__main__':
     else:
         try:
             token = retrieve_default()['token']
-            x = Application(token).run()
+            watson = retrieve_default()['watson']
+            x = Application(token, use_watson=True).run()
         except FileNotFoundError:
             print('Configuration file not found.')
             sys.exit(1)

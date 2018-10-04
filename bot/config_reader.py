@@ -2,7 +2,7 @@ import os
 from configparser import ConfigParser
 
 
-def retrieve_default(filename='config.ini'):
+def retrieve_default(section="MAIN", filename='config.ini'):
     """
     Function to retrieve all informations from token file.
     Usually retrieves from config.ini
@@ -12,7 +12,7 @@ def retrieve_default(filename='config.ini'):
         config = ConfigParser()
         with open(FILE_PATH) as config_file:
             config.read_file(config_file)
-        return(config['DEFAULT'])
+        return(config[section])
     except FileNotFoundError:
         config_information = '[DEFAULT]\ntoken=\nuser=\npass='
         with open('config.ini', mode='w') as config_file:
