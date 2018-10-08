@@ -91,3 +91,8 @@ def cov(c):
 def lint(c):
     """ Checks yaml file structure """
     c.run('yamllint bot')
+
+@task()
+def encrypt(c):
+	""" Needed only when encrypting bot token to travis """
+	c.run('travis encrypt-file bot/config.ini --add')
