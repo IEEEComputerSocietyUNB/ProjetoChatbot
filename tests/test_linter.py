@@ -2,11 +2,8 @@ import unittest
 import sys
 import os
 import shutil
-sys.path.append(
-    os.path.dirname(
-        os.path.dirname(os.path.realpath(__file__))
-    )
-)
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from linter.linter import Linter
 
 
@@ -35,10 +32,11 @@ class TestLinterClass(unittest.TestCase):
         FPATH = "{0}/{1}".format(self.FILE_PATH, filename)
         with open(FPATH, "w") as test_json:
             test_json.write("categories:\n- Test")
-        expected_result = {'dialogs': ['dialogs.yml']}
+        expected_result = {"dialogs": ["dialogs.yml"]}
 
         self.assertEqual(
-            self.linter.check_folders(path="./bot_test/"), expected_result
+            self.linter.check_folders(path="./bot_test/"),
+            expected_result
         )
         os.remove(FPATH)
 
@@ -70,5 +68,5 @@ class TestLinterClass(unittest.TestCase):
     #     self.assertEqual(self.linter.check_pronouns_on_dialogs(), False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

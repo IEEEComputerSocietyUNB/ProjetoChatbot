@@ -1,16 +1,12 @@
 import unittest
 import sys
 import os
-sys.path.append(
-    os.path.dirname(
-        os.path.dirname(os.path.realpath(__file__))
-    )
-)
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from bot.communication import Communication
 
 
 class TestBotCommunication(unittest.TestCase):
-
     def setUp(self):
         self.comm = Communication(train=False, use_watson=False)
 
@@ -41,8 +37,7 @@ class TestBotCommunication(unittest.TestCase):
 
     def test_comm_switches_abbreviations(self):
         self.assertEqual(
-            self.comm.switch_abbreviations("vc está aki"),
-            "você está aqui"
+            self.comm.switch_abbreviations("vc está aki"), "você está aqui"
         )
 
     def test_if_comm_raises_error_when_rm_is_not_a_list(self):
@@ -64,5 +59,5 @@ class TestBotCommunication(unittest.TestCase):
         self.assertEqual(self.comm.clean("vc é um chato"), "você é chato")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
