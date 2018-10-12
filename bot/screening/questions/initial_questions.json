@@ -1,0 +1,37 @@
+[
+    {
+        "dimension": "Ansiedade", 
+        "question": "Você tem evitado situações que te deixam ansioso?",
+        "criterion": 2        
+    }, 
+    {
+        "dimension": "Depressão", 
+        "question": "Você tem se sentido para baixo, deprimido ou sem esperança?",
+        "criterion": 2
+    },
+    {
+        "dimension": "Uso de substâncias", 
+        "question": "Você tem ingerido álcool, tabaco, medicamentos tarja preta sem prescrição ou outras drogas?",
+        "criterion": 1
+    },
+    {
+        "dimension": "Mania", 
+        "question": "Você tem começado mais projetos do que o habitual ou tem feito coisas mais arriscadas do que o habitual?",
+        "criterion": 2
+    },
+    {
+        "dimension": "Psicose", 
+        "question": "Você tem sentido que alguém podia ouvir seus pensamentos, ou que você pudesse ouvir o que a outra pessoa estava pensando?",
+        "criterion": 1
+    },
+    {
+        "dimension": "Dissociação", 
+        "question": "Você tem se sentido afastado ou distante de si mesmo, do seu corpo, do seu ambiente físico ou de suas memórias?",
+        "criterion": 2
+    },
+    {
+        "dimension": "Ideação Suicida", 
+        "question": "Você tem tido pensamentos sobre machucar a si mesmo?",
+        "criterion": 1
+    }
+]    
