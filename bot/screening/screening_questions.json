@@ -1,3 +1,37 @@
-[   {"Dimensão": "Ansiedade", "Pergunta": "Você tem evitado situações que te deixam ansioso?"}, 
-    {"Dimensão": "Depressão", "Pergunta": "Você tem se sentido para baixo, deprimido ou sem esperança?"}    
+[
+    {
+        "Dimensão": "Ansiedade", 
+        "Pergunta": "Você tem evitado situações que te deixam ansioso?",
+        "Critério Triagem": 2
+    }, 
+    {
+        "Dimensão": "Depressão", 
+        "Pergunta": "Você tem se sentido para baixo, deprimido ou sem esperança?",
+        "Critério Triagem": 2
+    },
+    {
+        "Dimensão": "Uso de substâncias", 
+        "Pergunta": "Você tem ingerido álcool, tabaco, medicamentos tarja preta sem prescrição ou outras drogas?",
+        "Critério Triagem": 1
+    },
+    {
+        "Dimensão": "Mania", 
+        "Pergunta": "Você tem começado mais projetos do que o habitual ou tem feito coisas mais arriscadas do que o habitual?",
+        "Critério Triagem": 2
+    },
+    {
+        "Dimensão": "Psicose", 
+        "Pergunta": "Você tem sentido que alguém podia ouvir seus pensamentos, ou que você pudesse ouvir o que a outra pessoa estava pensando?",
+        "Critério Triagem": 1
+    },
+    {
+        "Dimensão": "Dissociação", 
+        "Pergunta": "Você tem se sentido afastado ou distante de si mesmo, do seu corpo, do seu ambiente físico ou de suas memórias?",
+        "Critério Triagem": 2
+    },
+    {
+        "Dimensão": "Ideação Suicida", 
+        "Pergunta": "Você tem tido pensamentos sobre machucar a si mesmo?",
+        "Critério Triagem": 1
+    }
 ]    

@@ -1,9 +1,13 @@
 import json
 from pprint import pprint
 
-with open('bot/screening/screening_questions.json') as f:
+
+with open('screening/screening_questions.json') as f:    
     data = json.load(f)
 
 #TODO: terminar o Json
-    
-print(data[1]["Dimensão"])
+
+for i in data:
+    print(i["Dimensão"])
+    print(i["Pergunta"])
+    print(i["Critério Triagem"])
