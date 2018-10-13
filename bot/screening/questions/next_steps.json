@@ -1,11 +1,11 @@
 {
     "Ansiedade": ["DASS-21A", "DASS-21S"], 
     "Depressão": ["DASS-21D", "DASS-21S"],
-    "Uso de substâncias": "",
-    "Mania": "",
-    "Psicose": "",
-    "Dissociação": "",
-    "Ideação Suicida": "",
-    "Bipolaridade": ["DASS-21D", "DASS-21S"],
-    "Esquizofrenia": ""
+    "Uso de substâncias": ["DASS-21A"],
+    "Mania": [],
+    "Psicose": [],
+    "Dissociação": [],
+    "Ideação Suicida": [],
+    "Bipolaridade": ["DASS-21D"],
+    "Esquizofrenia": []
 }

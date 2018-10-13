@@ -1,9 +1,19 @@
-[
-    "Eu não conseguia ter sentimentos positivos.",
-    "Eu achei difícil ter iniciativa para fazer as coisas.",
-    "Eu senti que não tinha expectativas positivas a respeito de nada.",
-    "Eu me senti abatido(a) e triste.",
-    "Eu não consegui me empolgar com qualquer coisa.",
-    "Eu senti que não tinha muito valor como pessoa.",
-    "Eu senti que a vida não tinha sentido."
-]
+{
+    "questions": 
+    [ 
+        "Eu não conseguia ter sentimentos positivos.",
+        "Eu achei difícil ter iniciativa para fazer as coisas.",
+        "Eu senti que não tinha expectativas positivas a respeito de nada.",
+        "Eu me senti abatido(a) e triste.",
+        "Eu não consegui me empolgar com qualquer coisa.",
+        "Eu senti que não tinha muito valor como pessoa.",
+        "Eu senti que a vida não tinha sentido."
+    ],
+    "answers":
+    [
+        "Não se aplicou a mim de forma alguma", 
+        "Aplicou-se a mim de alguma forma ou em algumas vezes", 
+        "Aplicou-se a mim de forma considerável ou em boa parte do tempo",
+        "Aplicou-se muito a mim ou na maior parte do tempo"
+    ]
+}
