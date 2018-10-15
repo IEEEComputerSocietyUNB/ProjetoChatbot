@@ -2,6 +2,7 @@ import json
 import pprint
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+
 class Screening:
     """
     Contains all the Screening information
@@ -25,20 +26,32 @@ class Screening:
         self.scales_dict = {}
         self.load_jsons()
 
+    def dass_screen(self, dass):
+        dass_dict = self.scales_dict
+        questions_answers = []
+        answer = dass_dict[dass]['answers']
+        for question in dass_dict[dass]['questions']:
+            dic = {}
+            dic['question'] = question
+            dic['answer'] = answer
+            questions_answers.append(dic)
+
+        return questions_answers
+
     def initial_screen(self):
         """
         user_disturbs contains all questions/answers
         """
         disturbs = self.initial_questions
         answers = self.initial_answers
-        user_disturbs = []
+        questions_answers = []
         for disturb in disturbs:
             dic = {}
             dic['question'] = disturb['question']
-            dic['answer']   = answers
-            user_disturbs.append(dic)
+            dic['answer'] = answers
+            questions_answers.append(dic)
 
-        return user_disturbs
+        return questions_answers
 
     def evaluate_initial_screen(self, answers):
         user_disturbs = []
@@ -50,7 +63,7 @@ class Screening:
         for disturb in self.initial_questions:
             if(answers[count] >= disturb['criterion']):
                 user_disturbs.append(disturb['dimension'])
-            count += 1        
+            count += 1
 
         if('Depressão' in user_disturbs and 'Ansiedade' in user_disturbs):
             user_disturbs.remove('Depressão')
@@ -73,19 +86,20 @@ class Screening:
         for step in next_steps:
             scale = self.scales_dict[step]
             button(scale['questions'], scale['answers'])
-    
+
     def build_question(self, question_index):
-        #Uma forma
+        # Uma forma
         count = 1
-        formated_question = json_dict_list[question_index]["question"] + "\nEcolha umas das opções a seguir:"
+        formated_question = json_dict_list[question_index]["question"] + \
+            "\nEcolha umas das opções a seguir:"
         possible_answers = json_dict_list[question_index]["answers"]
         for answer in possible_answers:
-            formated_question = formated_question + "\n**{}**-{}".format(count, answer)
+            formated_question = formated_question + \
+                "\n**{}**-{}".format(count, answer)
             count += 1
         return formated_question
-        #Outra forma
+        # Outra forma
         # return json_dict_list[question_index]["question"]
-
 
     def build_button_markup(self, question_index):
         print(json_dict_list[question_index]["question"])
@@ -94,7 +108,7 @@ class Screening:
         inline_buttons = []
         possible_answers = json_dict_list[question_index]["answers"]
 
-        #Uma forma
+        # Uma forma
         for answer in possible_answers:
             query_data = "{}{}".format(question_index, count)
             my_button = InlineKeyboardButton(count, callback_data=query_data)
@@ -102,7 +116,7 @@ class Screening:
             count += 1
         return InlineKeyboardMarkup([[inline_buttons]])
 
-        #Outra forma
+        # Outra forma
         for answer in possible_answers:
             query_data = "s{}{}".format(question_index, count)
             my_button = InlineKeyboardButton(answer, callback_data=query_data)
@@ -119,9 +133,3 @@ class Screening:
         question = json_dict_list[question_index]["question"]
         answer = json_dict_list[question_index]["answers"][answer_index]
         return 0
-
-s = Screening()
-pp =pprint.PrettyPrinter(indent=4)
-pp.pprint(s.initial_screen())
-print(s.evaluate_initial_screen([2,2,0,0,0,0,0]))
-#ret = s.initial_screen(s.initial_questions, s.initial_answers)
