@@ -33,7 +33,7 @@ class Screening:
         for disturb in disturbs:
             dic = {}
             dic['question'] = disturb['question']
-            dic['answer']   = self.initial_answers
+            dic['answer']   = disturb['answer']
             user_disturbs.append(dic)
 
         return user_disturbs

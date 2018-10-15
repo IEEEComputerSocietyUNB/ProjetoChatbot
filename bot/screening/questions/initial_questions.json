@@ -2,36 +2,43 @@
     {
         "dimension": "Ansiedade", 
         "question": "Você tem evitado situações que te deixam ansioso?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 2        
     }, 
     {
         "dimension": "Depressão", 
         "question": "Você tem se sentido para baixo, deprimido ou sem esperança?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 2
     },
     {
         "dimension": "Uso de substâncias", 
         "question": "Você tem ingerido álcool, tabaco, medicamentos tarja preta sem prescrição ou outras drogas?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 1
     },
     {
         "dimension": "Mania", 
         "question": "Você tem começado mais projetos do que o habitual ou tem feito coisas mais arriscadas do que o habitual?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 2
     },
     {
         "dimension": "Psicose", 
         "question": "Você tem sentido que alguém podia ouvir seus pensamentos, ou que você pudesse ouvir o que a outra pessoa estava pensando?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 1
     },
     {
         "dimension": "Dissociação", 
         "question": "Você tem se sentido afastado ou distante de si mesmo, do seu corpo, do seu ambiente físico ou de suas memórias?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 2
     },
     {
         "dimension": "Ideação Suicida", 
         "question": "Você tem tido pensamentos sobre machucar a si mesmo?",
+        "answer": ["Baixo","Médio baixo", "Médio", "Médio alto", "Alto"],
         "criterion": 1
     }
 ]    
