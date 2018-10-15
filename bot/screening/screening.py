@@ -25,15 +25,17 @@ class Screening:
         self.scales_dict = {}
         self.load_jsons()
 
-    def initial_screen(self, disturbs, answers):
+    def initial_screen(self):
         """
         user_disturbs contains all questions/answers
         """
+        disturbs = self.initial_questions
+        answers = self.initial_answers
         user_disturbs = []
         for disturb in disturbs:
             dic = {}
             dic['question'] = disturb['question']
-            dic['answer']   = disturb['answer']
+            dic['answer']   = answers
             user_disturbs.append(dic)
 
         return user_disturbs
@@ -119,5 +121,7 @@ class Screening:
         return 0
 
 s = Screening()
+pp =pprint.PrettyPrinter(indent=4)
+pp.pprint(s.initial_screen())
 print(s.evaluate_initial_screen([2,2,0,0,0,0,0]))
 #ret = s.initial_screen(s.initial_questions, s.initial_answers)
