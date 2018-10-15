@@ -1,8 +1,6 @@
 import json
+import pprint
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-
-        # my_reply_markup = InlineKeyboardMarkup(keyboard)
-        # update.message.reply_text('Explore more topics:', reply_markup=my_reply_markup, parse_mode=telegram.ParseMode.HTML)
 
 class Screening:
     """
@@ -29,15 +27,28 @@ class Screening:
 
     def initial_screen(self, disturbs, answers):
         """
-        user_disturbs contains all disturbs detected
+        user_disturbs contains all questions/answers
         """
         user_disturbs = []
         for disturb in disturbs:
-            # Call button function
-            user_choice = button(disturb['question'], answers)
-            # If user has enough to be classified
-            if(user_choice >= disturb['criterion']):
+            dic = {}
+            dic['question'] = disturb['question']
+            dic['answer']   = self.initial_answers
+            user_disturbs.append(dic)
+
+        return user_disturbs
+
+    def evaluate_initial_screen(self, answers):
+        user_disturbs = []
+
+        if(len(answers) != len(self.initial_questions)):
+            raise ValueError('Array of different size of questions')
+
+        count = 0
+        for disturb in self.initial_questions:
+            if(answers[count] >= disturb['criterion']):
                 user_disturbs.append(disturb['dimension'])
+            count += 1        
 
         if('Depressão' in user_disturbs and 'Ansiedade' in user_disturbs):
             user_disturbs.remove('Depressão')
@@ -108,5 +119,5 @@ class Screening:
         return 0
 
 s = Screening()
-ret = s.initial_screen(s.initial_questions, s.initial_answers)
-s.call_next_steps(ret)
+print(s.evaluate_initial_screen([2,2,0,0,0,0,0]))
+#ret = s.initial_screen(s.initial_questions, s.initial_answers)
