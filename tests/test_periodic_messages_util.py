@@ -1,7 +1,7 @@
 import unittest
 import os
 import sys
-from telegram import Bot, Message
+from telegram import Bot
 from unittest.mock import patch
 sys.path.append(
     os.path.dirname(

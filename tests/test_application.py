@@ -29,8 +29,9 @@ class TestBotBasics(unittest.TestCase):
         self.assertEqual(self.tgbot.start(bot, bot), 0)
 
     @patch('telegram.Bot')
-    def text_button(self, bot):
-        self.assertEqual(self.tgbot.button(bot, bot), 0)
+    @patch('telegram.Update')
+    def text_button(self, bot, update):
+        self.assertEqual(self.tgbot.button(bot, update), 0)
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
