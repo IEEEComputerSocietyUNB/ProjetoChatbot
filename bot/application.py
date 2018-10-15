@@ -6,11 +6,12 @@ import telegram
 from time import sleep
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
-    Filters
+    Filters, CallbackQueryHandler
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from bot.communication import Communication
 from bot.config_reader import retrieve_default
+from bot.screening.screening import Screening
 
 
 class Application:
@@ -28,6 +29,7 @@ class Application:
             format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
             level=logging.INFO,
         )
+        self.screening = Screening()
         self.logger = logging.getLogger("log")
         self.app = Bot(token)
         self.updater = Updater(token)
@@ -47,6 +49,8 @@ class Application:
 
         message_handler = MessageHandler(Filters.text, self.text_message)
         self.dispatcher.add_handler(message_handler)
+
+        self.dispatcher.add_handler(CallbackQueryHandler(self.button_clicked))
 
         self.dispatcher.add_error_handler(self.error)
 
@@ -137,6 +141,14 @@ class Application:
         message = update.effective_message.text
         update.effective_message.reply_text(str(self.comm.respond(message)))
         return 0
+
+    def button_clicked(self, bot, update):
+        query = update.callback_query
+        query_str = query.data
+        is_screening = query_str[0]
+        if(is_screening == 's'):
+            self.screening.button_clicked(bot, update)
+            return 0
 
     def error(self, bot, update, error):
         self.logger.warning(f'Update "{update}" caused error "{error}"')

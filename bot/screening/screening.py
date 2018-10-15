@@ -1,10 +1,8 @@
 import json
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-
-# Interface of how the button should work
-def button(question, possible_answers):
-    return(3)
-
+        # my_reply_markup = InlineKeyboardMarkup(keyboard)
+        # update.message.reply_text('Explore more topics:', reply_markup=my_reply_markup, parse_mode=telegram.ParseMode.HTML)
 
 class Screening:
     """
@@ -62,7 +60,52 @@ class Screening:
         for step in next_steps:
             scale = self.scales_dict[step]
             button(scale['questions'], scale['answers'])
+    
+    def build_question(self, question_index):
+        #Uma forma
+        count = 1
+        formated_question = json_dict_list[question_index]["question"] + "\nEcolha umas das opções a seguir:"
+        possible_answers = json_dict_list[question_index]["answers"]
+        for answer in possible_answers:
+            formated_question = formated_question + "\n**{}**-{}".format(count, answer)
+            count += 1
+        return formated_question
+        #Outra forma
+        # return json_dict_list[question_index]["question"]
 
+
+    def build_button_markup(self, question_index):
+        print(json_dict_list[question_index]["question"])
+
+        count = 1
+        inline_buttons = []
+        possible_answers = json_dict_list[question_index]["answers"]
+
+        #Uma forma
+        for answer in possible_answers:
+            query_data = "{}{}".format(question_index, count)
+            my_button = InlineKeyboardButton(count, callback_data=query_data)
+            inline_buttons.append(my_button)
+            count += 1
+        return InlineKeyboardMarkup([[inline_buttons]])
+
+        #Outra forma
+        for answer in possible_answers:
+            query_data = "s{}{}".format(question_index, count)
+            my_button = InlineKeyboardButton(answer, callback_data=query_data)
+            inline_buttons.append(count)
+            count += 1
+        return InlineKeyboardMarkup([[inline_buttons]])
+
+    def button_clicked(self, bot, update):
+        query = update.callback_query
+        query_str = query.data
+        question_index = int(query_str[0])
+        answer_index = int(query_str[1])
+
+        question = json_dict_list[question_index]["question"]
+        answer = json_dict_list[question_index]["answers"][answer_index]
+        return 0
 
 s = Screening()
 ret = s.initial_screen(s.initial_questions, s.initial_answers)
