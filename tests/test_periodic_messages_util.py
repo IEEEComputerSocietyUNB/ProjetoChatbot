@@ -1,7 +1,7 @@
 import unittest
 import os
 import sys
-from telegram import Bot
+from telegram import Bot, Message
 from unittest.mock import patch
 sys.path.append(
     os.path.dirname(
@@ -17,9 +17,11 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
 
     def setUp(self):
         try:
-            self.tgbot = Application(retrieve_default()['token'], False)
+            self.tgbot = Application(
+                retrieve_default("TELEGRAM")["token"],
+                train=False
+            )
             self.periodic_messages = Periodic_mesages_util()
-
         except FileNotFoundError:
             pass
 
@@ -46,10 +48,11 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
-    def test_ask_for_interval(self, comm, bot):
+    @patch('telegram.Message')
+    def test_ask_for_interval(self, comm, bot, message):
         self.tgbot.comm = comm
         self.assertEqual(self.periodic_messages.
-                         ask_for_interval(bot, bot, "Tente novamente"), 0)
+                         ask_for_interval(bot, bot, message), 0)
 
 
 if __name__ == '__main__':
