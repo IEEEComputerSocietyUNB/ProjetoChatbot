@@ -160,14 +160,10 @@ class Application:
                 intervals_dict = json.load(data_file)
         except FileNotFoundError:
             intervals_dict = self.periodic_mesages_util. \
-                              build_custom_interval_file()
+                build_custom_interval_file()
         max_interval = intervals_dict.get("max_interval")
-        message = "Com que frequencia você quer ser lembrado de " + \
-                    "dialogar com o bot? Diga um intervalo em dias " + \
-                    "inferior a {max_interval}"
-
         self.periodic_mesages_util. \
-            ask_for_interval(bot, update, message)
+            ask_for_interval(bot, update)
 
         return 0
 
@@ -214,7 +210,7 @@ class Application:
                 intervals_dict = json.load(data_file)
         except FileNotFoundError:
             intervals_dict = self.periodic_mesages_util. \
-                              build_custom_interval_file()
+                build_custom_interval_file()
 
         interval = int(intervals_dict.get("default_interval"))
         chatID = update.message.chat_id

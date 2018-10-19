@@ -2,8 +2,6 @@ import os
 import sys
 import json
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, \
-    Dispatcher, MessageHandler, Filters
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
@@ -13,8 +11,12 @@ sys.path.append(
 
 class Periodic_mesages_util:
 
-    @staticmethod
-    def ask_for_interval(self, bot, update, message):
+    def __init__(self):
+        self.default_message= "Com que frequencia você quer ser lembrado " + \
+                                "de dialogar com o bot? Diga um intervalo  " + \
+                                "em dias inferior a {max_interval}"
+
+    def ask_for_interval(self, bot, update):
         """
         Builds the keyboard and prompts it to the user with the message
         argument
@@ -33,7 +35,7 @@ class Periodic_mesages_util:
 
         bot.send_message(
             chat_id=update.message.chat_id,
-            text=message,
+            text=self.default_message,
             reply_markup=InlineKeyboardMarkup(keyboard),
             one_time_keyboard=True
         )
@@ -55,7 +57,7 @@ class Periodic_mesages_util:
         intervals_dict[chatID] = str(interval)
         with open(FILE_PATH, "w") as data_file:
             json.dump(intervals_dict, data_file)
-                
+
         return 0
 
     def build_custom_interval_file(self,
@@ -65,5 +67,3 @@ class Periodic_mesages_util:
         with open(FILE_PATH, "w") as data_file:
             json.dump(default_dict, data_file)
         return default_dict
-
-

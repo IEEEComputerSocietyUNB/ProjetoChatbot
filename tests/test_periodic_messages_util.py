@@ -33,16 +33,16 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
-    @patch('telegram.Message')
-    def test_ask_for_interval(self, comm, bot, message):
+    def test_ask_for_interval(self, comm, bot):
         self.tgbot.comm = comm
         self.assertEqual(self.periodic_messages.
-                         ask_for_interval(bot, bot, message), 0)
+                         ask_for_interval(bot, bot), 0)
 
     def test_build_custom_interval_file(self):
         default_dict = {"default_interval": 3, "max_interval": 7}
         self.assertEqual(self.periodic_messages.
                          build_custom_interval_file(), default_dict)
+
 
 if __name__ == '__main__':
     unittest.main(exit=False)
