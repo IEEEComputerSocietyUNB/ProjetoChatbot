@@ -146,7 +146,7 @@ class Application:
             )
         return 0
 
-    def lembrete(self, bot, update, file='users_custom_invervals.json'):
+    def lembrete(self, bot, update, file_name='users_custom_invervals.json'):
         """
         Asks the frequency (in days) on witch the user wants to
         be reminded to chat
@@ -158,15 +158,16 @@ class Application:
             FILE_PATH = str(os.getcwd()) + '/bot/' + file
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
-                max_interval = intervals_dict.get("max_interval")
-                message = "Com que frequencia você quer ser lembrado de " + \
-                          "dialogar com o bot? Diga um intervalo em dias " + \
-                          "inferior a {max_interval}"
-
-                self.periodic_mesages_util. \
-                    ask_for_interval(bot, update, message)
         except FileNotFoundError:
-            print("File not found error")
+            intervals_dict = self.periodic_mesages_util. \
+                              build_custom_interval_file()
+        max_interval = intervals_dict.get("max_interval")
+        message = "Com que frequencia você quer ser lembrado de " + \
+                    "dialogar com o bot? Diga um intervalo em dias " + \
+                    "inferior a {max_interval}"
+
+        self.periodic_mesages_util. \
+            ask_for_interval(bot, update, message)
 
         return 0
 
@@ -211,16 +212,18 @@ class Application:
             FILE_PATH = str(os.getcwd()) + '/bot/' + file_name
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
-                interval = int(intervals_dict.get("default_interval"))
-                chatID = update.message.chat_id
-                if (intervals_dict.get(str(chatID) is not None)):
-                    interval = int(intervals_dict.get(str(chatID)))
-                job_queue.run_repeating(self.callback_lets_talk,
-                                        interval=timedelta(days=interval),
-                                        name='reminder_job',
-                                        context=update)
         except FileNotFoundError:
-            print("File not found error")
+            intervals_dict = self.periodic_mesages_util. \
+                              build_custom_interval_file()
+
+        interval = int(intervals_dict.get("default_interval"))
+        chatID = update.message.chat_id
+        if (intervals_dict.get(str(chatID) is not None)):
+            interval = int(intervals_dict.get(str(chatID)))
+        job_queue.run_repeating(self.callback_lets_talk,
+                                interval=timedelta(days=interval),
+                                name='reminder_job',
+                                context=update)
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )

@@ -31,21 +31,6 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
         self.assertEqual(self.periodic_messages.
                          set_user_custom_interval(interval, chatID), 0)
 
-    def test_nonexistent_set_user_custom_interval(self):
-        interval = 3
-        chatID = "987654321"
-        self.assertEqual(self.periodic_messages.
-                         set_user_custom_interval(interval, chatID), 0)
-
-    def test_set_user_custom_interval_wrong_file(self):
-        interval = 3
-        chatID = "123456789"
-        file_name = "another_file_name.json"
-        self.assertEqual(self.periodic_messages.
-                         set_user_custom_interval(interval,
-                                                  chatID,
-                                                  file_name), 0)
-
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
     @patch('telegram.Message')
@@ -54,6 +39,10 @@ class TestBotPeriodicMessagesUtil(unittest.TestCase):
         self.assertEqual(self.periodic_messages.
                          ask_for_interval(bot, bot, message), 0)
 
+    def test_build_custom_interval_file(self):
+        default_dict = {"default_interval": 3, "max_interval": 7}
+        self.assertEqual(self.periodic_messages.
+                         build_custom_interval_file(), default_dict)
 
 if __name__ == '__main__':
     unittest.main(exit=False)
