@@ -155,7 +155,7 @@ class Application:
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + file
+            FILE_PATH = str(os.getcwd()) + '/bot/' + file_name
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
         except FileNotFoundError:

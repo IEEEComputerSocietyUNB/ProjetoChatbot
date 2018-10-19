@@ -52,7 +52,7 @@ class Periodic_mesages_util:
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
         except FileNotFoundError:
-            intervals_dict = build_custom_interval_file()
+            intervals_dict = self.build_custom_interval_file()
 
         intervals_dict[chatID] = str(interval)
         with open(FILE_PATH, "w") as data_file:
