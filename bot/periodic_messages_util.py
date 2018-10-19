@@ -12,9 +12,9 @@ sys.path.append(
 class Periodic_mesages_util:
 
     def __init__(self):
-        self.default_message= "Com que frequencia você quer ser lembrado " + \
-                                "de dialogar com o bot? Diga um intervalo  " + \
-                                "em dias inferior a {max_interval}"
+        self.default_message = "Com que frequencia você quer ser" + \
+                               "lembrado de dialogar com o bot? Diga um " + \
+                               "intervalo em dias inferior a {max_interval}"
 
     def ask_for_interval(self, bot, update):
         """
@@ -52,7 +52,7 @@ class Periodic_mesages_util:
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
         except FileNotFoundError:
-            intervals_dict = self.build_custom_interval_file()
+            intervals_dict = build_custom_interval_file()
 
         intervals_dict[chatID] = str(interval)
         with open(FILE_PATH, "w") as data_file:
@@ -60,8 +60,8 @@ class Periodic_mesages_util:
 
         return 0
 
-    def build_custom_interval_file(self,
-                                   file_name='users_custom_invervals.json'):
+    @staticmethod
+    def build_custom_interval_file(file_name='users_custom_invervals.json'):
         default_dict = {"default_interval": 3, "max_interval": 7}
         FILE_PATH = str(os.getcwd()) + '/bot/' + file_name
         with open(FILE_PATH, "w") as data_file:
