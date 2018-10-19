@@ -7,7 +7,6 @@ class Screening:
     """
     Contains all the Screening information
     """
-
     def load_jsons(self):
         with open('bot/screening/questions/initial_questions.json') as f:
             self.initial_questions = json.load(f)
@@ -24,6 +23,8 @@ class Screening:
 
     def __init__(self):
         self.scales_dict = {}
+        self.initial_dict = {}
+        self.initial_given_answers = []
         self.load_jsons()
 
     def dass_screen(self, dass):
@@ -38,20 +39,16 @@ class Screening:
 
         return questions_answers
 
-    def initial_screen(self):
+    def initial_screen(self, bot, update):
         """
         user_disturbs contains all questions/answers
         """
-        disturbs = self.initial_questions
-        answers = self.initial_answers
-        questions_answers = []
-        for disturb in disturbs:
-            dic = {}
-            dic['question'] = disturb['question']
-            dic['answer'] = answers
-            questions_answers.append(dic)
-
-        return questions_answers
+        #Build firt question
+        question = self.build_question(0)
+        keyboard_markup = self.build_button_markup(0)
+        bot.send_message(chat_id=update.message.chat_id, 
+                         text=question, reply_markup=keyboard_markup)
+        return 0
 
     def evaluate_initial_screen(self, answers):
         user_disturbs = []
@@ -89,47 +86,57 @@ class Screening:
 
     def build_question(self, question_index):
         # Uma forma
-        count = 1
-        formated_question = json_dict_list[question_index]["question"] + \
-            "\nEcolha umas das opções a seguir:"
-        possible_answers = json_dict_list[question_index]["answers"]
-        for answer in possible_answers:
-            formated_question = formated_question + \
-                "\n**{}**-{}".format(count, answer)
-            count += 1
-        return formated_question
-        # Outra forma
-        # return json_dict_list[question_index]["question"]
+        # count = 1
+        # formated_question = self.initial_questions[question_index]["question"] + \
+        #                         "\nEcolha umas das opções a seguir:"
+        # possible_answers = self.initial_questions[question_index]["answer"]
+        # for answer in possible_answers:
+        #     formated_question = formated_question + \
+        #         "\n**{}**-{}".format(count, answer)
+        #     count += 1
+        # return formated_question
+        # # Outra forma
+        return self.initial_questions[question_index]["question"]
 
     def build_button_markup(self, question_index):
-        print(json_dict_list[question_index]["question"])
-
-        count = 1
+        count = 0
         inline_buttons = []
-        possible_answers = json_dict_list[question_index]["answers"]
+        possible_answers = self.initial_questions[question_index]["answer"]
 
         # Uma forma
         for answer in possible_answers:
-            query_data = "{}{}".format(question_index, count)
-            my_button = InlineKeyboardButton(count, callback_data=query_data)
-            inline_buttons.append(my_button)
-            count += 1
-        return InlineKeyboardMarkup([[inline_buttons]])
-
-        # Outra forma
-        for answer in possible_answers:
             query_data = "s{}{}".format(question_index, count)
             my_button = InlineKeyboardButton(answer, callback_data=query_data)
-            inline_buttons.append(count)
+            inline_buttons.append(my_button)
             count += 1
-        return InlineKeyboardMarkup([[inline_buttons]])
+        return InlineKeyboardMarkup([inline_buttons])
+
+        # Outra forma
+        # for answer in possible_answers:
+        #     #s stands for screening
+        #     query_data =f"s{question_index}{count}"
+        #     my_button = InlineKeyboardButton(answer, callback_data=query_data)
+        #     inline_buttons.append(count)
+        #     count += 1
+        # return InlineKeyboardMarkup([[inline_buttons]])
 
     def button_clicked(self, bot, update):
         query = update.callback_query
         query_str = query.data
-        question_index = int(query_str[0])
-        answer_index = int(query_str[1])
+        #query_str[0] == 's'
+        question_index = int(query_str[1])
+        answer_index = int(query_str[2])
+        print(answer_index)
+        answer = self.initial_questions[question_index]["answer"][answer_index]
+        self.initial_given_answers.append(answer)
+        if(question_index+1 < len(self.initial_questions)):
+            question = self.build_question(question_index+1)
+            keyboard_markup = self.build_button_markup(question_index+1)
+            bot.send_message(chat_id=query.message.chat_id, 
+                            text=question, reply_markup=keyboard_markup)
+        else:
+            message = "Obrigado, agora podemos conversar"
+            bot.send_message(chat_id=query.message.chat_id, 
+                text=message)
 
-        question = json_dict_list[question_index]["question"]
-        answer = json_dict_list[question_index]["answers"][answer_index]
         return 0
