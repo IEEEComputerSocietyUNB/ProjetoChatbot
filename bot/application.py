@@ -89,17 +89,19 @@ class Application:
         @bot = information about the bot
         @update = the user info.
         """
-        bot.send_chat_action(
-            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
-        )
-        with open(f"{os.getcwd()}/bot/dialogs/info.md") as info_file:
-            info_text = info_file.read()
-            bot.send_message(
-                chat_id=update.message.chat_id,
-                text=info_text,
-                parse_mode=telegram.ParseMode.MARKDOWN,
-            )
-            return 0
+        # bot.send_chat_action(
+        #     chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+        # )
+        # with open(f"{os.getcwd()}/bot/dialogs/info.md") as info_file:
+        #     info_text = info_file.read()
+        #     bot.send_message(
+        #         chat_id=update.message.chat_id,
+        #         text=info_text,
+        #         parse_mode=telegram.ParseMode.MARKDOWN,
+        #     )
+        #     return 0
+        #TODO remove. made this for testing proposes
+        self.screening.initial_screen(bot, update)
         return 1
 
     def helpme(self, bot, update):
