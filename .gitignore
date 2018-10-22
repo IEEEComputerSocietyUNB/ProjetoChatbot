@@ -109,3 +109,4 @@ config.ini
 db.sqlite*
 .idea
 .vscode/
+.sqlite3

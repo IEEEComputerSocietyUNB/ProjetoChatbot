@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot/branch/master/graph/badge.svg)](https://codecov.io/gh/ComputerSocietyUNB/ProjetoChatbot)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ffdec12c3e0377893317/maintainability)](https://codeclimate.com/github/ComputerSocietyUNB/ProjetoChatbot/maintainability)
 
-# ProjetoChatbot
+# Projeto Chatbot
 
 ## O que é
 
@@ -92,7 +92,7 @@ python3 bot/application.py
   * [Vinicius Costa](https://github.com/vinicius0197)
   * [Beatriz Chiarelli](https://github.com/biachiarelli)
   * [Anna Thaís Costa Lopes](https://github.com/annathais)
-  
+
 * Equipe Cog
   * [Marcella Pantarotto](https://github.com/marcellapantarotto)
   * [Vithor Rosa Franco](https://github.com/vthorrf)
