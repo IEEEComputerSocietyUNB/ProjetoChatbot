@@ -127,8 +127,7 @@ class Screening:
         question_index = int(query_str[1])
         answer_index = int(query_str[2])
         print(answer_index)
-        answer = self.initial_questions[question_index]["answer"][answer_index]
-        self.initial_given_answers.append(answer)
+        self.initial_given_answers.append(answer_index)
         if(question_index+1 < len(self.initial_questions)):
             question = self.build_question(question_index+1)
             keyboard_markup = self.build_button_markup(question_index+1)
