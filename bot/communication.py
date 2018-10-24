@@ -3,8 +3,9 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.response_selection import get_random_response
 import os
 import json
-import dialogflow/dialog as dlf
+"""import dialogflow as dlf"""
 
+from dialogflow.dialog import Dialog
 
 class Communication:
 
@@ -35,11 +36,18 @@ class Communication:
         )
         self.comm.train('bot/dialogs/')
 
+        self.dialog = Dialog()
+
+        #self.dialog.create()
+
     def respond(self, message):
         """
         Receive message from user and returns corresponding answer.
         """
-        return self.dlf.get_response(self.clean(message))
+
+        self.dialog.response(self.clean(message))
+
+        return self.comm.get_response(self.clean(message))
 
     def clean(self, message):
         """

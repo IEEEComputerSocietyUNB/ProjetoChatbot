@@ -14,7 +14,7 @@ sys.path.append(
     )
 )
 from bot.communication import Communication
-
+from dialogflow.dialog import Dialog
 
 def retrieve_default(file='config.ini'):
     """
@@ -64,6 +64,10 @@ class Application:
         self.dispatcher.add_handler(message_handler)
 
         self.dispatcher.add_error_handler(self.error)
+
+        self.dialog = Dialog()
+
+        self.dialog.create()
 
     def start(self, bot, update):
         """
