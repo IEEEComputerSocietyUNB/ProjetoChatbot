@@ -5,10 +5,10 @@ import sys
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.response_selection import get_random_response
-from bot.config_reader import retrieve_default
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from bot.watson import Watson
+from bot.config_reader import retrieve_default
 
 
 class Communication:
@@ -51,31 +51,39 @@ class Communication:
                 exit()
         else:
             self.watson_usage = False
-        self.all_texts = ""
+        self.all_texts = " "
 
     def respond(self, message):
         """
         Receive message from user and returns corresponding answer.
         """
-        # if string isnt empty concatenate with space
-        if self.all_texts:
-            self.all_texts += " " + message
-        else:
-            self.all_texts = message
-
         if len(message) > 50 and self.watson_usage:
-            analysis = self.watson_analyzer.get_analysis(message)
-
-            # Get top 1 categorie
-            top_score = analysis["categories"][0]["score"]
-            top_label = analysis["categories"][0]["label"]
-
-            # Print the leaf from category tree
-            toplabel_index = top_label.rindex("/") + 1
-            leaf_category = top_label[toplabel_index:]
-            return f"Hmm, você está falando sobre {leaf_category}"
-        else:
+            top_answer = get_analysis(message)
+            return f"Hmm, você está falando sobre {top_answer}"
+        elif len(message) > 0:
             return self.comm.get_response(self.clean(message))
+        else:
+            return "Algo de errado não está certo, mande mensagem com o que " \
+                   "você falou para os meus criadores!" \
+                   " Digite /info para saber mais."
+
+    def get_analysis(message):
+        """
+        Analyses message received by label and score and returns best answer
+        """
+        # if string isnt empty concatenate with space
+        self.all_texts += f"{message} "
+
+        analysis = self.watson_analyzer.get_analysis(message)
+
+        # Get top 1 category
+        top_score = analysis["categories"][0]["score"]
+        top_label = analysis["categories"][0]["label"]
+
+        # Print the leaf from category tree
+        toplabel_index = top_label.rindex("/") + 1
+        top_answer = top_label[toplabel_index:]
+        return top_answer
 
     def clean(self, message):
         """
