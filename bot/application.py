@@ -4,6 +4,7 @@ import random
 import logging
 import telegram
 import json
+import sqlalchemy
 from datetime import timedelta
 from datetime import datetime
 from time import sleep
@@ -18,6 +19,22 @@ sys.path.append(
 from bot.communication import Communication
 from bot.config_reader import retrieve_default
 from bot.periodic_messages_util import Periodic_mesages_util
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine('sqlite:///:memory:', echo=True)
+Base = declarative_base()
+
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
+
+class Message(Base):
+    __tablename__ = 'messages'
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
 
 
 class Application:
@@ -58,10 +75,10 @@ class Application:
                                         self.weekly_resume,
                                         pass_args=True)
        
-        find_weekly_handler = CommandHandler('historico',
-                                            self.find_weekly_resume)
+        #find_weekly_handler = CommandHandler('historico',
+        #                                    self.find_weekly_resume)
 
-        self.dispatcher.add_handler(find_weekly_handler)
+        #self.dispatcher.add_handler(find_weekly_handler)
 
         self.dispatcher.add_handler(weekly_handler)
 
@@ -80,6 +97,7 @@ class Application:
 
         self.periodic_mesages_util = Periodic_mesages_util()
 
+        
     def start(self, bot, update):
         """
         Start command to receive /start message on Telegram.
@@ -184,9 +202,15 @@ class Application:
         """
         Asks about the user's week experiences
         """
+        Base.metadata.create_all(engine)
         message = ' '.join(args)
 
         # TODO : add message and user to database
+
+        db_message = Message(id=update.message.chat_id, text=message)
+        session.add(db_message)
+
+        session.commit()
 
         bot.send_message(
             chat_id=update.message.chat_id,
