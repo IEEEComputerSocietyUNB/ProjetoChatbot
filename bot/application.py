@@ -25,6 +25,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from model.WeeklyLog import Message
 
+# Initialize SQLite database
 engine = create_engine('sqlite:///:memory', echo=True)
 Message.metadata.create_all(engine, checkfirst=True)
 Session = sessionmaker(bind=engine)
@@ -68,10 +69,10 @@ class Application:
                                         self.weekly_resume,
                                         pass_args=True)
        
-        #find_weekly_handler = CommandHandler('historico',
-        #                                    self.find_weekly_resume)
+        find_weekly_handler = CommandHandler('historico',
+                                            self.find_weekly_resume)
 
-        #self.dispatcher.add_handler(find_weekly_handler)
+        self.dispatcher.add_handler(find_weekly_handler)
 
         self.dispatcher.add_handler(weekly_handler)
 
@@ -201,19 +202,19 @@ class Application:
         session.add(db_message)
 
         session.commit()
-
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=message,
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
-
-    def find_weekly_messages(self, bot, update):
+ 
+    def find_weekly_resume(self, bot, update):
         """
         Search database to find saved weekly resumes
         """
-        # TODO
-        pass
+        weekly_log = []
+        for instance in session.query(Message):
+            weekly_log.append(instance.text)
+        
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=weekly_log
+        )
 
     def button(self, bot, update):
         """
