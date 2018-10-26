@@ -208,9 +208,12 @@ class Application:
         Search database to find saved weekly resumes
         """
         weekly_log = []
+
+        # TODO: add message formatting using Markdown
+
         for instance in session.query(Message):
             weekly_log.append(instance.text)
-        
+
         bot.send_message(
             chat_id=update.message.chat_id,
             text=weekly_log
