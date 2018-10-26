@@ -23,19 +23,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
+from model.WeeklyLog import Message
 
-engine = create_engine('sqlite:///:memory:', echo=True)
-Base = declarative_base()
-
+engine = create_engine('sqlite:///:memory', echo=True)
+Message.metadata.create_all(engine, checkfirst=True)
 Session = sessionmaker(bind=engine)
-Session.configure(bind=engine)
 session = Session()
-
-class Message(Base):
-    __tablename__ = 'messages'
-    id = Column(Integer, primary_key=True)
-    text = Column(String)
-
 
 class Application:
     """
@@ -201,13 +194,10 @@ class Application:
     def weekly_resume(self, bot, update, args):
         """
         Asks about the user's week experiences
-        """
-        Base.metadata.create_all(engine)
-        message = ' '.join(args)
+        """ 
+        message = ' '.join(args) 
 
-        # TODO : add message and user to database
-
-        db_message = Message(id=update.message.chat_id, text=message)
+        db_message = Message(chat_id=update.message.chat_id, text=message)
         session.add(db_message)
 
         session.commit()
