@@ -54,7 +54,7 @@ class Periodic_mesages_util:
         except FileNotFoundError:
             intervals_dict = self.build_custom_interval_file()
 
-        intervals_dict[chatID] = str(interval)
+        intervals_dict[str(chatID)] = str(interval)
         with open(FILE_PATH, "w") as data_file:
             json.dump(intervals_dict, data_file)
 
