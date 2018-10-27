@@ -1,9 +1,11 @@
 import unittest
 import sys
 import os
+from unittest.mock import patch
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from bot.communication import Communication
+from bot.watson import Watson
 
 
 class TestBotCommunication(unittest.TestCase):

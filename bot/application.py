@@ -233,7 +233,6 @@ class Application:
 
     def run(self):
         # Start the Bot
-        print("Bot configured. Receiving messages now.")
         self.updater.start_polling()
 
         # Run the bot until you press Ctrl-C or the process receives SIGINT,
@@ -261,7 +260,8 @@ if __name__ == "__main__":
         try:
             token = retrieve_default("TELEGRAM")["token"]
             watson = eval(retrieve_default()["IBM Watson"])
-            x = Application(token=token, use_watson=watson).run()
+            x = Application(token=token, use_watson=watson)
+            x.run()
         except FileNotFoundError:
             print("Configuration file not found.")
             sys.exit(1)
