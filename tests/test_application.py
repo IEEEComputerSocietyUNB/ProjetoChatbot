@@ -53,12 +53,6 @@ class TestBotBasics(unittest.TestCase):
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
-    def test_weekly_resume(self, comm, bot):
-        self.tgbot.comm = comm
-        self.assertEqual(self.tgbot.weekly_resume(bot, bot, "test"), 0)
-
-    @patch('bot.communication.Communication')
-    @patch('telegram.Bot')
     def test_find_weekly_resume(self, comm, bot):
         self.tgbot.comm = comm
         self.assertEqual(self.tgbot.find_weekly_resume(bot, bot), 0)

@@ -205,6 +205,8 @@ class Application:
         session.add(db_message)
 
         session.commit()
+
+        return 0
  
     def find_weekly_resume(self, bot, update):
         """
@@ -221,6 +223,8 @@ class Application:
             chat_id=update.message.chat_id,
             text=weekly_log
         )
+
+        return 0
 
     def button(self, bot, update):
         """
@@ -283,6 +287,7 @@ class Application:
     def callback_week(self, bot, job):
         bot.send_message(chat_id=job.context.message.chat_id,
                          text='Use /resumo e me conte como foi sua semana!')
+        return 0
 
     def weekly_update(self, bot, update, job_queue):
         """ Requests weekly update from user """
@@ -291,6 +296,8 @@ class Application:
                                      first=0,
                                      name='weekly',
                                      context=update)
+
+        return 0
 
     def error(self, bot, update, error):
         self.logger.warning(
