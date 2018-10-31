@@ -53,6 +53,18 @@ class TestBotBasics(unittest.TestCase):
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')
+    def test_weekly_resume(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.weekly_resume(bot, bot, "test"), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    def test_find_weekly_resume(self, comm, bot):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.find_weekly_resume(bot, bot), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
     def test_lembrete_wrong_file(self, comm, bot):
         self.tgbot.comm = comm
         file_name = "another_file_name.json"
@@ -63,6 +75,19 @@ class TestBotBasics(unittest.TestCase):
     def test_callback_lets_talk(self, bot, job):
         self.assertEqual(self.tgbot.callback_lets_talk(bot,
                          job), 0)
+
+    @patch('telegram.Bot')
+    @patch('telegram.ext.Job')
+    def test_callback_week(self, bot, job):
+        self.assertEqual(self.tgbot.callback_week(bot,
+                         job), 0)
+
+    @patch('bot.communication.Communication')
+    @patch('telegram.Bot')
+    @patch('telegram.ext.JobQueue')
+    def test_weekly_update(self, comm, bot, job_queue):
+        self.tgbot.comm = comm
+        self.assertEqual(self.tgbot.weekly_update(bot, bot, job_queue), 0)
 
     @patch('bot.communication.Communication')
     @patch('telegram.Bot')

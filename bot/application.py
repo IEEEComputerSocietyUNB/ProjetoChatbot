@@ -23,7 +23,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
-from model.WeeklyLog import Message
+try:
+    from model.WeeklyLog import Message
+except ImportError:
+    from .model.WeeklyLog import Message
 
 # Initialize SQLite database
 engine = create_engine('sqlite:///:memory', echo=True)
