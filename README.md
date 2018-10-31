@@ -44,11 +44,20 @@ vigente.
 
 ## Configurando o ambiente de desenvolvimento
 
-Deve-se primeiro criar um ambiente virtual
+1. Deve-se primeiro criar um ambiente virtual
 
 ```
 python3 -m venv venv
 ```
+
+2. Em seguida, deve-se clonar o repositório do projeto para um repositório
+local.
+
+```
+git clone https://github.com/ComputerSocietyUNB/ProjetoChatbot.git
+
+```
+O diretório 'ProjetoChatbot' deverá ser criado.
 
 Depois deve-se instalar os pacotes contidos no `requirements.txt`. Caso você
 tenha o `make` instalado, use `make install`, caso contrário:
