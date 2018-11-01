@@ -59,11 +59,25 @@ git clone https://github.com/ComputerSocietyUNB/ProjetoChatbot.git
 ```
 O diretório 'ProjetoChatbot' deverá ser criado.
 
-Depois deve-se instalar os pacotes contidos no `requirements.txt`. Caso você
-tenha o `make` instalado, use `make install`, caso contrário:
+
+3. Ative o ambiente virtual criado no passo 1 com o seguinte comando:
 
 ```
-pip install -r requirements.txt
+source <diretório raiz do ambiente virtual>/bin/activate
+```
+
+4. Com o ambiente virtual ativado, deve-se instalar o módulo invoke
+com o seguinte comando:
+
+```
+pip3 install invoke
+```
+
+5. Com o módulo invoke devidamente instalado, use o seguinte comando para
+instalar todas as dependências necessárias:
+
+```
+inv install
 ```
 
 ## Como fazer o bot funcionar
