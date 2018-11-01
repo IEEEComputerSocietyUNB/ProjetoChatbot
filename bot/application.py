@@ -8,14 +8,9 @@ import sqlalchemy
 from datetime import timedelta
 from datetime import datetime
 from time import sleep
-from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, \
-    Dispatcher, MessageHandler, Filters
-sys.path.append(
-    os.path.dirname(
-        os.path.dirname(os.path.realpath(__file__))
-    )
-)
+from telegram import Bot
+from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
+    Filters
 from bot.communication import Communication
 from bot.config_reader import retrieve_default
 from bot.periodic_messages_util import Periodic_mesages_util
@@ -23,7 +18,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
-from model.WeeklyLog import Message
+try:
+    from model.WeeklyLog import Message
+except ImportError:
+    from .model.WeeklyLog import Message
 
 # Initialize SQLite database
 engine = create_engine('sqlite:///:memory', echo=True)
@@ -37,29 +35,31 @@ class Application:
     oncoming messages and also handles all Telegram related commands.
     Might soon have a sibling to deal with Facebook.
     """
+
     def __init__(self, token, train=True, use_watson=True):
         if train:
             self.comm = Communication(use_watson)
 
         logging.basicConfig(
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            level=logging.INFO)
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            level=logging.INFO,
+        )
         self.logger = logging.getLogger("log")
         self.app = Bot(token)
         self.updater = Updater(token)
         self.dispatcher = self.updater.dispatcher
         self.job_queue = self.updater.job_queue
 
-        start_handler = CommandHandler('start', self.start)
+        start_handler = CommandHandler("start", self.start)
         self.dispatcher.add_handler(start_handler)
 
-        info_handler = CommandHandler('info', self.info)
+        info_handler = CommandHandler("info", self.info)
         self.dispatcher.add_handler(info_handler)
 
-        helpme_handler = CommandHandler('helpme', self.helpme)
+        helpme_handler = CommandHandler("helpme", self.helpme)
         self.dispatcher.add_handler(helpme_handler)
 
-        contatos_handler = CommandHandler('contatos', self.contatos)
+        contatos_handler = CommandHandler("contatos", self.contatos)
         self.dispatcher.add_handler(contatos_handler)
 
         lembrete_handler = CommandHandler('lembrete', self.lembrete)
@@ -101,15 +101,21 @@ class Application:
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
         sleep(3.5)
-        name = update.message['chat']['first_name']
-        start_text = f"Olá {name}, eu sou o Rabot.\n" + \
+        name = update.message["chat"]["first_name"]
+        start_text = (
+            f"Olá {name}, eu sou o Rabot.\n" +
             "Um robô bem simpático criado para alegrar seu dia!\n"
+        )
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
-        start_text = "Se quiser saber mais sobre mim ou meus criadores " + \
+        start_text = (
+            "Se quiser saber mais sobre mim ou meus criadores " +
             "basta digitar `/info` ;)"
+        )
         bot.send_message(
-            chat_id=update.message.chat_id, text=start_text,
-            parse_mode=telegram.ParseMode.MARKDOWN)
+            chat_id=update.message.chat_id,
+            text=start_text,
+            parse_mode=telegram.ParseMode.MARKDOWN,
+        )
         start_text = "Agora vamos lá. Em que posso ajudá-lo?"
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         return 0
@@ -128,7 +134,7 @@ class Application:
             bot.send_message(
                 chat_id=update.message.chat_id,
                 text=info_text,
-                parse_mode=telegram.ParseMode.MARKDOWN
+                parse_mode=telegram.ParseMode.MARKDOWN,
             )
             return 0
         return 1
@@ -146,7 +152,7 @@ class Application:
             bot.send_message(
                 chat_id=update.message.chat_id,
                 text=helpme_text,
-                parse_mode=telegram.ParseMode.MARKDOWN
+                parse_mode=telegram.ParseMode.MARKDOWN,
             )
         return 0
 
@@ -163,7 +169,7 @@ class Application:
             bot.send_message(
                 chat_id=update.message.chat_id,
                 text=contatos_text,
-                parse_mode=telegram.ParseMode.MARKDOWN
+                parse_mode=telegram.ParseMode.MARKDOWN,
             )
         return 0
 
@@ -201,6 +207,8 @@ class Application:
         session.add(db_message)
 
         session.commit()
+
+        return 0
  
     def find_weekly_resume(self, bot, update):
         """
@@ -215,6 +223,8 @@ class Application:
             chat_id=update.message.chat_id,
             text=weekly_log
         )
+
+        return 0
 
     def button(self, bot, update):
         """
@@ -277,6 +287,7 @@ class Application:
     def callback_week(self, bot, job):
         bot.send_message(chat_id=job.context.message.chat_id,
                          text='Use /resumo e me conte como foi sua semana!')
+        return 0
 
     def weekly_update(self, bot, update, job_queue):
         """ Requests weekly update from user """
@@ -286,15 +297,14 @@ class Application:
                                      name='weekly',
                                      context=update)
 
+        return 0
+
     def error(self, bot, update, error):
-        self.logger.warning(
-            f'Update "{update}" caused error "{error}"'
-        )
+        self.logger.warning(f'Update "{update}" caused error "{error}"')
         return 0
 
     def run(self):
         # Start the Bot
-        print('Bot configured. Receiving messages now.')
         self.updater.start_polling()
 
         # Run the bot until you press Ctrl-C or the process receives SIGINT,
@@ -304,29 +314,26 @@ class Application:
         return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Variables set on Heroku
-    TOKEN = os.environ.get('TOKEN')
-    NAME = os.environ.get('NAME')
+    TOKEN = os.environ.get("TOKEN")
+    NAME = os.environ.get("NAME")
     # Port is given by Heroku
-    PORT = os.environ.get('PORT')
+    PORT = os.environ.get("PORT")
     if TOKEN is not None:
         bot = Application(TOKEN, use_watson=False)
         bot.updater.start_webhook(
-            listen="0.0.0.0",
-            port=int(PORT),
-            url_path=TOKEN
-        )
-        bot.updater.bot.set_webhook(
-            "https://{}.herokuapp.com/{}".format(NAME, TOKEN)
-        )
+            listen="0.0.0.0", port=int(PORT), url_path=TOKEN)
+        bot.updater.bot.set_webhook(f"https://{NAME}.herokuapp.com/{TOKEN}")
         bot.updater.idle()
 
     # Run on local system once detected that it's not on Heroku
     else:
         try:
-            token = retrieve_default()['token']
-            x = Application(token, use_watson=False).run()
+            token = retrieve_default("TELEGRAM")["token"]
+            watson = eval(retrieve_default()["IBM Watson"])
+            x = Application(token=token, use_watson=watson)
+            x.run()
         except FileNotFoundError:
-            print('Configuration file not found.')
+            print("Configuration file not found.")
             sys.exit(1)

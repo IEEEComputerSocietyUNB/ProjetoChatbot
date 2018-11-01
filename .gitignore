@@ -103,7 +103,7 @@ ENV/
 
 # User added
 .DS_Store
-*.ini
+config.ini
 /.gtm/
 /rabot
 db.sqlite*
