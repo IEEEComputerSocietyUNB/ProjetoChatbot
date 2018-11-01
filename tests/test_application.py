@@ -4,31 +4,30 @@ import sys
 import logging
 from telegram import Bot
 from unittest.mock import patch
-sys.path.append(
-    os.path.dirname(
-        os.path.dirname(os.path.realpath(__file__))
-    )
-)
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from bot.application import Application
 from bot.config_reader import retrieve_default
 
 
 class TestBotBasics(unittest.TestCase):
-
     def setUp(self):
         try:
-            self.tgbot = Application(retrieve_default()['token'], False)
+            self.tgbot = Application(
+                retrieve_default("TELEGRAM")["token"],
+                train=False
+            )
         except FileNotFoundError:
             pass
 
-    @patch('telegram.Bot')
+    @patch("telegram.Bot")
     def test_info_message(self, bot):
         self.assertEqual(self.tgbot.info(bot, bot), 0)
 
-    @patch('telegram.Bot')
+    @patch("telegram.Bot")
     def test_start_method(self, bot):
         self.assertEqual(self.tgbot.start(bot, bot), 0)
-
+        
     @patch('telegram.Bot')
     def text_button(self, bot):
         self.assertEqual(self.tgbot.button(bot, bot), 0)
@@ -94,6 +93,10 @@ class TestBotBasics(unittest.TestCase):
     @patch('telegram.Bot')
     @patch('telegram.ext.JobQueue')
     def test_text_message_wrong_file(self, comm, bot, job_queue):
+
+    @patch("bot.communication.Communication")
+    @patch("telegram.Bot")
+    def test_text_message(self, comm, bot):
         self.tgbot.comm = comm
         file_name = "another_file_name.json"
         self.assertEqual(self.tgbot.
@@ -102,11 +105,11 @@ class TestBotBasics(unittest.TestCase):
     def test_error_method(self):
         self.assertEqual(self.tgbot.error("", "", ""), 0)
 
-    @patch('telegram.ext.Updater')
+    @patch("telegram.ext.Updater")
     def test_run_method(self, updater):
         self.tgbot.updater = updater
         self.assertEqual(self.tgbot.run(), 0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
