@@ -46,39 +46,38 @@ vigente.
 
 1. Deve-se primeiro criar um ambiente virtual
 
-```
-python3 -m venv venv
-```
+  ```
+  python3 -m venv venv
+  ```
 
 2. Em seguida, deve-se clonar o repositório do projeto para um repositório
 local.
 
-```
-git clone https://github.com/ComputerSocietyUNB/ProjetoChatbot.git
+  ```
+  git clone https://github.com/ComputerSocietyUNB/ProjetoChatbot.git
+  ```
 
-```
-  - O diretório 'ProjetoChatbot' deverá ser criado.
-
+ O diretório 'ProjetoChatbot' deverá ser criado.
 
 3. Ative o ambiente virtual criado no passo 1 com o seguinte comando:
 
-```
-source <diretório raiz do ambiente virtual>/bin/activate
-```
+  ```
+  source <diretório raiz do ambiente virtual>/bin/activate
+  ```
 
 4. Com o ambiente virtual ativado, deve-se instalar o módulo `invoke`
 com o seguinte comando:
 
-```
-pip3 install invoke
-```
+  ```
+  pip3 install invoke
+  ```
 
 5. Com o módulo `invoke` devidamente instalado, use o seguinte comando para
 instalar todas as dependências necessárias:
 
-```
-inv install
-```
+  ```
+  inv install
+  ```
 
 ## Como fazer o bot funcionar
 
@@ -95,19 +94,22 @@ de bots para o Telegram: [Bot API](https://core.telegram.org/bots/api)
 Uma vez tendo em mão o token do bot, deve-se criar um arquivo chamado
 `config.ini` na pasta `bot`. O arquivo terá a seguinte estrutura:
 
-```
-[MAIN]
-IBM Watson=False
+  ```
+  [MAIN]
+  IBM Watson=False
 
-[TELEGRAM]
-token={SEUTOKENGIGANTEAQUI}
-```
+  [TELEGRAM]
+  token={SEUTOKENGIGANTEAQUI}
+  ```
 
 Uma vez criado o arquivo, use `inv run` para fazer o bot funcionar ou
 
-```
-python3 bot/application.py
-```
+  ```
+  python3 bot/application.py
+  ```
+
+  Para mais informações mais completas acesse a
+  [wiki do projeto](https://github.com/ComputerSocietyUNB/ProjetoChatbot/wiki).
 
 ## Equipe Responsável
 
