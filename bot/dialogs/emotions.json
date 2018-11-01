@@ -1,0 +1,52 @@
+{
+    ":grinning_squinting_face:":
+    {
+        "statements":
+        [
+            "É bom saber que está feliz!",
+            "Estar feliz é um motivo para manter-se grato.",
+            "Muito bom! Sugiro você tentar anotar o porquê deste sentimento para lembrar-se depois."
+        ],
+        "emotion_type": "5"
+    },
+    ":grinning_face_with_smiling_eyes:":
+    {
+        "statements":
+        [
+            "Maravilha! É sempre bom ter um alto astral",
+            "Ótimo. Foque em estar ainda melhor nos proximos dias.",
+            "Maravilha! Comprometa-se em melhorar sempre."
+        ],
+    "emotion_type": "4"
+    },
+    ":expressionless_face:":
+    {
+        "statements":
+        [
+            "Entendo. Saiba que sentir-se assim é algo bastante comum.",
+            "Muito bom. Sugiro que você reflita sobre o que tem dado certo.",
+            "Excelente. Todos nós em algum momento nos sentimos assim."
+        ],
+        "emotion_type": "3"
+    },
+    ":disappointed_face:":
+    {
+    "statements":
+        [
+            "Entendo. Também me sinto assim muitas vezes.",
+            "Entendo. Por favor, reserve algum tempo a si mesmo e reflita o que pode ser feito.",
+            "Claro. Sugiro que você faça uma simples caminhada, e tente refletir."
+        ],
+        "emotion_type": "2"
+    },
+    ":angry_face:":
+    {
+        "statements":
+        [
+          "Entendo perfeitamente. Por favor, permita-me tentar te ajudar.",
+          "Acalme-se. Não tome nenhuma decisão neste momento.",
+          "Cuidado. São nestes momentos que fazemos as piores escolhas."
+        ],
+        "emotion_type": "1"
+    }
+}

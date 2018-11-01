@@ -9,6 +9,7 @@ dialog_test = tests/test_dialogs.py
 linter_test = tests/test_linter.py
 all_tests = $(app_test) $(comm_test) $(dialog_test) $(linter_test)
 db_file = db.sqlite3
+emotions_db_file = emotions.sqlite3
 
 .PHONY: test rmdb travis run cov style doc full encrypt install help yaml
 
@@ -20,6 +21,10 @@ test:
 	@make rmdb
 	green3 $(first_test)
 	green3 .
+
+rmdb:
+	@if [ -a $(db_file) ]; then rm $(db_file); fi
+	#@if [ -a $(emotions_db_file) ]; then rm $(emotions_db_file); fi
 
 travis:
 	@# what will run on travis

@@ -6,6 +6,10 @@ pydocstyle==2.1.1
 chatterbot==0.8.7
 radon==2.2.0
 codecov==2.0.15
+emoji
+pygal==2.4.0
+cairocffi==0.9.0
+CairoSVG==2.1.3
 invoke==1.2.0
 yamllint==1.11.1
 watson-developer-cloud==2.1.0
