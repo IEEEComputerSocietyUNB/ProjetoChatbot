@@ -57,7 +57,7 @@ local.
 git clone https://github.com/ComputerSocietyUNB/ProjetoChatbot.git
 
 ```
-O diretório 'ProjetoChatbot' deverá ser criado.
+  - O diretório 'ProjetoChatbot' deverá ser criado.
 
 
 3. Ative o ambiente virtual criado no passo 1 com o seguinte comando:
@@ -66,14 +66,14 @@ O diretório 'ProjetoChatbot' deverá ser criado.
 source <diretório raiz do ambiente virtual>/bin/activate
 ```
 
-4. Com o ambiente virtual ativado, deve-se instalar o módulo invoke
+4. Com o ambiente virtual ativado, deve-se instalar o módulo `invoke`
 com o seguinte comando:
 
 ```
 pip3 install invoke
 ```
 
-5. Com o módulo invoke devidamente instalado, use o seguinte comando para
+5. Com o módulo `invoke` devidamente instalado, use o seguinte comando para
 instalar todas as dependências necessárias:
 
 ```
