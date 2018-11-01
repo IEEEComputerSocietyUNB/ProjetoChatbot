@@ -65,7 +65,7 @@ class Application:
         lembrete_handler = CommandHandler('lembrete', self.lembrete)
         self.dispatcher.add_handler(lembrete_handler)
 
-        weekly_handler = CommandHandler('resumo', 
+        weekly_handler = CommandHandler('resumo',
                                         self.weekly_resume,
                                         pass_args=True)
        
@@ -91,7 +91,6 @@ class Application:
 
         self.periodic_mesages_util = Periodic_mesages_util()
 
-        
     def start(self, bot, update):
         """
         Start command to receive /start message on Telegram.
@@ -208,9 +207,7 @@ class Application:
         Search database to find saved weekly resumes
         """
         weekly_log = []
-
-        # TODO: add message formatting using Markdown
-
+ 
         for instance in session.query(Message):
             weekly_log.append(instance.text)
 
