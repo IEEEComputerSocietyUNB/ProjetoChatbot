@@ -82,6 +82,9 @@ inv install
 
 ## Como fazer o bot funcionar
 
+#### Configurando um cliente Telegram Chatbot
+
+
 Deve-se primeiramente gerar um token utilizando o @botfather. Abra o Telegram e
 procure por @botfather. Inicie o diálogo, envie o comando /newbot e siga as
 instruções fornecidas. Ao final do diálogo, será informado um token, este token
@@ -93,11 +96,14 @@ Uma vez tendo em mão o token do bot, deve-se criar um arquivo chamado
 `config.ini` na pasta `bot`. O arquivo terá a seguinte estrutura:
 
 ```
-[DEFAULT]
+[MAIN]
+IBM Watson=False
+
+[TELEGRAM]
 token={SEUTOKENGIGANTEAQUI}
 ```
 
-Uma vez criado o arquivo, use `make run` para fazer o bot funcionar ou
+Uma vez criado o arquivo, use `inv run` para fazer o bot funcionar ou
 
 ```
 python3 bot/application.py
