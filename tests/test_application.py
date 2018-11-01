@@ -27,7 +27,7 @@ class TestBotBasics(unittest.TestCase):
     @patch("telegram.Bot")
     def test_start_method(self, bot):
         self.assertEqual(self.tgbot.start(bot, bot), 0)
-        
+
     @patch('telegram.Bot')
     def text_button(self, bot):
         self.assertEqual(self.tgbot.button(bot, bot), 0)
@@ -88,11 +88,6 @@ class TestBotBasics(unittest.TestCase):
     def test_text_message(self, comm, bot, job_queue):
         self.tgbot.comm = comm
         self.assertEqual(self.tgbot.text_message(bot, bot, job_queue), 0)
-
-    @patch('bot.communication.Communication')
-    @patch('telegram.Bot')
-    @patch('telegram.ext.JobQueue')
-    def test_text_message_wrong_file(self, comm, bot, job_queue):
 
     @patch("bot.communication.Communication")
     @patch("telegram.Bot")
