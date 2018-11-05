@@ -22,6 +22,7 @@ class Screening:
             self.scales_dict['DASS-21S'] = json.load(f)
 
     def __init__(self):
+        self.scales_to_answer = []
         self.scales_dict = {}
         self.initial_dict = {}
         self.initial_given_answers = []
@@ -76,13 +77,13 @@ class Screening:
         for disturb in user_disturbs:
             next_steps += self.next_steps[disturb]
         # Returns the next steps(without duplicates)
-        return(list(set(next_steps)))
+        return list(set(next_steps))
 
     def call_next_steps(self, next_steps):
-        print(next_steps)
+        scales = []
         for step in next_steps:
-            scale = self.scales_dict[step]
-            button(scale['questions'], scale['answers'])
+            scales += self.scales_dict[step]
+        self.scales_to_answer = scales    
 
     def build_question(self, question_index):
         # Uma forma
@@ -98,27 +99,32 @@ class Screening:
         # # Outra forma
         return self.initial_questions[question_index]["question"]
 
-    def build_button_markup(self, question_index):
+    def build_button_markup(self, is_dass, question_index, answers):
         count = 0
         inline_buttons = []
         possible_answers = self.initial_questions[question_index]["answer"]
 
-        # Uma forma
-        for answer in possible_answers:
-            query_data = "s{}{}".format(question_index, count)
-            my_button = InlineKeyboardButton(answer, callback_data=query_data)
-            inline_buttons.append(my_button)
-            count += 1
-        return InlineKeyboardMarkup([inline_buttons])
+        else:
+            # Uma forma
+            for answer in possible_answers:
+                query_data = "s{}{}".format(question_index, count)
+                if(count ==2):
+                    
+                my_button = InlineKeyboardButton(answer, callback_data=query_data)
+                inline_buttons.append(my_button)
+                [baixo, medio, al, ou, yotot]
+                [[baixo, medio], [meido baixo, alto], [out, o]]
+                count += 1
+            return InlineKeyboardMarkup([inline_buttons])
 
-        # Outra forma
-        # for answer in possible_answers:
-        #     #s stands for screening
-        #     query_data =f"s{question_index}{count}"
-        #     my_button = InlineKeyboardButton(answer, callback_data=query_data)
-        #     inline_buttons.append(count)
-        #     count += 1
-        # return InlineKeyboardMarkup([[inline_buttons]])
+            # Outra forma
+            # for answer in possible_answers:
+            #     #s stands for screening
+            #     query_data =f"s{question_index}{count}"
+            #     my_button = InlineKeyboardButton(answer, callback_data=query_data)
+            #     inline_buttons.append(count)
+            #     count += 1
+            # return InlineKeyboardMarkup([[inline_buttons]])
 
     def button_clicked(self, bot, update):
         query = update.callback_query
@@ -126,16 +132,28 @@ class Screening:
         #query_str[0] == 's'
         question_index = int(query_str[1])
         answer_index = int(query_str[2])
-        print(answer_index)
-        self.initial_given_answers.append(answer_index)
-        if(question_index+1 < len(self.initial_questions)):
-            question = self.build_question(question_index+1)
-            keyboard_markup = self.build_button_markup(question_index+1)
-            bot.send_message(chat_id=query.message.chat_id, 
-                            text=question, reply_markup=keyboard_markup)
-        else:
-            message = "Obrigado, agora podemos conversar"
-            bot.send_message(chat_id=query.message.chat_id, 
-                text=message)
+        if(query_str == 's'):
+            self.initial_given_answers.append(answer_index)
+            if(question_index+1 < len(self.initial_questions)):
+                question = self.build_question(question_index+1)
+                keyboard_markup = self.build_button_markup(question_index+1,
+                                       self.initial_questions[question_index]["answer"])
+                bot.send_message(chat_id=query.message.chat_id, 
+                                text=question, reply_markup=keyboard_markup)
+            else:
+                #TODO: colocar if
+                next_steps = self.evaluate_initial_screen(self.initial_given_answers)
+                if(next_steps != []):
+                    self.call_next_steps(next_steps)
+                else:
+                    message = "Obrigado, agora podemos conversar"
+                    bot.send_message(chat_id=query.message.chat_id, 
+                        text=message)
+        elif(query_str == "dass"):
+                            keyboard_markup = self.build_button_markup()
+                bot.send_message(chat_id=query.message.chat_id, 
+                                text=question, reply_markup=keyboard_markup)
+
+
 
         return 0
