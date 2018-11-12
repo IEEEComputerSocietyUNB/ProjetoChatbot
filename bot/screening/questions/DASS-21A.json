@@ -1,0 +1,19 @@
+{
+    "questions": 
+    [
+        "Eu percebi que estava com a boca seca.",
+        "Eu tive dificuldade para respirar (por exemplo, tive respiração muito rápida, ou falta de ar sem ter feito esforço físico).",
+        "Eu tive tremores (por exemplo, nas mãos).",
+        "Eu fiquei preocupado(a) com situações em que poderia entrar em pânico e fazer papel de bobo(a).",
+        "Eu senti que estava prestes a entrar em pânico.",
+        "Eu percebi as batidas do meu coração na ausência de esforço físico (por exemplo, a sensação de aumento dos batimentos cardíacos, ou de que o coração estava batendo fora do ritmo).",
+        "Eu me senti assustado(a) sem qualquer razão."
+    ],
+    "answers":
+    [
+        "Não se aplicou a mim de forma alguma", 
+        "Aplicou-se a mim de alguma forma ou em algumas vezes", 
+        "Aplicou-se a mim de forma considerável ou em boa parte do tempo",
+        "Aplicou-se muito a mim ou na maior parte do tempo"
+    ]
+}

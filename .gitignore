@@ -109,3 +109,5 @@ config.ini
 db.sqlite*
 .idea
 .vscode/
+
+*.txt
