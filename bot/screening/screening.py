@@ -193,7 +193,7 @@ class Screening:
             tam = len(self.dass_screen("DASS-21S")[question_index]["answer"])
 
         #Going for next stage
-        if(tam == answer_index+1):
+        if(tam == question_index+1):
             # recebe o stage atual e acessa as resposta em
             # self.user_answers[stage]["given_answer"], avalia quais 
             # questionarios precisam ser respondidos, e modifica 
