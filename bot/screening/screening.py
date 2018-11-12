@@ -2,6 +2,7 @@ import json
 import pprint
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+SOCIODEMOGRAFICO, DASS_21A, DASS_21D, DASS_21S = range(4)
 
 class Screening:
     """
@@ -15,16 +16,33 @@ class Screening:
         with open('bot/screening/questions/next_steps.json') as f:
             self.next_steps = json.load(f)
         with open('bot/screening/questions/DASS-21A.json') as f:
-            self.scales_dict['DASS-21A'] = json.load(f)
+            self.scales_dict['DASS_21A'] = json.load(f)
         with open('bot/screening/questions/DASS-21D.json') as f:
-            self.scales_dict['DASS-21D'] = json.load(f)
+            self.scales_dict['DASS_21D'] = json.load(f)
         with open('bot/screening/questions/DASS-21S.json') as f:
-            self.scales_dict['DASS-21S'] = json.load(f)
+            self.scales_dict['DASS_21S'] = json.load(f)
 
     def __init__(self):
         self.scales_dict = {}
         self.initial_dict = {}
-        self.initial_given_answers = []
+        self.user_answers = user_answers = {
+                        str(SOCIODEMOGRAFICO) : {
+                            "needed" : True,
+                            "given_answer": []
+                        },
+                        str(DASS_21A) : {
+                            "needed" : False,
+                            "given_answer" : []
+                        },
+                        str(DASS_21D) : {
+                            "needed" : False,
+                            "given_answer" : []
+                        },
+                        str(DASS_21S) : {
+                            "needed" : False,
+                            "given_answer" : []
+                        }
+        }
         self.load_jsons()
 
     def dass_screen(self, dass):
@@ -43,12 +61,18 @@ class Screening:
         """
         user_disturbs contains all questions/answers
         """
-        #Build firt question
-        question = self.build_question(0)
-        keyboard_markup = self.build_button_markup(0)
-        bot.send_message(chat_id=update.message.chat_id, 
-                         text=question, reply_markup=keyboard_markup)
+        self.call_next_question(bot, update.message.chat_id, SOCIODEMOGRAFICO, 0)
         return 0
+
+    def get_equivalent_string(self, num):
+        if num == 'SOCIODEMOGRAFICO':
+            return 0
+        elif num == 'DASS_21A':
+            return 1
+        elif num == 'DASS_21D':
+            return 2
+        elif num == 'DASS_21S':
+            return 3
 
     def evaluate_initial_screen(self, answers):
         user_disturbs = []
@@ -75,30 +99,51 @@ class Screening:
         next_steps = []
         for disturb in user_disturbs:
             next_steps += self.next_steps[disturb]
-        # Returns the next steps(without duplicates)
-        return(list(set(next_steps)))
+        
+        next_steps = list(set(next_steps))
+
+        self.user_answers[SOCIODEMOGRAFICO]['needed'] = False
+        for step in next_steps:
+            step_id = self.get_equivalent_string(step)
+            self.user_answers[step_id]['needed'] = True
 
     def call_next_steps(self, next_steps):
-        print(next_steps)
+        scales = []
         for step in next_steps:
-            scale = self.scales_dict[step]
-            button(scale['questions'], scale['answers'])
+            scales += self.scales_dict[step]
+        self.scales_to_answer = scales    
 
-    def build_question(self, question_index):
-        # Uma forma
-        # count = 1
-        # formated_question = self.initial_questions[question_index]["question"] + \
-        #                         "\nEcolha umas das opções a seguir:"
-        # possible_answers = self.initial_questions[question_index]["answer"]
-        # for answer in possible_answers:
-        #     formated_question = formated_question + \
-        #         "\n**{}**-{}".format(count, answer)
-        #     count += 1
-        # return formated_question
-        # # Outra forma
-        return self.initial_questions[question_index]["question"]
+    def call_next_question(self, bot, chat_id, stage, question_index):
+        answers = []
+        question = None
+        #Jumping for next stage, question_index must be 0
+        print(f"stage:{stage}\nq_index:{question_index}")
+        while(self.user_answers[str(stage)]["needed"] != True):
+            stage += 1
+            
+        if(stage == SOCIODEMOGRAFICO):
+            question = self.initial_questions[question_index]["question"]
+            answers = self.initial_questions[question_index]["answer"]
+        elif(stage == DASS_21A):
+            tuples_qa = self.dass_screen("DASS-21A")
+            question = tuples_qa[question_index]["question"]
+            answers = tuples_qa[question_index]["answer"]
+        elif(stage == DASS_21D):
+            tuples_qa = self.dass_screen("DASS-21D")
+            question = tuples_qa[question_index]["question"]
+            answers = tuples_qa[question_index]["answer"]
+        elif(stage == DASS_21S):
+            tuples_qa = self.dass_screen("DASS-21S")
+            question = tuples_qa[question_index]["question"]
+            answers = tuples_qa[question_index]["answer"]
 
-    def build_button_markup(self, question_index):
+        keyboard_markup = self.build_button_markup(stage, question_index, answers)
+        bot.send_message(chat_id=chat_id, 
+                                text=question, reply_markup=keyboard_markup)
+
+        return 0
+
+    def build_button_markup(self, stage, question_index, answers):
         i = 0
         inline_buttons = []
         possible_answers = self.initial_questions[question_index]["answer"]
@@ -107,45 +152,58 @@ class Screening:
         while(i < len(possible_answers)):
             list_temp = []
 
-            query_data = "s{}{}".format(question_index, i)
-            my_button = InlineKeyboardButton(possible_answers[i], callback_data=query_data)
+            query_data = f"{stage}{question_index}{i}"                
+            my_button = InlineKeyboardButton(possible_answers[i], 
+                                             callback_data=query_data)
             list_temp.append(my_button)
 
             i = i+1
             if (i < len(possible_answers)):
-                query_data = "s{}{}".format(question_index, i)
-                my_button = InlineKeyboardButton(possible_answers[i], callback_data=query_data)
+                query_data = f"{stage}{question_index}{i}"                
+                my_button = InlineKeyboardButton(possible_answers[i], 
+                                                 callback_data=query_data)
                 list_temp.append(my_button)
             
             inline_buttons.append(list_temp)
             i = i+1
         return InlineKeyboardMarkup(inline_buttons)
 
-        # Outra forma
-        # for answer in possible_answers:
-        #     #s stands for screening
-        #     query_data =f"s{question_index}{count}"
-        #     my_button = InlineKeyboardButton(answer, callback_data=query_data)
-        #     inline_buttons.append(count)
-        #     count += 1
-        # return InlineKeyboardMarkup([[inline_buttons]])
-
     def button_clicked(self, bot, update):
         query = update.callback_query
         query_str = query.data
-        #query_str[0] == 's'
+        stage = int(query_str[0])
         question_index = int(query_str[1])
         answer_index = int(query_str[2])
-        print(answer_index)
-        self.initial_given_answers.append(answer_index)
-        if(question_index+1 < len(self.initial_questions)):
-            question = self.build_question(question_index+1)
-            keyboard_markup = self.build_button_markup(question_index+1)
-            bot.send_message(chat_id=query.message.chat_id, 
-                            text=question, reply_markup=keyboard_markup)
+        tam = 0
+        #saving answer
+        if(stage == SOCIODEMOGRAFICO):
+            self.user_answers[str(SOCIODEMOGRAFICO)]["given_answer"]. \
+                append(answer_index)
+        elif(stage == DASS_21A):
+            self.user_answers[str(DASS_21A)]["given_answer"]. \
+                append(answer_index)
+            tam = len(self.dass_screen("DASS-21A")[question_index]["answer"])
+        elif(stage == DASS_21D):
+            self.user_answers[str(DASS_21D)]["given_answer"]. \
+                append(answer_index)
+            tam = len(self.dass_screen("DASS-21D")[question_index]["answer"])
+        elif(stage == DASS_21S):
+            self.user_answers[str(DASS_21S)]["given_answer"]. \
+                append(answer_index)
+            tam = len(self.dass_screen("DASS-21S")[question_index]["answer"])
+
+        #Going for next stage
+        if(tam == answer_index+1):
+            # recebe o stage atual e acessa as resposta em
+            # self.user_answers[stage]["given_answer"], avalia quais 
+            # questionarios precisam ser respondidos, e modifica 
+            # self.user_answers[stage]["needed"] para True
+            if(stage == SOCIODEMOGRAFICO):
+                self.evaluate_initial_screen(
+                    self.user_answers[stage]["given_answer"]
+                )
+            self.call_next_question(bot, query.message.chat_id, stage+1, 0)
         else:
-            message = "Obrigado, agora podemos conversar"
-            bot.send_message(chat_id=query.message.chat_id, 
-                text=message)
+            self.call_next_question(bot, query.message.chat_id, stage, question_index+1)
 
         return 0

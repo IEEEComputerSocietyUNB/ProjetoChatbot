@@ -145,12 +145,10 @@ class Application:
         return 0
 
     def button_clicked(self, bot, update):
-        query = update.callback_query
-        query_str = query.data
-        is_screening = query_str[0]
-        if(is_screening == 's'):
-            self.screening.button_clicked(bot, update)
-            return 0
+        # query = update.callback_query
+        # query_str = query.data
+        self.screening.button_clicked(bot, update)
+        return 0
 
     def error(self, bot, update, error):
         self.logger.warning(f'Update "{update}" caused error "{error}"')
