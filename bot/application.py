@@ -100,7 +100,7 @@ class Application:
         #         parse_mode=telegram.ParseMode.MARKDOWN,
         #     )
         #     return 0
-        #TODO remove. made this for testing proposes
+        # TODO: remove. made this for testing proposes
         self.screening.initial_screen(bot, update)
         return 1
 
