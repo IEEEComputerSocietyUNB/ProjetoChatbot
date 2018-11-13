@@ -108,8 +108,28 @@ Uma vez criado o arquivo, use `inv run` para fazer o bot funcionar ou
   python3 bot/application.py
   ```
 
-  Para mais informações mais completas acesse a
-  [wiki do projeto](https://github.com/ComputerSocietyUNB/ProjetoChatbot/wiki).
+
+## Como fazer o bot funcionar em um container Heroku
+
+#### Criando uma conta no Heroku
+
+Caso você não possua uma conta pessoal nos servidores do Heroku. Você deverá
+[cadastrar-se](https://signup.heroku.com/) para utilizar os serviços. O bot
+pode ser executado em uma conta gratuita.
+
+#### Criando um serviço no heroku para rodar o bot
+
+Após ter criado uma conta de usuário no Heroku, deve-se criar um serviço
+específico na plataforma para rodar a aplicação criada neste projeto. Para
+isso, primeiro faça o login na plataforma. Você será direcionado para o
+dashboard do projeto.
+
+Logo após, clique no botão 'New' e depois clique em 'Create new app...'.
+Digite algum nome para o app criado, ou deixe o campo em branco para que o
+sistema escolha um nome aleatório para o seu app.
+
+Para mais informações mais completas acesse a
+[wiki do projeto](https://github.com/ComputerSocietyUNB/ProjetoChatbot/wiki).
 
 ## Equipe Responsável
 
