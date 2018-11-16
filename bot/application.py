@@ -3,19 +3,29 @@ import sys
 import random
 import logging
 import telegram
+
+import time
 import json
 from datetime import timedelta
 from datetime import datetime
 from time import sleep
-from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, \
-    Dispatcher, MessageHandler, Filters
+
+import sqlite3
+import pygal
+import emoji
+from time import sleep
+from telegram import Bot, User, ReplyKeyboardRemove, \
+    InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, Dispatcher,\
+    MessageHandler, Filters, CallbackQueryHandler
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from bot.communication import Communication
 from bot.config_reader import retrieve_default
 from bot.periodic_messages_util import Periodic_mesages_util
+from bot.communication import Communication
+from bot.dbutils import DBUtils as dbu
 
 
 class Application:
@@ -33,7 +43,8 @@ class Application:
             format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
             level=logging.INFO,
         )
-        self.logger = logging.getLogger("log")
+        self.emotion_handler = False
+        self.logger = logging.getLogger("LOG")
         self.app = Bot(token)
         self.updater = Updater(token)
         self.dispatcher = self.updater.dispatcher
@@ -51,6 +62,7 @@ class Application:
         contatos_handler = CommandHandler("contatos", self.contatos)
         self.dispatcher.add_handler(contatos_handler)
 
+
         lembrete_handler = CommandHandler('lembrete', self.lembrete)
         self.dispatcher.add_handler(lembrete_handler)
 
@@ -58,30 +70,45 @@ class Application:
 
         message_handler = MessageHandler(Filters.text, self.text_message,
                                          pass_job_queue=True)
+
+        emotion_handler = CommandHandler("emotion", self.emotional_state)
+        self.dispatcher.add_handler(emotion_handler)
+
+        emotions_chart_handler = CommandHandler(
+            "emotionchart", self.emotional_state_chart
+        )
+        self.dispatcher.add_handler(emotions_chart_handler)
+
+        message_handler = MessageHandler(Filters.text, self.text_message)
         self.dispatcher.add_handler(message_handler)
-
         self.dispatcher.add_error_handler(self.error)
-
         self.periodic_mesages_util = Periodic_mesages_util()
-
-    def start(self, bot, update):
+        
+    def send_type_action(self, bot, update):
         """
-        Start command to receive /start message on Telegram.
-        @bot = information about the bot
-        @update = the user info.
+        Shows status typing when sending message
         """
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        sleep(3.5)
+        sleep(1)
+
+    def start(self, bot, update):
+        """
+        Start command to receive /start message on Telegram.
+
+        @bot = information about the bot
+        @update = the user info.
+        """
+        self.send_type_action(bot, update)
         name = update.message["chat"]["first_name"]
         start_text = (
-            f"Olá {name}, eu sou o Rabot.\n" +
-            "Um robô bem simpático criado para alegrar seu dia!\n"
+            f"Olá {name}, eu sou o Rabot."
+            "\nUm robô bem simpático criado para alegrar seu dia!\n"
         )
         bot.send_message(chat_id=update.message.chat_id, text=start_text)
         start_text = (
-            "Se quiser saber mais sobre mim ou meus criadores " +
+            "Se quiser saber mais sobre mim ou meus criadores "
             "basta digitar `/info` ;)"
         )
         bot.send_message(
@@ -90,19 +117,23 @@ class Application:
             parse_mode=telegram.ParseMode.MARKDOWN,
         )
         start_text = "Agora vamos lá. Em que posso ajudá-lo?"
-        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=start_text,
+            reply_markup=telegram.ReplyKeyboardRemove()
+        )
         return 0
 
     def info(self, bot, update):
         """
         Info command to know more about the developers.
+
         @bot = information about the bot
         @update = the user info.
         """
-        bot.send_chat_action(
-            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
-        )
-        with open(f"{os.getcwd()}/bot/dialogs/info.md") as info_file:
+        self.send_type_action(bot, update)
+        with open(f"{os.getcwd()}/bot/dialogs/commands/info.md")\
+                as info_file:
             info_text = info_file.read()
             bot.send_message(
                 chat_id=update.message.chat_id,
@@ -120,7 +151,7 @@ class Application:
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        with open(f"{os.getcwd()}/bot/dialogs/help.md") as help_file:
+        with open(f"{os.getcwd()}/bot/dialogs/commands/help.md") as help_file:
             helpme_text = help_file.read()
             bot.send_message(
                 chat_id=update.message.chat_id,
@@ -133,10 +164,8 @@ class Application:
         """
         Shows all contact centers to the bot user
         """
-        bot.send_chat_action(
-            chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
-        )
 
+        self.send_type_action(bot, update)
         with open(f"{os.getcwd()}/bot/dialogs/contacts.md") as contatos_file:
             contatos_text = contatos_file.read()
             bot.send_message(
@@ -222,9 +251,167 @@ class Application:
                                 context=update)
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
+
+    def text_message(self, bot, update):
+        self.send_type_action(bot, update)
+
+        if not self.check_for_emotion(update):
+            message = update.effective_message.text
+            update.effective_message.reply_text(
+                str(self.comm.respond(message))
+            )
+        return 0
+
+    def check_for_emotion(self, update):
+        if self.emotion_handler:
+            self.emotional_state_collect_emotion(
+                update,
+                update.effective_message.text
+            )
+            if len(update.effective_message.text) <= 1:
+                return True
+            return False
+
+    def emotional_state_collect_emotion(self, update, msg_text):
+        """
+        When the user chooses an option based on how he or she is feeling
+        a certain moment. This method is called to evaluate which option
+        has been choosen and then call the method responsible for storing
+        the information.
+
+        @update = the user info.
+        @msg_text = the option the user has choosen
+        """
+        with open("bot/dialogs/emotions.json", "r") as rf:
+            data = json.load(rf)
+        response = random.choice(data[emoji.demojize(msg_text)]["statements"])
+        response = str(response)
+        emotion_type = int(data[emoji.demojize(msg_text)]["emotion_type"])
+
+        update.effective_message.reply_text(response)
+        update.effective_message.reply_text(
+            "Em breve, eu te apresentarei um diário com maiores informações.",
+            reply_markup=ReplyKeyboardRemove(),
         )
-        message = update.effective_message.text
-        update.effective_message.reply_text(str(self.comm.respond(message)))
+        self.emotion_handler = False
+        self.emotional_state_store_emotion(update, emotion_type)
+        return 0
+
+    def emotional_state_store_emotion(self, update, emotion_type):
+        """
+        This method stores the emotion the user are feeling in a certain
+        moment in a database.
+
+        @emotion_type = a numeric value which is associated with an emotion
+        """
+        user_id = str(update.message.from_user.id)
+        datetime_statement = time.time()
+
+        connection = dbu.db_connect("emotions.sqlite3")
+        dbu.create_emotion(
+            connection,
+            user_id,
+            datetime_statement,
+            emotion_type
+        )
+        connection.close()
+        return 0
+
+    def emotional_state(self, bot, update):
+        """
+        Asks how the user is feeling in a certain moment
+
+        @bot = information about the bot
+        @update = the user info.
+        """
+        self.send_type_action(bot, update)
+        name = update.message["chat"]["first_name"]
+        start_text = (
+            f"{name}, eu gostaria de saber como você está se sentindo agora\n"
+        )
+
+        bot.send_message(chat_id=update.message.chat_id, text=start_text)
+        faces_keyboard = []
+        with open("bot/dialogs/emotions.json", "r") as rf:
+            data = json.load(rf)
+            for item in data:
+                faces_keyboard.append(
+                    [{"text": emoji.emojize(item, use_aliases=True)}]
+                )
+
+        # faces_keyboard = [
+        #     [{"text": emoji.emojize(":laughing:", use_aliases=True)}],
+        #     [{"text": emoji.emojize(":smile:", use_aliases=True)}],
+        #     [{"text": emoji.emojize(
+        #         ":expressionless_face:", use_aliases=True
+        #     )}],
+        #     [{"text": emoji.emojize(":disappointed:", use_aliases=True)}],
+        #     [{"text": emoji.emojize(":angry_face:", use_aliases=True)}],
+        # ]
+
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text="Qual dessas caras exprime melhor o seu estado atual?\n",
+            reply_markup={
+                "keyboard": faces_keyboard,
+                "resize_keyboard": False,
+                "one_time_keyboard": True,
+            },
+        )
+        self.emotion_handler = True
+        return 0
+
+    def emotional_state_chart(self, bot, update):
+        """
+        Generate charts based on the emotional reports the user has sent
+
+        @bot = information about the bot
+        @update = the user info.
+        """
+        self.send_type_action(bot, update)
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text="Vou mostrar para você o que tenho até o momento.",
+        )
+
+        # make a query to the sqlite3 database to retrieve the recorded
+        # information about the user's current emotional state
+        connector = dbu.db_connect("emotions.sqlite3")
+        rows = dbu.select_emotions_count(
+            connector,
+            str(update.message.from_user.id)
+        )
+        if rows is None or len(rows) == 0:
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text="Parece que você ainda não utilizou o comando /emotion"
+                "para que você possa me dizer algumas informações.",
+            )
+            return 0
+        emotions = {
+            1: "Raiva",
+            2: "Triste",
+            3: "Normal",
+            4: "Bom",
+            5: "Excelente"
+        }
+        pie_chart = pygal.Pie(
+            half_pie=True,
+            legend_at_bottom=True,
+            print_values=True,
+            style=pygal.style.LightSolarizedStyle,
+        )
+        pie_chart.title = "Gráfico das suas ultimas emoções"
+        for row in rows:
+            pie_chart.add(emotions[row[0]], row[1])
+        chart_name = f"output_pie_{str(update.message.from_user.id)}.png"
+        rd = pie_chart.render_to_png(chart_name)
+        bot.send_photo(
+            chat_id=update.message.chat_id,
+            photo=open(chart_name, "rb")
+        )
+        if os.path.exists(chart_name):
+            os.remove(chart_name)
         return 0
 
     def error(self, bot, update, error):
@@ -251,7 +438,9 @@ if __name__ == "__main__":
     if TOKEN is not None:
         bot = Application(TOKEN, use_watson=False)
         bot.updater.start_webhook(
-            listen="0.0.0.0", port=int(PORT), url_path=TOKEN)
+            listen="0.0.0.0",
+            port=int(PORT),
+            url_path=TOKEN)
         bot.updater.bot.set_webhook(f"https://{NAME}.herokuapp.com/{TOKEN}")
         bot.updater.idle()
 
