@@ -4,19 +4,18 @@ import random
 import logging
 import telegram
 import json
-import sqlalchemy
 from datetime import timedelta
-from datetime import datetime
 from time import sleep
 from telegram import Bot
 from telegram.ext import Updater, CommandHandler, Dispatcher, MessageHandler, \
-    Filters
+    Filters, CallbackQueryHandler
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from bot.communication import Communication
 from bot.config_reader import retrieve_default
 from bot.periodic_messages_util import Periodic_mesages_util
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Integer, String
 from sqlalchemy.orm import sessionmaker
 try:
     from model.WeeklyLog import Message
@@ -28,6 +27,7 @@ engine = create_engine('sqlite:///:memory', echo=True)
 Message.metadata.create_all(engine, checkfirst=True)
 Session = sessionmaker(bind=engine)
 session = Session()
+
 
 class Application:
     """
@@ -68,9 +68,9 @@ class Application:
         weekly_handler = CommandHandler('resumo',
                                         self.weekly_resume,
                                         pass_args=True)
-       
+
         find_weekly_handler = CommandHandler('historico',
-                                            self.find_weekly_resume)
+                                             self.find_weekly_resume)
 
         self.dispatcher.add_handler(find_weekly_handler)
 
@@ -81,8 +81,9 @@ class Application:
         message_handler = MessageHandler(Filters.text, self.text_message,
                                          pass_job_queue=True)
 
-        weekly_message_handler = MessageHandler(Filters.text, self.weekly_update,
-                                         pass_job_queue=True)
+        weekly_message_handler = MessageHandler(Filters.text, 
+                                        self.weekly_update,
+                                        pass_job_queue=True)
 
         self.dispatcher.add_handler(message_handler)
         self.dispatcher.add_handler(weekly_message_handler)
@@ -197,11 +198,12 @@ class Application:
 
         return 0
 
+    @staticmethod
     def weekly_resume(self, bot, update, args):
         """
         Asks about the user's week experiences
-        """ 
-        message = ' '.join(args) 
+        """
+        message = ' '.join(args)
 
         db_message = Message(chat_id=update.message.chat_id, text=message)
         session.add(db_message)
@@ -209,13 +211,13 @@ class Application:
         session.commit()
 
         return 0
- 
+
     def find_weekly_resume(self, bot, update):
         """
         Search database to find saved weekly resumes
         """
         weekly_log = []
- 
+
         for instance in session.query(Message):
             weekly_log.append(instance.text)
 
@@ -292,10 +294,10 @@ class Application:
     def weekly_update(self, bot, update, job_queue):
         """ Requests weekly update from user """
         job_queue.run_repeating(self.callback_week,
-                                     interval=60,
-                                     first=0,
-                                     name='weekly',
-                                     context=update)
+                                interval=60,
+                                first=0,
+                                name='weekly',
+                                context=update)
 
         return 0
 

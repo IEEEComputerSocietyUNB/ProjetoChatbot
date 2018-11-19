@@ -1,10 +1,9 @@
 import os
 import sys
-import telegram
 import json
-from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackQueryHandler, CommandHandler, \
-    Dispatcher, MessageHandler, Filters
+    Dispatcher, Filters
 sys.path.append(
     os.path.dirname(
         os.path.dirname(os.path.realpath(__file__))
