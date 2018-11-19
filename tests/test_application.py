@@ -89,14 +89,6 @@ class TestBotBasics(unittest.TestCase):
         self.tgbot.comm = comm
         self.assertEqual(self.tgbot.text_message(bot, bot, job_queue), 0)
 
-    @patch("bot.communication.Communication")
-    @patch("telegram.Bot")
-    def test_text_message(self, comm, bot):
-        self.tgbot.comm = comm
-        file_name = "another_file_name.json"
-        self.assertEqual(self.tgbot.
-                         text_message(bot, bot, job_queue, file_name), 0)
-
     def test_error_method(self):
         self.assertEqual(self.tgbot.error("", "", ""), 0)
 
