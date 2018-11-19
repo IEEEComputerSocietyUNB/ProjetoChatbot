@@ -50,6 +50,11 @@ class Application:
         self.dispatcher = self.updater.dispatcher
         self.job_queue = self.updater.job_queue
 
+        self.add_telegram_handlers()
+
+        self.periodic_mesages_util = Periodic_mesages_util()
+
+    def add_telegram_handlers(self):
         start_handler = CommandHandler("start", self.start)
         self.dispatcher.add_handler(start_handler)
 
@@ -81,16 +86,14 @@ class Application:
         message_handler = MessageHandler(Filters.text, self.text_message,
                                          pass_job_queue=True)
 
-        weekly_message_handler = MessageHandler(Filters.text, 
-                                        self.weekly_update,
-                                        pass_job_queue=True)
+        weekly_message_handler = MessageHandler(Filters.text,
+                                                self.weekly_update,
+                                                pass_job_queue=True)
 
         self.dispatcher.add_handler(message_handler)
         self.dispatcher.add_handler(weekly_message_handler)
 
         self.dispatcher.add_error_handler(self.error)
-
-        self.periodic_mesages_util = Periodic_mesages_util()
 
     def start(self, bot, update):
         """
