@@ -71,11 +71,11 @@ class Screening:
     def get_equivalent_range(self, string):
         if string == 'SOCIODEMOGRAFICO':
             return 0
-        elif string == 'DASS_21A':
+        elif string == 'DASS-21A':
             return 1
-        elif string == 'DASS_21D':
+        elif string == 'DASS-21D':
             return 2
-        elif string == 'DASS_21S':
+        elif string == 'DASS-21S':
             return 3
         else:
             return -1
@@ -110,8 +110,8 @@ class Screening:
 
         self.user_answers[str(SOCIODEMOGRAFICO)]['needed'] = False
         for step in next_steps:
-            step_id = self.get_equivalent_string(step)
-            print(step_id)
+            print(f"STEP: " + step)
+            step_id = self.get_equivalent_range(step)
             print(f"step {str(step_id)}")
             self.user_answers[str(step_id)]['needed'] = True
 

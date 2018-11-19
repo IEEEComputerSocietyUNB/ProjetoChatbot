@@ -1,0 +1,39 @@
+[
+    {
+        "question": "Posso fazer algumas perguntas sobre você? Caso a pergunta não se aplicar, por favor responda 'Não se aplica'.",
+        "answer": ["Sim", "Não"]
+    },
+    {
+        "question": "Qual sua idade ?",
+        "answer": []
+    },
+    {
+        "question": "Qual o seu gênero?",
+        "answer": ["Feminino", "Masculino", "Outro"]
+    },
+    {
+        "question": "Onde você mora?",
+        "answer": ["Plano Piloto", "..."]
+    },
+    {
+        "question": "Você faz terapia atualmente?",
+        "answer": ["Sim", "Não", "Já fiz, mas não faço atualmente"]
+    },
+    {
+        "question": "Qual é a sua etnia?",
+        "answer": []
+    },
+    {
+        "question":"Você trabalha?",
+        "answer": ["Sim", "Não"]
+    },
+    {
+        "question": "Qual curso você faz?",
+        "answer": []
+    },
+    {
+        "question": "Há quanto tempo você está na UNB?",
+        "answer": []
+    }
+
+]
