@@ -29,22 +29,22 @@ class Screening:
         self.scales_dict = {}
         self.initial_dict = {}
         self.user_answers = {
-            str(SOCIODEMOGRAFICO): {
-                "needed": True,
-                "given_answer": []
-            },
-            str(DASS_21A): {
-                "needed": False,
-                "given_answer": []
-            },
-            str(DASS_21D): {
-                "needed": False,
-                "given_answer": []
-            },
-            str(DASS_21S): {
-                "needed": False,
-                "given_answer": []
-            }
+                        str(SOCIODEMOGRAFICO) : {
+                            "needed" : True,
+                            "given_answer": []
+                        },
+                        str(DASS_21A) : {
+                            "needed" : False,
+                            "given_answer" : []
+                        },
+                        str(DASS_21D) : {
+                            "needed" : False,
+                            "given_answer" : []
+                        },
+                        str(DASS_21S) : {
+                            "needed" : False,
+                            "given_answer" : []
+                        }
         }
         self.load_jsons()
 
@@ -108,10 +108,12 @@ class Screening:
 
         next_steps = list(set(next_steps))
 
-        self.user_answers[SOCIODEMOGRAFICO]['needed'] = False
+        self.user_answers[str(SOCIODEMOGRAFICO)]['needed'] = False
         for step in next_steps:
-            step_id = self.get_equivalent_range(step)
-            self.user_answers[step_id]['needed'] = True
+            step_id = self.get_equivalent_string(step)
+            print(step_id)
+            print(f"step {str(step_id)}")
+            self.user_answers[str(step_id)]['needed'] = True
 
     def call_next_steps(self, next_steps):
         scales = []
@@ -186,6 +188,7 @@ class Screening:
         if(stage == SOCIODEMOGRAFICO):
             self.user_answers[str(SOCIODEMOGRAFICO)]["given_answer"]. \
                 append(answer_index)
+            tam = len(self.initial_questions)
         elif(stage == DASS_21A):
             self.user_answers[str(DASS_21A)]["given_answer"]. \
                 append(answer_index)
@@ -199,19 +202,22 @@ class Screening:
                 append(answer_index)
             tam = len(self.dass_screen("DASS_21S")[question_index]["answer"])
 
-        # Going for next stage
-        if(tam == question_index + 1):
+        #Going for next stage
+        print(f"tam:{tam}")
+        print(f"question_index+1{question_index+1}")
+        if(tam == question_index+1):
             # recebe o stage atual e acessa as resposta em
             # self.user_answers[stage]["given_answer"], avalia quais
             # questionarios precisam ser respondidos, e modifica
             # self.user_answers[stage]["needed"] para True
             if(stage == SOCIODEMOGRAFICO):
                 self.evaluate_initial_screen(
-                    self.user_answers[stage]["given_answer"]
+                    self.user_answers[str(stage)]["given_answer"]
                 )
-            self.call_next_question(bot, query.message.chat_id, stage + 1, 0)
+            print("AHUAUA")
+            self.call_next_question(bot, query.message.chat_id, stage+1, 0)
         else:
-            self.call_next_question(
-                bot, query.message.chat_id, stage, question_index + 1)
+            print("QQQQQ")
+            self.call_next_question(bot, query.message.chat_id, stage, question_index+1)
 
         return 0
