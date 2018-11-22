@@ -113,7 +113,7 @@ class Communication:
         except FileNotFoundError:
             raise FileNotFoundError
 
-    def remove_words(self, message, files=["articles.json", "pronouns.json"]):
+    def remove_words(self, message, files=["articles.json", "pronouns.json", "adverbs.json"]):
         message = f" {message} "
         try:
             for file in files:
