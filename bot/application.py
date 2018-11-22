@@ -62,7 +62,6 @@ class Application:
         contatos_handler = CommandHandler("contatos", self.contatos)
         self.dispatcher.add_handler(contatos_handler)
 
-
         lembrete_handler = CommandHandler('lembrete', self.lembrete)
         self.dispatcher.add_handler(lembrete_handler)
 
@@ -83,7 +82,7 @@ class Application:
         self.dispatcher.add_handler(message_handler)
         self.dispatcher.add_error_handler(self.error)
         self.periodic_mesages_util = Periodic_mesages_util()
-        
+
     def send_type_action(self, bot, update):
         """
         Shows status typing when sending message
@@ -151,7 +150,7 @@ class Application:
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
         )
-        with open(f"{os.getcwd()}/bot/dialogs/commands/help.md") as help_file:
+        with open("bot/dialogs/commands/help.md") as help_file:
             helpme_text = help_file.read()
             bot.send_message(
                 chat_id=update.message.chat_id,
@@ -166,7 +165,7 @@ class Application:
         """
 
         self.send_type_action(bot, update)
-        with open(f"{os.getcwd()}/bot/dialogs/contacts.md") as contatos_file:
+        with open("bot/dialogs/commands/contacts.md") as contatos_file:
             contatos_text = contatos_file.read()
             bot.send_message(
                 chat_id=update.message.chat_id,
@@ -234,7 +233,7 @@ class Application:
 
         # starting timer for next reminder to chat
         try:
-            FILE_PATH = str(os.getcwd()) + '/bot/' + file_name
+            FILE_PATH = f'{str(os.getcwd())}/bot/{file_name}'
             with open(FILE_PATH) as data_file:
                 intervals_dict = json.load(data_file)
         except FileNotFoundError:
@@ -251,16 +250,20 @@ class Application:
                                 context=update)
         bot.send_chat_action(
             chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING
-
-    def text_message(self, bot, update):
-        self.send_type_action(bot, update)
-
-        if not self.check_for_emotion(update):
-            message = update.effective_message.text
-            update.effective_message.reply_text(
-                str(self.comm.respond(message))
-            )
+        )
+        message = update.effective_message.text
+        update.effective_message.reply_text(str(self.comm.respond(message)))
         return 0
+
+    # def text_message(self, bot, update):
+    #     self.send_type_action(bot, update)
+
+    #     if not self.check_for_emotion(update):
+    #         message = update.effective_message.text
+    #         update.effective_message.reply_text(
+    #             str(self.comm.respond(message))
+    #         )
+    #     return 0
 
     def check_for_emotion(self, update):
         if self.emotion_handler:

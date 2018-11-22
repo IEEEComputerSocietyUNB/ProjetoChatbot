@@ -110,3 +110,4 @@ db.sqlite*
 .idea
 .vscode/
 *.sqlite3
+bot/users_custom_invervals.json
