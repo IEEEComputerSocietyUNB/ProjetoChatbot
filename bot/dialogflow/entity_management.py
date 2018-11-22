@@ -40,6 +40,9 @@ def list_entities(project_id, entity_type_id):
     entities = entity_types_client.get_entity_type(parent).entities
 
     for entity in entities:
+        log_file = open('dialog_logs.txt', 'a')
+        log_file.write('Entity value: {}'.format(entity.value))
+        log_file.write('Entity synonyms: {}\n'.format(entity.synonyms))
         print('Entity value: {}'.format(entity.value))
         print('Entity synonyms: {}\n'.format(entity.synonyms))
 

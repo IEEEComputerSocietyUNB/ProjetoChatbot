@@ -1,0 +1,133 @@
+Entity type name: projects/rabot-free-test/agent/entityTypes/f0bd30bc-b7f8-4a0c-a3fd-725fdc593d58Entity type display name: TemaNumber of entities: 1
+Entity value: depressãoEntity synonyms: ['depressivo', 'depressiva']
+====================Intent name: projects/rabot-free-test/agent/intents/d447710d-654e-446f-9d66-e19819183768Intent display_name: intent-sentimento-teste3Intent training_phrases: []Intent message: [text {
+  text: "r"
+  text: "e"
+  text: "s"
+  text: "p"
+  text: "o"
+  text: "s"
+  text: "t"
+  text: "a"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+  text: "3"
+}
+]Action: 
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:====================Intent name: projects/rabot-free-test/agent/intents/a601f66f-d1a5-439b-8c7d-e015846fda0fIntent display_name: intent-sentimento-teste2Intent training_phrases: []Intent message: [text {
+  text: "r"
+  text: "e"
+  text: "s"
+  text: "p"
+  text: "o"
+  text: "s"
+  text: "t"
+  text: "a"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+  text: "2"
+}
+]Action: 
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:====================Intent name: projects/rabot-free-test/agent/intents/f063fbf2-412d-49e1-9878-4273656d53f3Intent display_name: intent-sentimento-testeIntent training_phrases: []Intent message: [text {
+  text: "r"
+  text: "e"
+  text: "s"
+  text: "p"
+  text: "o"
+  text: "s"
+  text: "t"
+  text: "a"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+}
+]Action: 
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:====================Intent name: projects/rabot-free-test/agent/intents/dedd3859-cf54-4476-bb3b-b0033f2d7170Intent display_name: intent-sentimento-raivaIntent training_phrases: []Intent message: [text {
+  text: "r"
+  text: "e"
+  text: "s"
+  text: "p"
+  text: "o"
+  text: "s"
+  text: "t"
+  text: "a"
+  text: " "
+  text: "r"
+  text: "a"
+  text: "i"
+  text: "v"
+  text: "a"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+}
+]Action: 
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:====================Intent name: projects/rabot-free-test/agent/intents/57605edb-4bf5-4645-9808-f1960e842556Intent display_name: intent-sentimento-depressaoIntent training_phrases: []Intent message: [text {
+  text: "r"
+  text: "e"
+  text: "s"
+  text: "p"
+  text: "o"
+  text: "s"
+  text: "t"
+  text: "a"
+  text: " "
+  text: "t"
+  text: "e"
+  text: "s"
+  text: "t"
+  text: "e"
+}
+]Action: 
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:====================Intent name: projects/rabot-free-test/agent/intents/53bb225f-cbbf-44a5-8077-5cc29794d4fcIntent display_name: Default Welcome IntentIntent training_phrases: []Intent message: [text {
+  text: "Ol\303\241!"
+  text: "Oi!"
+}
+]Action: input.welcome
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:====================Intent name: projects/rabot-free-test/agent/intents/4b92773a-658b-48fe-8c79-aad133867179Intent display_name: Default Fallback IntentIntent training_phrases: []Intent message: [text {
+  text: "Lamento, mas n\303\243o compreendi."
+  text: "Desculpe, mas n\303\243o compreendi."
+  text: "Infelizmente, n\303\243o captei o que deseja."
+  text: "N\303\243o consegui compreender, desculpe."
+}
+]Action: input.unknown
+Root followup intent: Parent followup intent: 
+Input contexts:Output contexts:

@@ -35,6 +35,10 @@ def list_entity_types(project_id):
     entity_types = entity_types_client.list_entity_types(parent)
 
     for entity_type in entity_types:
+        log_file = open('dialog_logs.txt', 'a')
+        log_file.write('Entity type name: {}'.format(entity_type.name))
+        log_file.write('Entity type display name: {}'.format(entity_type.display_name))
+        log_file.write('Number of entities: {}\n'.format(len(entity_type.entities)))
         print('Entity type name: {}'.format(entity_type.name))
         print('Entity type display name: {}'.format(entity_type.display_name))
         print('Number of entities: {}\n'.format(len(entity_type.entities)))

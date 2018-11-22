@@ -40,15 +40,35 @@ def list_intents(project_id):
     intents = intents_client.list_intents(parent)
 
     for intent in intents:
+        log_file = open('dialog_logs.txt', 'a')
+        log_file.write('=' * 20)
+        log_file.write('Intent name: {}'.format(intent.name))
+        log_file.write('Intent display_name: {}'.format(intent.display_name))
+        log_file.write('Intent training_phrases: {}'.format(intent.training_phrases))
+        log_file.write('Intent message: {}'.format(intent.messages))
+        log_file.write('Action: {}\n'.format(intent.action))
+        log_file.write('Root followup intent: {}'.format(
+            intent.root_followup_intent_name))
+        log_file.write('Parent followup intent: {}\n'.format(
+            intent.parent_followup_intent_name))
+        log_file.write('Input contexts:')
+        for input_context_name in intent.input_context_names:
+            print('\tName: {}'.format(input_context_name))
+
+        log_file.write('Output contexts:')
+        for output_context in intent.output_contexts:
+            print('\tName: {}'.format(output_context.name))
+        
         print('=' * 20)
         print('Intent name: {}'.format(intent.name))
         print('Intent display_name: {}'.format(intent.display_name))
+        print('Intent training_phrases: {}'.format(intent.training_phrases))
+        print('Intent message: {}'.format(intent.messages))
         print('Action: {}\n'.format(intent.action))
         print('Root followup intent: {}'.format(
             intent.root_followup_intent_name))
         print('Parent followup intent: {}\n'.format(
             intent.parent_followup_intent_name))
-
         print('Input contexts:')
         for input_context_name in intent.input_context_names:
             print('\tName: {}'.format(input_context_name))
@@ -71,9 +91,11 @@ def create_intent(project_id, display_name, training_phrases_parts,
     for training_phrases_part in training_phrases_parts:
         part = dialogflow.types.Intent.TrainingPhrase.Part(
             text=training_phrases_part)
+        #print('part: ', part)
         # Here we create a new training phrase for each provided part.
         training_phrase = dialogflow.types.Intent.TrainingPhrase(parts=[part])
         training_phrases.append(training_phrase)
+        #print('training_phrases: ', training_phrases)
 
     text = dialogflow.types.Intent.Message.Text(text=message_texts)
     message = dialogflow.types.Intent.Message(text=text)

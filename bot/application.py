@@ -65,9 +65,7 @@ class Application:
 
         self.dispatcher.add_error_handler(self.error)
 
-        self.dialog = Dialog()
-
-        self.dialog.create()
+        self.dialog = Dialog().create()
 
     def start(self, bot, update):
         """
