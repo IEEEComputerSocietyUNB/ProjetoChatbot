@@ -4,7 +4,7 @@ import os
 from unittest.mock import patch
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from bot.communication import Communication
+from bot.communication import Communication, switch_abbreviations, remove_words
 from bot.watson import Watson
 
 
@@ -31,28 +31,28 @@ class TestBotCommunication(unittest.TestCase):
 
     def test_if_comm_raises_error_when_abbr_is_not_a_list(self):
         with self.assertRaises(FileNotFoundError):
-            self.comm.switch_abbreviations("teste", files="fail.txt")
+            switch_abbreviations("teste", directory="fail.txt")
 
     def test_if_comm_raises_error_when_abbr_not_found(self):
         with self.assertRaises(FileNotFoundError):
-            self.comm.switch_abbreviations("teste", files=["fail.txt"])
+            switch_abbreviations("teste", directory=["fail.txt"])
 
     def test_comm_switches_abbreviations(self):
         self.assertEqual(
-            self.comm.switch_abbreviations("vc está aki"), "você está aqui"
+            switch_abbreviations("vc está aki"), "você está aqui"
         )
 
     def test_if_comm_raises_error_when_rm_is_not_a_list(self):
         with self.assertRaises(FileNotFoundError):
-            self.comm.remove_words("teste", files="fail.txt")
+            remove_words("teste", directory="fail")
 
     def test_if_comm_raises_error_when_rm_not_found(self):
         with self.assertRaises(FileNotFoundError):
-            self.comm.remove_words("teste", files=["fail.txt"])
+            remove_words("teste", directory=["fail"])
 
     def test_comm_removes_pronouns_and_articles(self):
         self.assertEqual(
-            self.comm.remove_words("conte uma piada"),
+            remove_words("conte uma piada"),
             "conte piada"
         )
 

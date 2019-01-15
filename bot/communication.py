@@ -2,6 +2,8 @@ import os
 import json
 import time
 import sys
+from os import listdir
+from os.path import isfile, join
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.response_selection import get_random_response
@@ -26,9 +28,12 @@ class Communication:
                     "import_path": "chatterbot.logic.LowConfidenceAdapter",
                     "threshold": 0.65,
                     "default_response": [
-                        "Desculpa, mas não entendi sua mensagem.",
-                        "Não compreendi, você pode repetir?",
-                        "Como é? Não entendi",
+                        "Desculpa, mas não entendi sua mensagem."
+                        "Como eu deveria ter respondido?",
+                        "Não compreendi, "
+                        "você pode me falar como eu deveria ter respondido?",
+                        "Como é? Não entendi. "
+                        "Qual seria uma resposta adequada?",
                     ],
                 },
             ],
@@ -93,37 +98,45 @@ class Communication:
         and some pronouns.
         """
         # message = self.remove_punctuations(message)
-        message = self.switch_abbreviations(message)
-        message = self.remove_words(message)
+        message = switch_abbreviations(message)
+        message = remove_words(message)
         return message.lower()
 
-    def switch_abbreviations(self, message, files=["abbreviations.json"]):
-        message = f" {message} "
-        try:
-            for file in files:
-                FILE_PATH = f"{str(os.getcwd())}/bot/dialogs/switches/{file}"
-                with open(FILE_PATH, "r") as file:
-                    common_abbr = json.load(file)
-                    for word in common_abbr:
-                        message = message.replace(
-                            (f" {word} "), (f" {common_abbr[word]} ")
-                        )
-            message = message[1:-1]
-            return message
-        except FileNotFoundError:
-            raise FileNotFoundError
 
-    def remove_words(self, message, files=["articles.json", "pronouns.json"]):
-        message = f" {message} "
-        try:
-            for file in files:
-                FILE_PATH = f"{str(os.getcwd())}/bot/dialogs/removals/{file}"
-                with open(FILE_PATH, "r") as file:
-                    removals = json.load(file)
+def switch_abbreviations(message, directory="switches"):
+    message = f" {message} "
+    directory = f"bot/dialogs/{directory}"
+    files = [file for file in listdir(directory)
+             if isfile(join(directory, file))]
+    try:
+        for file in files:
+            FILE_PATH = f"{directory}/{file}"
+            with open(FILE_PATH, "r") as file:
+                common_abbr = json.load(file)
+                for word in common_abbr:
+                    message = message.replace(
+                        (f" {word} "), (f" {common_abbr[word]} ")
+                    )
+        message = message[1:-1]
+        return message
+    except FileNotFoundError:
+        raise FileNotFoundError
 
-                    for word in removals:
-                        message = message.replace((f" {word} "), (" "))
-            message = message[1:-1]
-            return message
-        except FileNotFoundError:
-            raise FileNotFoundError
+
+def remove_words(message,
+                 directory="removals"):
+    message = f" {message} "
+    directory = f"bot/dialogs/{directory}"
+    files = [file for file in listdir(directory)
+             if isfile(join(directory, file))]
+    try:
+        for file in files:
+            FILE_PATH = f"{directory}/{file}"
+            with open(FILE_PATH, "r") as file:
+                removals = json.load(file)
+                for word in removals:
+                    message = message.replace((f" {word} "), (" "))
+        message = message[1:-1]
+        return message
+    except FileNotFoundError:
+        raise FileNotFoundError
